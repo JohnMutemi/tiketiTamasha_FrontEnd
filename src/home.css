@@ -108,16 +108,8 @@ body {
     align-items: center;
     justify-content: space-between;
     bottom: 0;
-  }
-  
-  footer .footer-left {
-    display: flex;
-    align-items: center;
-  }
-  
-  footer .footer-left img .a {
-    height: 40px;
-    margin-right: 10px;
+    position: fixed;
+    width: 98%;
   }
   
   footer .footer-center {
@@ -127,7 +119,7 @@ body {
   
   footer .footer-right {
     display: flex;
-    gap: 10px;
+    gap: 7px;
   }
   
   footer .footer-right img {
