@@ -9,13 +9,20 @@ function Home() {
 
   useEffect(() => {
     fetch('http://localhost:5555/events')
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then((data) => {
         console.log('Fetched events:', data);
         setEvents(data);
         setFilteredEvents(data);
       })
-      .catch((error) => console.error('Error fetching events:', error));
+      .catch((error) => {
+        console.error('Error fetching events:', error);
+      });
   }, []);
 
   const handleSearch = (term) => {
@@ -33,11 +40,11 @@ function Home() {
       <EventList events={filteredEvents} />
       <footer>
         <div className="footer-left">
-          <img src="" alt="logo" />
           <a href="#">FanProtect™</a>
         </div>
         <div className="footer-center">
           <a href="#">About us</a>
+          <a href="#">Help</a>
           <a href="#">Customer Service</a>
           <a href="#">Download the Tiketi Tamasha app</a>
         </div>

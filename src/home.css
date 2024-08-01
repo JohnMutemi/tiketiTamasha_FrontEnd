@@ -1,18 +1,18 @@
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #ffffff;
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: #f7f7f7; 
     display: flex;
     flex-direction: column;
     min-height: 100vh;
   }
-
+  
   .home {
     flex: 1;
     display: flex;
     flex-direction: column;
   }
-
+  
   .App {
     display: flex;
     flex-direction: column;
@@ -23,64 +23,65 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 20px;
-    background-color: #eeecec;
-    box-shadow: 0 2px 4px rgba(55, 54, 54, 0.1);
+    padding: 15px 30px; 
+    background-color: #ffffff; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   }
   
   .logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: #B65D58;
+    font-size: 28px; 
+    font-weight: 700; 
+    color: #d9534f; 
   }
-
+  
   .search-bar {
     display: flex;
     align-items: center;
-    background-color: #B65D58;
-    border-radius: 20px;
-    padding: 5px 10px;
+    background-color: #f1f1f1; 
+    border-radius: 25px;
+    padding: 8px 12px; 
+    border: 1px solid #ccc; 
   }
-
+  
   .search-bar input {
     border: none;
     outline: none;
     background: transparent;
-    color: black;
+    color: #333; 
     font-size: 16px;
     padding: 5px;
     flex-grow: 1;
   }
-
+  
   .search-bar .category-dropdown,
   .search-bar .search-button {
     background: none;
     border: none;
-    color: black;
-    font-size: 20px;
+    color: #333;
+    font-size: 16px;
     cursor: pointer;
   }
-
+  
   .my-events-button {
     background: none;
     border: none;
-    color: black;
+    color: #333;
     font-size: 16px;
     cursor: pointer;
     margin-left: 20px;
   }
-
+  
   .hero-image {
-    width: 90%;
-    height: 200px;
-    background-image: url('https://via.placeholder.com/1200x200');
+    width: 85%;
+    height: 300px; 
+    background-image: url('https://cdn.britannica.com/58/155258-050-2F8189A9/Symphony-concert-Svetlanov-Hall-Moscow-International-House.jpg'); 
     background-size: cover;
     background-position: center;
     margin: 20px auto;
-    border-radius: 25px;
-    border-color: #9994B4;
+    border-radius: 10px; 
+    border: 4px solid #9994B4;
   }
-
+  
   .event-list {
     display: flex;
     justify-content: space-around;
@@ -90,26 +91,40 @@ body {
   }
   
   .event-card {
-    background-color: #9994B4;
+    background-color: #ffffff; 
     border-radius: 10px;
     padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 30%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    width: 100%; 
+    max-width: 300px; 
+    border: 4px solid #EA8F74;
   }
   
   .event-card h3 {
     margin-top: 0;
+    color: #333; 
   }
   
   footer {
-    background-color: #6395A0;
-    padding: 20px 20px;
+    background-color: #6395A0; 
+    color: #ffffff;
+    padding: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     bottom: 0;
     position: fixed;
     width: 98%;
+  }
+  
+  footer .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  footer .footer-left img {
+    height: 40px; 
   }
   
   footer .footer-center {
@@ -119,7 +134,7 @@ body {
   
   footer .footer-right {
     display: flex;
-    gap: 7px;
+    gap: 10px;
   }
   
   footer .footer-right img {
@@ -128,16 +143,15 @@ body {
   }
   
   footer a {
-    color: black;
+    color: #ffffff;
     text-decoration: none;
     font-size: 14px;
-    text-align: center;
   }
   
   footer a:hover {
     text-decoration: underline;
   }
-
+  
   .account-icon {
     background: none;
     border: none;
@@ -145,3 +159,4 @@ body {
     font-size: 20px;
     cursor: pointer;
   }
+  
