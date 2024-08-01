@@ -6,7 +6,7 @@ function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState('attendee');
+  const [role, setRole] = useState('event_organizer');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ function Register() {
         setUsername('');
         setPassword('');
         setEmail('');
-        setRole('attendee');
+        setRole('event_organizer');
 
         setTimeout(() => navigate('/login'), 1000);
       })
@@ -64,7 +64,7 @@ function Register() {
   return (
     <div className="register-container">
       <form onSubmit={handleSubmit} className="register-form">
-        <h3>Register</h3>
+        <h3>Create Account</h3>
         <div className="input-group">
           <label htmlFor="username">Username</label>
           <input
@@ -109,11 +109,11 @@ function Register() {
             onChange={handleChange}
             required>
             <option value="event_organizer">Event Organizer</option>
-            <option value="attendee">Attendee</option>
+            <option value="customer">Attendee</option>
           </select>
         </div>
         <button type="submit" className="register-button">
-          Register
+          Submit
         </button>
         <button
           type="button"
