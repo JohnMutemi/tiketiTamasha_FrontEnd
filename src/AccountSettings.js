@@ -93,6 +93,7 @@ function AccountSettings() {
 
     return (
         <div className="settings-container">
+            <h1>Settings</h1>
             <div className="setting-item">
                 <button onClick={() => setShowPasswordChange(!showPasswordChange)}>
                     Change Password
