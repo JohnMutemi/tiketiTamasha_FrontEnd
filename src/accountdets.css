@@ -1,0 +1,122 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+}
+
+.account-container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #6395a0a1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    height: 100%;
+}
+
+.sidebar img {
+    width: 50px;
+    margin-bottom: 20px;
+}
+
+.sidebar a, .sidebar button {
+    text-decoration: none;
+    color: #000;
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.sidebar button  {
+    border:none;
+    cursor: pointer;
+    padding: 0;
+    outline: none; 
+    background-color: #6395a000;
+}
+
+.sidebar a:hover,
+.sidebar a.active, 
+.sidebar button:hover,
+.sidebar button.active  {
+    color: #ffffff;
+}
+
+.account-details {
+    flex-grow: 1;
+    padding: 40px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+.account-details h1 {
+    font-size: 28px;
+    color: #4a6b6b;
+    margin-bottom: 30px;
+}
+
+.account-details p {
+    border: 1px solid #6395A0;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    background-color: #f7fafb;
+    font-size: 16px;
+}
+
+.account-details p strong {
+    display: block;
+    font-weight: bold;
+    color: #333;
+}
+
+.logoo {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    transform: rotate(45deg);
+    border-radius: 25px;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-around; 
+    align-items: center; 
+    background-color: #6395a0a1;
+    color: #333;
+    padding: 20px 0; 
+    position: absolute;
+    width: 100%; 
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    z-index: 1;
+}
+
+.footer a {
+    color: #333;
+    text-decoration: none;
+    padding: 0 10px; 
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .footer {
+        width: 100%; 
+        flex-direction: column; 
+        padding: 10px 0;
+    }
+
+    .footer a {
+        padding: 5px 0; 
+    }
+}
