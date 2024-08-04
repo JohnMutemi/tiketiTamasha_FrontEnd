@@ -33,12 +33,7 @@ function SignIn() {
         return response.json();
       })
       .then((userData) => {
-        login({
-          username: userData.username,
-          userId: userData.user_id,
-          email: userData.email,
-          token: userData.access_token,
-        });
+        login(userData, stayLoggedIn); 
         setError('');
         setSuccess('Login successful!');
         const dashboardPath =
@@ -51,13 +46,6 @@ function SignIn() {
         setError(error.message);
         setSuccess('');
       });
-  };
-
-  const handleLogin = (userData) => {
-    const stayLoggedIn = document.getElementById(
-      'stayLoggedInCheckbox'
-    ).checked;
-    login(userData, stayLoggedIn);
   };
 
   return (
@@ -105,7 +93,7 @@ function SignIn() {
         </div>
         <div className="signup-link">
           <p>
-            New to TiketiTamasha? <a href="/register">Create account</a>
+            New to Tiketi Tamasha? <a href="/register">Create account</a>
           </p>
         </div>
       </form>
