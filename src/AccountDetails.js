@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './accountdets.css'; 
 import AccountSettings from './AccountSettings';
+import ticket from'./ticket_11785924.png';
+import { Link } from 'react-router-dom';
 
 
 function AccountDetails() {
@@ -31,7 +33,9 @@ function AccountDetails() {
                 <a href="#logout">Logout</a>
             </div>
             <div className="account-details">
-                <img src="" alt="Logo" className="logoo" /> 
+            <Link to="/">
+                <img src={ticket} alt="Logo" className="logoo" />
+            </Link>
                 {currentView === 'details' ? (
                     <>
                     <h1>My Account</h1>

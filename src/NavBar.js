@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './ticket_11785924.png';
+import ticket from'./ticket_11785924.png';
 
 function NavBar({ onSearch, searchTerm, categories, onCategoryClick }) {
     const [showCategories, setShowCategories] = useState(false);
@@ -20,6 +20,7 @@ function NavBar({ onSearch, searchTerm, categories, onCategoryClick }) {
 
     return (
         <nav className="navbar">
+            <img src={ticket} alt="ticket" className="ticket"></img>
             <div className="logo">Tiketi Tamasha</div>
             <div className="search-bar">
                 <button className="category-dropdown" onClick={toggleCategoriesDropdown}>☰</button>
