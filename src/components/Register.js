@@ -57,7 +57,7 @@ function Register() {
   };
 
   const handleGoogleSignUp = () => {
-    // Redirect the user to Google's OAuth 2.0 consent page
+ 
     window.location.href = 'YOUR_GOOGLE_OAUTH_URL';
   };
 
