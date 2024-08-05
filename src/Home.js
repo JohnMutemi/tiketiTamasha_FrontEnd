@@ -57,6 +57,10 @@ function Home() {
         setFilteredEvents(filtered);
     };
 
+    const handleCategorySelection = (category) => {
+        console.log('Selected Category:', category);
+    };
+
     return (
         <div className="home">
         <NavBar 
