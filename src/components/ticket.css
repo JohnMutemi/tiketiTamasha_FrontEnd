@@ -1,0 +1,87 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.256);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  background-color: #e8e7ecc1;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 80%;
+  max-width: 500px;
+  text-align: center;
+  border: 5px solid #6395a09d;
+  position: relative; /* Needed for absolute positioning of the Close button */
+}
+
+.ticket-options select {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Add some margin to the dropdown */
+.ticket-options {
+  margin-bottom: 20px;
+}
+
+.ticket-option.active {
+  background-color: #9994b4;
+  color: white;
+}
+
+.ticket-option:hover {
+  background-color: #9994b4;
+  color: white;
+}
+
+.ticket-details {
+  margin-bottom: 20px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between; /* Space between buttons */
+  align-items: center;
+  margin-top: 20px;
+}
+
+.close-button {
+  background-color: #ea9074ac;
+  color: rgb(3, 3, 3);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.close-button:hover {
+  background-color: #ea8f74;
+}
+
+.book-now-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.book-now-button:hover {
+  background-color: #45a049;
+}
