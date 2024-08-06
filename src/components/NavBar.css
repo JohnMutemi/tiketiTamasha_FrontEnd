@@ -1,0 +1,223 @@
+/* home.css */
+
+/* General header styling */
+.header {
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+/* Container styling */
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 30px;
+  width: 100%;
+  max-width: 1200px; /* Adjust max-width as needed */
+  margin: 0 auto; /* Center the container */
+}
+
+/* Navbar styling */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  color: #fff;
+  border-bottom: 2px solid #0056b3;
+  width: 100%;
+}
+
+.navbar .profile-container {
+  position: relative;
+}
+
+.navbar .profile-icon {
+  font-size: 24px;
+  cursor: pointer;
+  margin-left: 20px;
+}
+
+.navbar .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.navbar .profile-container:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 8px 12px;
+  color: #333;
+  text-decoration: none;
+}
+
+.dropdown-item:hover {
+  background-color: #f4f4f4;
+}
+
+
+.left-section {
+  display: flex;
+  align-items: center;
+}
+
+.ticket {
+  width: 50px;
+  height: 50px;
+  transform: rotate(45deg);
+  border-radius: 25px;
+  margin-right: 10px; /* Adds space between the ticket and logo */
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: 700;
+  color: #d9534f;
+  margin-right: 20px; /* Adds space between the logo and the search bar */
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #f1f1f1;
+  border-radius: 25px;
+  padding: 8px 12px;
+  border: 2px solid #9994b4;
+  flex-grow: 1; /* Allows the search bar to expand */
+  max-width: 400px; /* Adjusts max width of search bar */
+  margin-right: 20px; /* Adds space between search bar and other items */
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #333;
+  font-size: 16px;
+  padding: 5px;
+  flex-grow: 1;
+}
+
+.search-bar .category-dropdown,
+.search-bar .search-button {
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 8px;
+}
+
+/* Header menu styling */
+.header__menu {
+  display: flex;
+  align-items: center;
+}
+
+.header__menu-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.header__menu-items li {
+  margin-left: 20px;
+}
+
+.header__menu-items a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+}
+
+.header__menu-items a:hover {
+  color: #d9534f; /* Highlight color on hover */
+}
+
+/* Profile container styling */
+.profile-container {
+  position: relative;
+}
+
+.profile-icon {
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Dropdown menu styling */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 10px;
+  width: 150px;
+  z-index: 1000;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-item {
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #333;
+  display: block;
+}
+
+.dropdown-item:hover {
+  background-color: #f1f1f1;
+}
+
+.logout-button {
+  color: #ff7300;
+}
+
+/* Login button styling */
+.header__login-btn .login-btn__text {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #48bd52;
+  text-decoration: none;
+  color: #fff;
+}
+
+/* Adjustments for sticky navbar */
+body {
+  margin: 0;
+  padding-top: 70px; /* Height of the navbar */
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+}
+.header__menu-item {
+  margin-left: 20px;
+  padding-right: 20px; /* Adjusts the space between Home and Contact Us */
+}
