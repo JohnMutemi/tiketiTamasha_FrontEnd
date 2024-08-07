@@ -33,11 +33,13 @@ function SignIn() {
         return response.json();
       })
       .then((userData) => {
-        login(userData, stayLoggedIn); 
+        login(userData, stayLoggedIn);
         setError('');
         setSuccess('Login successful!');
         const dashboardPath =
-          userData.role === 'event_organizer'
+          userData.role === 'admin'
+            ? '/admin-dashboard'
+            : userData.role === 'event_organizer'
             ? '/organizer-dashboard'
             : '/customer-dashboard';
         setTimeout(() => navigate(dashboardPath), 1000);

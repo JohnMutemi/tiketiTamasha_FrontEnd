@@ -1,6 +1,3 @@
-/* home.css */
-
-/* General header styling */
 .header {
   background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -11,18 +8,16 @@
   z-index: 1000;
 }
 
-/* Container styling */
 .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 15px 30px;
   width: 100%;
-  max-width: 1200px; /* Adjust max-width as needed */
-  margin: 0 auto; /* Center the container */
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* Navbar styling */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -71,7 +66,6 @@
   background-color: #f4f4f4;
 }
 
-
 .left-section {
   display: flex;
   align-items: center;
@@ -82,14 +76,14 @@
   height: 50px;
   transform: rotate(45deg);
   border-radius: 25px;
-  margin-right: 10px; /* Adds space between the ticket and logo */
+  margin-right: 10px;
 }
 
 .logo {
   font-size: 28px;
   font-weight: 700;
   color: #d9534f;
-  margin-right: 20px; /* Adds space between the logo and the search bar */
+  margin-right: 20px;
 }
 
 .search-bar {
@@ -99,9 +93,9 @@
   border-radius: 25px;
   padding: 8px 12px;
   border: 2px solid #9994b4;
-  flex-grow: 1; /* Allows the search bar to expand */
-  max-width: 400px; /* Adjusts max width of search bar */
-  margin-right: 20px; /* Adds space between search bar and other items */
+  flex-grow: 1;
+  max-width: 400px;
+  margin-right: 20px;
 }
 
 .search-bar input {
@@ -124,7 +118,6 @@
   padding: 0 8px;
 }
 
-/* Header menu styling */
 .header__menu {
   display: flex;
   align-items: center;
@@ -149,10 +142,9 @@
 }
 
 .header__menu-items a:hover {
-  color: #d9534f; /* Highlight color on hover */
+  color: #d9534f;
 }
 
-/* Profile container styling */
 .profile-container {
   position: relative;
 }
@@ -164,7 +156,6 @@
   cursor: pointer;
 }
 
-/* Dropdown menu styling */
 .dropdown-menu {
   display: none;
   position: absolute;
@@ -197,7 +188,6 @@
   color: #ff7300;
 }
 
-/* Login button styling */
 .header__login-btn .login-btn__text {
   padding: 5px 10px;
   border: 1px solid #ccc;
@@ -207,10 +197,9 @@
   color: #fff;
 }
 
-/* Adjustments for sticky navbar */
 body {
   margin: 0;
-  padding-top: 70px; /* Height of the navbar */
+  padding-top: 70px;
 }
 
 .contact-link {
@@ -219,5 +208,5 @@ body {
 }
 .header__menu-item {
   margin-left: 20px;
-  padding-right: 20px; /* Adjusts the space between Home and Contact Us */
+  padding-right: 20px;
 }
