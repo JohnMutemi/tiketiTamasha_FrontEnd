@@ -12,6 +12,7 @@ const EventManagement = () => {
   const [imageUrl, setImageUrl] = useState('');
   const [totalTickets, setTotalTickets] = useState('');
   const [remainingTickets, setRemainingTickets] = useState('');
+  const [isFormVisible, setFormVisible] = useState(false); // State to toggle form visibility
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -122,6 +123,7 @@ const EventManagement = () => {
     setImageUrl(event.image_url);
     setTotalTickets(event.total_tickets);
     setRemainingTickets(event.remaining_tickets);
+    setFormVisible(true); // Show the form when editing
   };
 
   const clearForm = () => {
@@ -133,115 +135,120 @@ const EventManagement = () => {
     setImageUrl('');
     setTotalTickets('');
     setRemainingTickets('');
+    setFormVisible(false); // Hide the form when cleared
   };
 
   return (
-    <div>
-      <h2>Event Management</h2>
-      <form
-        onSubmit={
-          editingEvent ? () => handleUpdateEvent(editingEvent) : handleAddEvent
-        }>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Event Title"
-          required
-        />
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Event Description"
-          required
-        />
-        <input
-          type="text"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          placeholder="Event Location"
-          required
-        />
-        <input
-          type="datetime-local"
-          value={startTime}
-          onChange={(e) => setStartTime(e.target.value)}
-          placeholder="Start Time"
-          required
-        />
-        <input
-          type="datetime-local"
-          value={endTime}
-          onChange={(e) => setEndTime(e.target.value)}
-          placeholder="End Time"
-          required
-        />
-        <input
-          type="text"
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
-          placeholder="Image URL"
-          required
-        />
-        <input
-          type="number"
-          value={totalTickets}
-          onChange={(e) => setTotalTickets(e.target.value)}
-          placeholder="Total Tickets"
-          required
-        />
-        <input
-          type="number"
-          value={remainingTickets}
-          onChange={(e) => setRemainingTickets(e.target.value)}
-          placeholder="Remaining Tickets"
-          required
-        />
-        <button type="submit">
-          {editingEvent ? 'Update Event' : 'Add Event'}
-        </button>
-        {editingEvent && (
-          <button type="button" onClick={() => setEditingEvent(null)}>
-            Cancel
-          </button>
-        )}
-      </form>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Location</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Total Tickets</th>
-            <th>Remaining Tickets</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {events.map((event) => (
-            <tr key={event.id}>
-              <td>{event.id}</td>
-              <td>{event.title}</td>
-              <td>{event.description}</td>
-              <td>{event.location}</td>
-              <td>{new Date(event.start_time).toLocaleString()}</td>
-              <td>{new Date(event.end_time).toLocaleString()}</td>
-              <td>{event.image_url}</td>
-              <td>{event.total_tickets}</td>
-              <td>{event.remaining_tickets}</td>
-              <td>
-                <button onClick={() => handleEditClick(event)}>Edit</button>
-                <button onClick={() => handleDeleteEvent(event.id)}>
-                  Delete
-                </button>
-              </td>
+    <div className="event-management">
+      <h2>Manage Events</h2>
+
+      <button
+        className="toggle-form-button"
+        onClick={() => setFormVisible(!isFormVisible)}
+      >
+        {isFormVisible ? 'Hide Form' : 'Add New Event'}
+      </button>
+
+      {isFormVisible && (
+        <form
+          onSubmit={
+            editingEvent ? () => handleUpdateEvent(editingEvent) : handleAddEvent
+          }
+          className="event-form"
+        >
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Event Title"
+            required
+          />
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Event Description"
+            required
+          />
+          <input
+            type="text"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            placeholder="Event Location"
+            required
+          />
+          <input
+            type="datetime-local"
+            value={startTime}
+            onChange={(e) => setStartTime(e.target.value)}
+            placeholder="Start Time"
+            required
+          />
+          <input
+            type="datetime-local"
+            value={endTime}
+            onChange={(e) => setEndTime(e.target.value)}
+            placeholder="End Time"
+            required
+          />
+          <input
+            type="text"
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)}
+            placeholder="Image URL"
+            required
+          />
+          <input
+            type="number"
+            value={totalTickets}
+            onChange={(e) => setTotalTickets(e.target.value)}
+            placeholder="Total Tickets"
+            required
+          />
+          <input
+            type="number"
+            value={remainingTickets}
+            onChange={(e) => setRemainingTickets(e.target.value)}
+            placeholder="Remaining Tickets"
+            required
+          />
+          <button type="submit">{editingEvent ? 'Update Event' : 'Add Event'}</button>
+        </form>
+      )}
+
+      <div className="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Location</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Total Tickets</th>
+              <th>Remaining Tickets</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {events.map((event) => (
+              <tr key={event.id}>
+                <td>{event.title}</td>
+                <td>{event.description}</td>
+                <td>{event.location}</td>
+                <td>{new Date(event.start_time).toLocaleString()}</td>
+                <td>{new Date(event.end_time).toLocaleString()}</td>
+                <td>{event.total_tickets}</td>
+                <td>{event.remaining_tickets}</td>
+                <td>
+                  <button onClick={() => handleEditClick(event)}>Edit</button>
+                  
+                  <button onClick={() => handleDeleteEvent(event.id)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

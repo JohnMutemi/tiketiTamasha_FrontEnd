@@ -16,7 +16,7 @@
 
 .signin-form h3 {
   text-align: center;
-  color: #00bfa5;
+  color: #6395a0;
   margin-bottom: 20px;
 }
 
@@ -52,7 +52,7 @@
 .signin-button {
   width: 100%;
   padding: 10px;
-  background-color: hsl(249, 51%, 63%);
+  background-color: #9994b4;
   color: #ffffff;
   border: none;
   border-radius: 5px;
@@ -82,7 +82,7 @@
 }
 
 .signup-link a {
-  color: #6a5acd;
+  color: #9994b4;
   text-decoration: none;
 }
 

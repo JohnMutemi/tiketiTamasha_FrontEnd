@@ -142,7 +142,7 @@
 }
 
 .header__menu-items a:hover {
-  color: #d9534f;
+  color: black;
 }
 
 .profile-container {
@@ -192,7 +192,7 @@
   padding: 5px 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  background-color: #48bd52;
+  background-color: #ea8f74;
   text-decoration: none;
   color: #fff;
 }
