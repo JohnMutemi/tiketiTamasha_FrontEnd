@@ -1,141 +1,235 @@
 import React, { useState, useEffect } from 'react';
+import { useUser } from './UserContext';
 import './EventManagement.css';
 
 const EventManagement = () => {
+  const { token } = useUser();
   const [events, setEvents] = useState([]);
   const [editingEvent, setEditingEvent] = useState(null);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [location, setLocation] = useState('');
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
-  const [totalTickets, setTotalTickets] = useState('');
-  const [remainingTickets, setRemainingTickets] = useState('');
-  const [isFormVisible, setFormVisible] = useState(false); // State to toggle form visibility
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    location: '',
+    startTime: '',
+    endTime: '',
+    imageUrl: '',
+    totalTickets: '',
+    remainingTickets: '',
+  });
+  const [isFormVisible, setFormVisible] = useState(() => {
+    return JSON.parse(localStorage.getItem('isFormVisible')) || false;
+  });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const formatDate = (date) => {
+    if (!date) return '';
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const hours = String(d.getHours()).padStart(2, '0');
+    const minutes = String(d.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
 
   useEffect(() => {
     const fetchEvents = async () => {
+      setLoading(true);
+      console.log('Fetching events...');
       try {
-        const response = await fetch('http://127.0.0.1:5555/events');
+        const response = await fetch('http://127.0.0.1:5555/events', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('Failed to fetch events');
         }
+
         const data = await response.json();
+        console.log('Events fetched:', data);
         setEvents(data);
+        localStorage.setItem('events', JSON.stringify(data));
       } catch (error) {
         console.error('Error fetching events:', error);
+        setMessage('Error fetching events');
+        const cachedEvents = localStorage.getItem('events');
+        if (cachedEvents) {
+          console.log('Loading cached events:', JSON.parse(cachedEvents));
+          setEvents(JSON.parse(cachedEvents));
+        }
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchEvents();
-  }, []);
+    if (token) {
+      fetchEvents();
+    }
+  }, [token]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    console.log(`Input changed - ${name}: ${value}`);
+    setFormData((prevData) => {
+      const newData = { ...prevData, [name]: value };
+      localStorage.setItem('formData', JSON.stringify(newData));
+      return newData;
+    });
+  };
 
   const handleAddEvent = async (e) => {
     e.preventDefault();
+    console.log('Adding event:', formData);
+    setLoading(true);
     try {
       const response = await fetch('http://127.0.0.1:5555/events', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          title,
-          description,
-          location,
-          start_time: startTime,
-          end_time: endTime,
-          image_url: imageUrl,
-          total_tickets: totalTickets,
-          remaining_tickets: remainingTickets,
+          title: formData.title,
+          description: formData.description,
+          location: formData.location,
+          start_time: formData.startTime,
+          end_time: formData.endTime,
+          image_url: formData.imageUrl,
+          total_tickets: formData.totalTickets,
+          remaining_tickets: formData.remainingTickets,
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('Failed to add event');
       }
 
       const newEvent = await response.json();
-      setEvents([...events, newEvent]);
+      console.log('Event added:', newEvent);
+      setEvents((prevEvents) => [...prevEvents, newEvent.event]);
       clearForm();
+      setMessage('Event added successfully!');
+      localStorage.removeItem('formData');
     } catch (error) {
       console.error('Error adding event:', error);
+      setMessage('Error adding event');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleUpdateEvent = async (eventId) => {
+  const handleUpdateEvent = async (e) => {
+    e.preventDefault();
+    console.log('Updating event:', formData);
+    setLoading(true);
     try {
-      const response = await fetch(`http://127.0.0.1:5555/events/${eventId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title,
-          description,
-          location,
-          start_time: startTime,
-          end_time: endTime,
-          image_url: imageUrl,
-          total_tickets: totalTickets,
-          remaining_tickets: remainingTickets,
-        }),
-      });
+      const response = await fetch(
+        `http://127.0.0.1:5555/events/${editingEvent}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            title: formData.title,
+            description: formData.description,
+            location: formData.location,
+            start_time: formData.startTime,
+            end_time: formData.endTime,
+            image_url: formData.imageUrl,
+            total_tickets: formData.totalTickets,
+            remaining_tickets: formData.remainingTickets,
+          }),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('Failed to update event');
       }
 
       const updatedEvent = await response.json();
-      setEvents(
-        events.map((event) => (event.id === eventId ? updatedEvent : event))
+      console.log('Event updated:', updatedEvent);
+      setEvents((prevEvents) =>
+        prevEvents.map((ev) =>
+          ev.id === editingEvent ? { ...ev, ...updatedEvent.event } : ev
+        )
       );
       clearForm();
-      setEditingEvent(null);
+      setMessage('Event updated successfully!');
+      localStorage.removeItem('formData');
     } catch (error) {
       console.error('Error updating event:', error);
+      setMessage('Error updating event');
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleDeleteEvent = async (eventId) => {
+    console.log(`Deleting event with ID: ${eventId}`);
+    setLoading(true);
     try {
       const response = await fetch(`http://127.0.0.1:5555/events/${eventId}`, {
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('Failed to delete event');
       }
 
       setEvents(events.filter((event) => event.id !== eventId));
+      setMessage('Event deleted successfully!');
+      localStorage.setItem(
+        'events',
+        JSON.stringify(events.filter((event) => event.id !== eventId))
+      );
     } catch (error) {
       console.error('Error deleting event:', error);
+      setMessage('Error deleting event');
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleEditClick = (event) => {
+    console.log('Editing event:', event);
     setEditingEvent(event.id);
-    setTitle(event.title);
-    setDescription(event.description);
-    setLocation(event.location);
-    setStartTime(event.start_time);
-    setEndTime(event.end_time);
-    setImageUrl(event.image_url);
-    setTotalTickets(event.total_tickets);
-    setRemainingTickets(event.remaining_tickets);
-    setFormVisible(true); // Show the form when editing
+    setFormData({
+      title: event.title,
+      description: event.description,
+      location: event.location,
+      startTime: event.start_time,
+      endTime: event.end_time,
+      imageUrl: event.image_url,
+      totalTickets: event.total_tickets,
+      remainingTickets: event.remaining_tickets,
+    });
+    setFormVisible(true);
+    localStorage.setItem('isFormVisible', JSON.stringify(true));
   };
 
   const clearForm = () => {
-    setTitle('');
-    setDescription('');
-    setLocation('');
-    setStartTime('');
-    setEndTime('');
-    setImageUrl('');
-    setTotalTickets('');
-    setRemainingTickets('');
-    setFormVisible(false); // Hide the form when cleared
+    console.log('Clearing form');
+    setFormData({
+      title: '',
+      description: '',
+      location: '',
+      startTime: '',
+      endTime: '',
+      imageUrl: '',
+      totalTickets: '',
+      remainingTickets: '',
+    });
+    setFormVisible(false);
+    setEditingEvent(null);
+    localStorage.setItem('isFormVisible', JSON.stringify(false));
   };
 
   return (
@@ -144,74 +238,85 @@ const EventManagement = () => {
 
       <button
         className="toggle-form-button"
-        onClick={() => setFormVisible(!isFormVisible)}
-      >
+        onClick={() => setFormVisible((prev) => !prev)}>
         {isFormVisible ? 'Hide Form' : 'Add New Event'}
       </button>
 
+      {message && <p className="message">{message}</p>}
+      {loading && <p>Loading...</p>}
+
       {isFormVisible && (
         <form
-          onSubmit={
-            editingEvent ? () => handleUpdateEvent(editingEvent) : handleAddEvent
-          }
-          className="event-form"
-        >
+          onSubmit={editingEvent ? handleUpdateEvent : handleAddEvent}
+          className="event-form">
           <input
             type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            name="title"
+            value={formData.title}
+            onChange={handleInputChange}
             placeholder="Event Title"
             required
           />
           <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            name="description"
+            value={formData.description}
+            onChange={handleInputChange}
             placeholder="Event Description"
             required
           />
           <input
             type="text"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
+            name="location"
+            value={formData.location}
+            onChange={handleInputChange}
             placeholder="Event Location"
             required
           />
-          <input
-            type="datetime-local"
-            value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
-            placeholder="Start Time"
-            required
-          />
-          <input
-            type="datetime-local"
-            value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}
-            placeholder="End Time"
-            required
-          />
+          <div>
+            <input
+              type="datetime-local"
+              name="startTime"
+              value={formatDate(formData.startTime)}
+              onChange={handleInputChange}
+              placeholder="Start Time"
+              required
+            />
+            <input
+              type="datetime-local"
+              name="endTime"
+              value={formatDate(formData.endTime)}
+              onChange={handleInputChange}
+              placeholder="End Time"
+              required
+            />
+          </div>
           <input
             type="text"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
+            name="imageUrl"
+            value={formData.imageUrl}
+            onChange={handleInputChange}
             placeholder="Image URL"
             required
           />
           <input
             type="number"
-            value={totalTickets}
-            onChange={(e) => setTotalTickets(e.target.value)}
+            name="totalTickets"
+            value={formData.totalTickets}
+            onChange={handleInputChange}
             placeholder="Total Tickets"
             required
           />
           <input
             type="number"
-            value={remainingTickets}
-            onChange={(e) => setRemainingTickets(e.target.value)}
+            name="remainingTickets"
+            value={formData.remainingTickets}
+            onChange={handleInputChange}
             placeholder="Remaining Tickets"
             required
           />
-          <button type="submit">{editingEvent ? 'Update Event' : 'Add Event'}</button>
+          <button type="submit">
+            {editingEvent ? 'Update Event' : 'Add Event'}
+          </button>
         </form>
       )}
 
@@ -230,22 +335,29 @@ const EventManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {events.map((event) => (
-              <tr key={event.id}>
-                <td>{event.title}</td>
-                <td>{event.description}</td>
-                <td>{event.location}</td>
-                <td>{new Date(event.start_time).toLocaleString()}</td>
-                <td>{new Date(event.end_time).toLocaleString()}</td>
-                <td>{event.total_tickets}</td>
-                <td>{event.remaining_tickets}</td>
-                <td>
-                  <button onClick={() => handleEditClick(event)}>Edit</button>
-                  
-                  <button onClick={() => handleDeleteEvent(event.id)}>Delete</button>
-                </td>
+            {events.length > 0 ? (
+              events.map((event) => (
+                <tr key={event.id}>
+                  <td>{event.title}</td>
+                  <td>{event.description}</td>
+                  <td>{event.location}</td>
+                  <td>{new Date(event.start_time).toLocaleString()}</td>
+                  <td>{new Date(event.end_time).toLocaleString()}</td>
+                  <td>{event.total_tickets}</td>
+                  <td>{event.remaining_tickets}</td>
+                  <td>
+                    <button onClick={() => handleEditClick(event)}>Edit</button>
+                    <button onClick={() => handleDeleteEvent(event.id)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="8">No events available</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

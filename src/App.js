@@ -6,7 +6,6 @@ import Register from './components/Register';
 import SignIn from './components/SignIn';
 import OrganizerDashboard from './components/OrganizerDashboard';
 import ContactForm from './components/ContactForm';
-import RequestOTP from './components/RequestOTP';
 import VerifyOTP from './components/VerifyOTP';
 import AdminDashboard from './components/AdminDashboard';
 
@@ -23,7 +22,6 @@ function App() {
           <Route path="/login" element={<SignIn />} />
           <Route path="/organizer-dashboard" element={<OrganizerDashboard />} />
           <Route path="/contact-us" element={<ContactForm />} />
-          <Route path="/request-otp" element={<RequestOTP />} />
           <Route path="/verify-otp" element={<VerifyOTP />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
         </Routes>

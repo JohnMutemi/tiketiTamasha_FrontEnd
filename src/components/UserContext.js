@@ -1,3 +1,4 @@
+// src/components/UserContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const UserContext = createContext();
@@ -7,34 +8,41 @@ export const UserProvider = ({ children }) => {
   const [token, setToken] = useState(null);
 
   useEffect(() => {
-    
-    const storedUser =
-      JSON.parse(localStorage.getItem('user')) ||
-      JSON.parse(sessionStorage.getItem('user'));
-    const storedToken =
-      localStorage.getItem('token') || sessionStorage.getItem('token');
+    try {
+      // Attempt to retrieve user and token from localStorage and sessionStorage
+      const storedUser =
+        JSON.parse(localStorage.getItem('user')) ||
+        JSON.parse(sessionStorage.getItem('user'));
+      const storedToken =
+        localStorage.getItem('token') || sessionStorage.getItem('token');
 
-    if (storedUser) {
-      setUser(storedUser);
-    }
-    if (storedToken) {
-      setToken(storedToken);
+      if (storedUser) {
+        setUser(storedUser);
+      }
+      if (storedToken) {
+        setToken(storedToken);
+      }
+    } catch (error) {
+      console.error('Error retrieving user or token from storage:', error);
     }
   }, []);
 
   const login = (userData, authToken, stayLoggedIn) => {
-    setUser(userData);
-    setToken(authToken);
-    if (stayLoggedIn) {
-      localStorage.setItem('user', JSON.stringify(userData));
-      localStorage.setItem('token', authToken);
-    } else {
-      sessionStorage.setItem('user', JSON.stringify(userData));
-      sessionStorage.setItem('token', authToken);
+    try {
+      setUser(userData);
+      setToken(authToken);
+
+      // Select the appropriate storage method
+      const storage = stayLoggedIn ? localStorage : sessionStorage;
+      storage.setItem('user', JSON.stringify(userData));
+      storage.setItem('token', authToken);
+    } catch (error) {
+      console.error('Error storing user or token:', error);
     }
   };
 
   const logout = () => {
+    // Clear state and storage
     setUser(null);
     setToken(null);
     localStorage.removeItem('user');
@@ -44,8 +52,7 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider
-      value={{ user, token, setUser, setToken, login, logout }}>
+    <UserContext.Provider value={{ user, token, login, logout }}>
       {children}
     </UserContext.Provider>
   );
