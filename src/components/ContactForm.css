@@ -33,7 +33,7 @@
 .submit-button {
   width: 100%;
   padding: 10px;
-  background-color: #48bd52;
+  background-color: #ea8f74;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -41,5 +41,5 @@
 }
 
 .submit-button:hover {
-  background-color: #3ca945;
+  background-color: #ea9074b6;
 }

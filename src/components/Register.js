@@ -48,7 +48,7 @@ function Register() {
         setEmail('');
         setRole('event_organizer');
 
-        setTimeout(() => navigate('/login'), 1000);
+        setTimeout(() => navigate('/request-otp'), 1000);
       })
       .catch((error) => {
         setError(error.message);
@@ -57,7 +57,6 @@ function Register() {
   };
 
   const handleGoogleSignUp = () => {
- 
     window.location.href = 'YOUR_GOOGLE_OAUTH_URL';
   };
 

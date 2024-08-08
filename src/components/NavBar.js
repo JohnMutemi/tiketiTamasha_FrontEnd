@@ -32,7 +32,7 @@ const NavBar = ({
 
   const handleCategorySelect = (category) => {
     onCategoryClick(category);
-    setShowCategories(false); // hide after selecting
+    setShowCategories(false); 
   };
 
   return (
@@ -74,6 +74,7 @@ const NavBar = ({
               <li className="header__menu-item">
                 <a href="/">Home</a>
               </li>
+
               <li className="header__menu-item">
                 <Link to="/contact-us" className="contact-link">
                   <FontAwesomeIcon icon={faPhone} className="contact-icon" />
@@ -116,7 +117,7 @@ const NavBar = ({
                         className="dropdown-item logout-button"
                         onClick={() => {
                           handleProfileClick();
-                          // handle logout logic here
+                      
                         }}>
                         <Logout />
                       </div>
