@@ -72,7 +72,7 @@ const NavBar = ({
           <div className="header__menu">
             <ul className="header__menu-items">
               <li className="header__menu-item">
-                <Link to="/">Home</Link>
+                <a href="/">Home</a>
               </li>
               <li className="header__menu-item">
                 <Link to="/contact-us" className="contact-link">

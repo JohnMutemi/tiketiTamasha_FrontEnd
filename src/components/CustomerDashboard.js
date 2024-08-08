@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './OrganizerDashboard.css';
+import './CustomerDashboard.css';
 import { useUser } from './UserContext';
 import NavBar from './NavBar';
 import Logout from './Logout';
@@ -7,7 +7,7 @@ import Logout from './Logout';
 const CustomerDashboard = () => {
   const { user, token } = useUser();
 
-  const [events, setEvents] = useState([]);
+  const [bookedEvents, setBookedEvents] = useState([]);
   const [formVisible, setFormVisible] = useState(false);
   const [form, setForm] = useState({
     title: '',
@@ -20,21 +20,22 @@ const CustomerDashboard = () => {
     image_url: '',
   });
 
-  const fetchEvents = () => {
-    fetch('http://127.0.0.1:5555/organizer-dashboard', {
+  // Fetch the events the customer has booked
+  const fetchBookedEvents = () => {
+    fetch('http://127.0.0.1:5555/booked_events', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
       .then((response) => response.json())
       .then((data) => {
-        setEvents(data);
+        setBookedEvents(data);
       })
-      .catch((error) => console.error('Error fetching events:', error));
+      .catch((error) => console.error('Error fetching booked events:', error));
   };
 
   useEffect(() => {
-    fetchEvents();
+    fetchBookedEvents();
   }, [token]);
 
   const handleChange = (e) => {
@@ -53,7 +54,7 @@ const CustomerDashboard = () => {
     formData.append('remaining_tickets', form.remaining_tickets);
     formData.append('image_url', form.image_url);
 
-    fetch('http://127.0.0.1:5555/organizer-dashboard', {
+    fetch('http://127.0.0.1:5555/customers', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -63,7 +64,7 @@ const CustomerDashboard = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data && data.id) {
-          setEvents([data, ...events]);
+          setBookedEvents([data, ...bookedEvents]);
           alert('Event hosted successfully');
           setForm({
             title: '',
@@ -201,10 +202,10 @@ const CustomerDashboard = () => {
         )}
 
         <section id="my-events" className="my-events-section">
-          <h2>My Hosted Events</h2>
-          {events.length > 0 ? (
+          <h2>Booked Events</h2>
+          {bookedEvents.length > 0 ? (
             <div className="events-grid">
-              {events.map((event) => (
+              {bookedEvents.map((event) => (
                 <div key={event.id} className="event-card">
                   <img
                     src={event.image_url || 'default-image.jpg'}
@@ -215,27 +216,12 @@ const CustomerDashboard = () => {
                   <p>Date: {new Date(event.start_time).toLocaleString()}</p>
                   <p>Location: {event.location}</p>
                   <p>Description: {event.description}</p>
-                  <p>Total Tickets: {event.total_tickets}</p>
-                  <p>Remaining Tickets: {event.remaining_tickets}</p>
-
-                  {/* tickets */}
-                  {event.tickets && event.tickets.length > 0 && (
-                    <div className="tickets-section">
-                      <h4>Available Tickets:</h4>
-                      <ul>
-                        {event.tickets.map((ticket, index) => (
-                          <li key={index}>
-                            {ticket.type}: {ticket.price}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  <p>Status: {event.booked_status === 'paid' ? 'Paid' : 'Pending'}</p>
                 </div>
               ))}
             </div>
           ) : (
-            <p>No hosted events to show</p>
+            <p>No booked events to show</p>
           )}
         </section>
       </div>
