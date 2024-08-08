@@ -33,7 +33,8 @@ function SignIn() {
         return response.json();
       })
       .then((userData) => {
-        login(userData, stayLoggedIn);
+        const { access_token, ...userInfo } = userData;
+        login(userInfo, access_token, stayLoggedIn);
         setError('');
         setSuccess('Login successful!');
         const dashboardPath =

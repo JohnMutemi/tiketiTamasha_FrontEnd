@@ -48,7 +48,7 @@ function Register() {
         setEmail('');
         setRole('event_organizer');
 
-        setTimeout(() => navigate('/request-otp'), 1000);
+        setTimeout(() => navigate('/verify-otp'), 1000);
       })
       .catch((error) => {
         setError(error.message);

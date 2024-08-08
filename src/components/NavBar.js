@@ -32,7 +32,7 @@ const NavBar = ({
 
   const handleCategorySelect = (category) => {
     onCategoryClick(category);
-    setShowCategories(false); 
+    setShowCategories(false);
   };
 
   return (
@@ -117,7 +117,6 @@ const NavBar = ({
                         className="dropdown-item logout-button"
                         onClick={() => {
                           handleProfileClick();
-                      
                         }}>
                         <Logout />
                       </div>
