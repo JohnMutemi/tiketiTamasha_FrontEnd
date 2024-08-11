@@ -6,7 +6,7 @@ const CategoryManagement = () => {
     const [editingCategory, setEditingCategory] = useState({ name: "" });
 
     useEffect(() => {
-      fetch("http://127.0.0.1:5000/categories")
+      fetch("http://127.0.0.1:5555/categories")
         .then((response) => response.json())
         .then((data) => setCategories(data))
         .catch((error) => console.error("Error fetching categories:", error));
@@ -14,7 +14,7 @@ const CategoryManagement = () => {
 
     useEffect(() => {
       if (selectedCategory !== null) {
-        fetch(`http://127.0.0.1:5000/categories/${selectedCategory}`)
+        fetch(`http://127.0.0.1:5555/categories/${selectedCategory}`)
           .then((response) => response.json())
           .then((data) => setEditingCategory(data))
           .catch((error) =>
@@ -35,17 +35,18 @@ const CategoryManagement = () => {
 
     const handleSubmit = (e) => {
       e.preventDefault();
+
+      const formData = new FormData();
+      formData.append('name', editingCategory.name);
+
       const method = selectedCategory ? "PUT" : "POST";
       const url = selectedCategory
-        ? `http://127.0.0.1:5000/categories/${selectedCategory}`
-        : "http://127.0.0.1:5000/categories";
+        ? `http://127.0.0.1:5555/categories/${selectedCategory}`
+        : "http://127.0.0.1:5555/categories";
 
       fetch(url, {
         method: method,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(editingCategory),
+        body: formData,
       })
         .then((response) => {
           if (!response.ok) {

@@ -32,7 +32,12 @@ function Home() {
             Authorization: `Bearer ${token}`,
           },
         });
+
+        if (!eventsResponse.ok) {
+          throw new Error(`HTTP error! Status: ${eventsResponse.status}`);
+        }
         const eventsData = await eventsResponse.json();
+
         if (Array.isArray(eventsData)) {
           setEvents(eventsData);
           setFilteredEvents(eventsData);
@@ -48,6 +53,11 @@ function Home() {
             },
           }
         );
+
+        if (!categoriesResponse.ok) {
+          throw new Error(`HTTP error! Status: ${categoriesResponse.status}`);
+        }
+        
         const categoriesData = await categoriesResponse.json();
         setCategories(categoriesData);
       } catch (error) {

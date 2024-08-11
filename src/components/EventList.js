@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import TicketModal from './TicketModal';
 import './EventList.css';
 
-function EventList({ events }) {
+function EventList({ events = []}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEventTickets, setSelectedEventTickets] = useState([]);
+
+  
 
   const handlePurchaseClick = (tickets) => {
     setSelectedEventTickets(tickets);
