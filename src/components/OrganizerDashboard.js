@@ -194,7 +194,7 @@ function OrganizerDashboard() {
   return (
     <div className="organizer-dashboard">
       <NavBar showLogin={false} />
-      {/* <header className="dashboard-header sticky-navbar"> */}
+      <header className="dashboard-header ">
       <h1>Welcome, {user ? user.username : 'Guest'}</h1>
       <div className="profile-menu">
         <i className="fas fa-user profile-icon"></i>
@@ -204,7 +204,7 @@ function OrganizerDashboard() {
           </div>
         </div>
       </div>
-      {/* </header> */}
+      </header>
 
       <section className="dashboard-hero">
         <div className="my-events">

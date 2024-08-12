@@ -3,13 +3,24 @@ import UserManagement from './UserManagement';
 import EventManagement from './EventManagement';
 import TransactionList from './TransactionList';
 import CategoryManagement from './CategoryManagement';
+import NavBar from './NavBar';
+import Logout from './Logout';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
   return (
     <div className="admin-dashboard">
-      <header className="dashboard-header">
-        <h1>Admin Dashboard</h1>
+      <NavBar showLogin={false} />
+      <header className="dashboard-header ">
+      <h1>Admin Dashboard</h1>
+      <div className="profile-menu">
+        <i className="fas fa-user profile-icon"></i>
+        <div className="dropdown">
+          <div className="dropdown-content">
+            <Logout />
+          </div>
+        </div>
+      </div>
       </header>
 
       <main className="dashboard-main">
