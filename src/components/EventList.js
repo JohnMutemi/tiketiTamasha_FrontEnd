@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import TicketModal from './TicketModal';
+import Map from './Map'; // Import the Map component
+import { useUser } from './UserContext'; 
 import './EventList.css';
 
 function EventList({ events = [] }) {

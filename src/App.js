@@ -8,7 +8,6 @@ import OrganizerDashboard from './components/OrganizerDashboard';
 import CustomerDashboard from './components/CustomerDashboard';
 import ContactForm from './components/ContactForm';
 import AdminDashboard from './components/AdminDashboard';
-import CustomerDashboard from './components/CustomerDashboard';
 import InitiateTransaction from './components/InitiateTransaction';
 import { UserProvider } from './components/UserContext';
 
@@ -29,7 +28,6 @@ function App() {
             path="/initiate-transaction"
             element={<InitiateTransaction />}
           />
-          <Route path="/customer-dashboard" element={<CustomerDashboard />} />
         </Routes>
       </Router>
     </UserProvider>

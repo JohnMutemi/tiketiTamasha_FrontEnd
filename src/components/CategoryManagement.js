@@ -5,27 +5,6 @@ const CategoryManagement = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [editingCategory, setEditingCategory] = useState({ name: '' });
 
-<<<<<<< HEAD
-    useEffect(() => {
-      fetch("http://127.0.0.1:5555/categories")
-        .then((response) => response.json())
-        .then((data) => setCategories(data))
-        .catch((error) => console.error("Error fetching categories:", error));
-    }, []);
-
-    useEffect(() => {
-      if (selectedCategory !== null) {
-        fetch(`http://127.0.0.1:5555/categories/${selectedCategory}`)
-          .then((response) => response.json())
-          .then((data) => setEditingCategory(data))
-          .catch((error) =>
-            console.error("Error fetching category details:", error)
-          );
-      } else {
-        setEditingCategory({ name: "" });
-      }
-    }, [selectedCategory]);
-=======
   useEffect(() => {
     fetch('http://127.0.0.1:5555/categories')
       .then((response) => response.json())
@@ -45,7 +24,6 @@ const CategoryManagement = () => {
       setEditingCategory({ name: '' });
     }
   }, [selectedCategory]);
->>>>>>> Dashboards
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,22 +33,6 @@ const CategoryManagement = () => {
     }));
   };
 
-<<<<<<< HEAD
-    const handleSubmit = (e) => {
-      e.preventDefault();
-
-      const formData = new FormData();
-      formData.append('name', editingCategory.name);
-
-      const method = selectedCategory ? "PUT" : "POST";
-      const url = selectedCategory
-        ? `http://127.0.0.1:5555/categories/${selectedCategory}`
-        : "http://127.0.0.1:5555/categories";
-
-      fetch(url, {
-        method: method,
-        body: formData,
-=======
   const handleSubmit = (e) => {
     e.preventDefault();
     const method = selectedCategory ? 'PUT' : 'POST';
@@ -90,7 +52,6 @@ const CategoryManagement = () => {
           throw new Error('Failed to save category');
         }
         return response.json();
->>>>>>> Dashboards
       })
       .then((data) => {
         console.log('Category saved:', data);
