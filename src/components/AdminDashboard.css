@@ -6,8 +6,7 @@
 
 .dashboard-header {
   text-align: center;
-  margin-bottom: 100px;
-  margin-top: 800px;
+  margin-bottom: 20px; /* Adjusted margin */
 }
 
 .dashboard-header h1 {
@@ -17,9 +16,8 @@
 
 .dashboard-main {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 20px;
+  flex-direction: column; /* Changed to column layout */
+  gap: 20px; /* Spacing between sections */
 }
 
 .dashboard-section {
@@ -27,11 +25,8 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  flex: 1;
   max-width: 100%;
   box-sizing: border-box;
+  min-height: 200px; /* Ensures that each section has a minimum height */
 }
-
-
-
 

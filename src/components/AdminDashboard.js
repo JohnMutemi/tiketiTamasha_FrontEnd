@@ -3,7 +3,7 @@ import UserManagement from './UserManagement';
 import EventManagement from './EventManagement';
 import TransactionList from './TransactionList';
 import CategoryManagement from './CategoryManagement';
-import './AdminDashboard.css'; 
+import './AdminDashboard.css';
 
 const AdminDashboard = () => {
   return (
@@ -14,7 +14,7 @@ const AdminDashboard = () => {
 
       <main className="dashboard-main">
         <div className="dashboard-section">
-          <EventManagement />
+          <CategoryManagement />
         </div>
         <div className="dashboard-section">
           <UserManagement />
@@ -23,7 +23,7 @@ const AdminDashboard = () => {
           <TransactionList />
         </div>
         <div className="dashboard-section">
-          <CategoryManagement />
+          <EventManagement />
         </div>
       </main>
     </div>
@@ -31,4 +31,3 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
-

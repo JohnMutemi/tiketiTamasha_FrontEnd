@@ -1,20 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import TicketModal from './TicketModal';
 import Map from './Map'; // Import the Map component
+import { useUser } from './UserContext'; // Import useUser from UserContext
 import './EventList.css';
 
 function EventList({ events = [] }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEventTickets, setSelectedEventTickets] = useState([]);
   const [selectedEventLocation, setSelectedEventLocation] = useState(null);
+  const { user, setSelectedTicket } = useUser();
+  const navigate = useNavigate(); // Initialize useNavigate
 
   // Function to fetch tickets for a specific event
   const fetchTickets = (eventId) => {
-    console.log(`Fetching tickets for event ID: ${eventId}`); // Print statement for debugging
+    console.log(`Fetching tickets for event ID: ${eventId}`);
     fetch(`http://127.0.0.1:5555/tickets/${eventId}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log('Tickets fetched:', data); // Print the fetched ticket data
+        console.log('Tickets fetched:', data);
         setSelectedEventTickets(data);
       })
       .catch((error) => {
@@ -24,20 +28,40 @@ function EventList({ events = [] }) {
 
   // Open the modal and set the selected event's tickets
   const handlePurchaseClick = (eventId) => {
-    console.log(`Purchase button clicked for event ID: ${eventId}`); // Print statement for debugging
-    fetchTickets(eventId);
-    setIsModalOpen(true);
+    if (user) {
+      console.log(`Purchase button clicked for event ID: ${eventId}`); // Print statement for debugging
+      fetchTickets(eventId);
+      const selectedTicket = { eventId, tickets: selectedEventTickets };
+      console.log('Selected ticket:', selectedTicket);
+
+      // Store the selected ticket in local storage
+      localStorage.setItem('selectedTicket', JSON.stringify(selectedTicket));
+
+      // Update the UserContext with the selected ticket
+      setSelectedTicket(selectedTicket);
+      console.log('Selected ticket stored in UserContext and local storage.');
+
+      setIsModalOpen(true);
+    } else {
+      // Show immediate feedback or message
+      alert('Please log in to book this ticket.');
+
+      // Redirect to login page
+      navigate('/login', {
+        state: { message: 'Please log in to book this ticket.' },
+      });
+    }
   };
 
   // Open the map for the selected event
   const handleMapClick = (location) => {
-    console.log('Map icon clicked. Location:', location); // Print statement for debugging
+    console.log('Map icon clicked. Location:', location);
     setSelectedEventLocation(location);
   };
 
   // Close the map modal or view
   const closeMap = () => {
-    console.log('Closing map modal'); // Print statement for debugging
+    console.log('Closing map modal');
     setSelectedEventLocation(null);
   };
 
@@ -55,13 +79,6 @@ function EventList({ events = [] }) {
             )}
             <h3>{event.title}</h3>
             <p>{event.description}</p>
-            <p>
-              <strong>Price:</strong> $
-              {Array.isArray(event.tickets) && event.tickets.length > 0
-                ? parseFloat(event.tickets[0].price).toFixed(2)
-                : 'Not available'}
-            </p>
-
             <p>
               <strong>Location:</strong>
               <img
