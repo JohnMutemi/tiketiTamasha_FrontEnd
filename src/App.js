@@ -7,9 +7,9 @@ import SignIn from './components/SignIn';
 import OrganizerDashboard from './components/OrganizerDashboard';
 import CustomerDashboard from './components/CustomerDashboard';
 import ContactForm from './components/ContactForm';
-import VerifyOTP from './components/VerifyOTP';
 import AdminDashboard from './components/AdminDashboard';
-
+import CustomerDashboard from './components/CustomerDashboard';
+import InitiateTransaction from './components/InitiateTransaction';
 import { UserProvider } from './components/UserContext';
 
 function App() {
@@ -24,8 +24,12 @@ function App() {
           <Route path="/organizer-dashboard" element={<OrganizerDashboard />} />
           <Route path="/customer-dashboard" element={<CustomerDashboard />} />
           <Route path="/contact-us" element={<ContactForm />} />
-          <Route path="/verify-otp" element={<VerifyOTP />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route
+            path="/initiate-transaction"
+            element={<InitiateTransaction />}
+          />
+          <Route path="/customer-dashboard" element={<CustomerDashboard />} />
         </Routes>
       </Router>
     </UserProvider>

@@ -1,19 +1,23 @@
+/* Container for the Event Management section */
 .event-management {
   padding: 20px;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  max-height: 80vh; 
-  overflow-y: auto; 
+  max-height: 80vh;
+  overflow-y: auto;
   position: relative;
+  border: 1px;
 }
 
+/* Heading style */
 .event-management h2 {
   color: #333;
-  margin-top: 200px;
+  margin-top: 0;
   text-align: left;
 }
 
+/* Button to toggle the form visibility */
 .toggle-form-button {
   display: block;
   margin: 10px auto;
@@ -30,6 +34,7 @@
   background-color: #ea8f74;
 }
 
+/* Styles for the event form */
 .event-form {
   margin-bottom: 20px;
 }
@@ -59,11 +64,13 @@
   background-color: #ea9074b4;
 }
 
+/* Container for the table to handle overflow */
 .table-container {
-  max-height: calc(100% - 60px); 
-  overflow-y: auto; 
+  max-height: 60vh;
+  overflow-y: auto;
 }
 
+/* Table styles */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -74,12 +81,14 @@ thead {
   color: white;
 }
 
-th, td {
+th,
+td {
   padding: 10px;
   text-align: left;
   border-bottom: 1px solid #ddd;
 }
 
+/* Alternating row colors and hover effects */
 tr:nth-child(even) {
   background-color: #f9f9f9;
 }
@@ -88,6 +97,7 @@ tr:hover {
   background-color: #f1f1f1;
 }
 
+/* Button styles within the table */
 td button {
   margin-right: 5px;
   padding: 5px 10px;
@@ -103,9 +113,16 @@ td button:hover {
   background-color: #ea8f74;
 }
 
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .event-management {
     padding: 10px;
     max-height: 70vh;
   }
+}
+
+/* Style for map icon (if applicable) */
+.map-icon {
+  width: 24px;
+  height: 24px;
 }

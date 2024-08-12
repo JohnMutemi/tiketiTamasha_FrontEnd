@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './ticket.css';
 import { useNavigate } from 'react-router-dom';
+import PaymentModal from './PaymentModal';
 
 function TicketModal({ onClose }) {
   const [tickets, setTickets] = useState([]);
   const [uniqueTicketTypes, setUniqueTicketTypes] = useState([]);
   const [selectedTicket, setSelectedTicket] = useState(null);
-  const [userLoggedIn, setUserLoggedIn] = useState(false);
-  const [userRole, setUserRole] = useState(null);
+  const [showPaymentModal, setShowPaymentModal] = useState(false); // State to control PaymentModal visibility
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,30 +24,6 @@ function TicketModal({ onClose }) {
         // Set initial selected ticket
         setSelectedTicket(data[0]);
       });
-
-    // Check if user is logged in and their role
-    fetch('http://127.0.0.1:5555/session', { credentials: 'include' })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error('Not logged in');
-        }
-      })
-      .then(() => {
-        setUserLoggedIn(true);
-        return fetch('http://127.0.0.1:5555/user-role', {
-          credentials: 'include',
-        });
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        setUserRole(data.role);
-      })
-      .catch((error) => {
-        console.error('Error fetching session:', error);
-        setUserLoggedIn(false);
-      });
   }, []);
 
   const handleTicketChange = (event) => {
@@ -59,34 +35,8 @@ function TicketModal({ onClose }) {
   };
 
   const handleBookNow = () => {
-    if (!userLoggedIn) {
-      navigate('/login');
-      return;
-    }
-    if (userRole !== 'customer') {
-      alert('Only customers can book tickets.');
-      return;
-    }
-
-    // Perform booking action
-    fetch('http://127.0.0.1:5555/book-ticket', {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ticket_id: selectedTicket.id }), // Pass necessary data
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.message) {
-          alert(data.message);
-          onClose();
-        } else {
-          alert(data.error || 'An error occurred');
-        }
-      })
-      .catch((error) => {
-        console.error('Error booking ticket:', error);
-      });
+    // Directly show the PaymentModal
+    setShowPaymentModal(true);
   };
 
   return (
@@ -113,7 +63,6 @@ function TicketModal({ onClose }) {
               <strong>Price:</strong> $
               {parseFloat(selectedTicket.price).toFixed(2)}
             </p>
-
           </div>
         )}
         <div className="button-container">
@@ -125,6 +74,14 @@ function TicketModal({ onClose }) {
           </button>
         </div>
       </div>
+
+      {/* Render PaymentModal if showPaymentModal is true */}
+      {showPaymentModal && (
+        <PaymentModal
+          ticket={selectedTicket}
+          onClose={() => setShowPaymentModal(false)}
+        />
+      )}
     </div>
   );
 }
