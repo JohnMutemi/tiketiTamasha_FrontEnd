@@ -1,0 +1,38 @@
+/* EventList.css */
+
+.map-modal {
+  position: fixed; /* Ensure it is fixed to the viewport */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Full width of viewport */
+  height: 100vh; /* Full height of viewport */
+  background: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Ensure it appears on top of other elements */
+}
+
+.map-container {
+  width: 80%; /* Adjust as needed */
+  height: 80%; /* Adjust as needed */
+  max-width: 1200px; /* Optional: max width for large screens */
+  max-height: 800px; /* Optional: max height for large screens */
+  position: relative;
+}
+
+.map-modal button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 10px 20px;
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+  z-index: 1001; /* Ensure button is above the map */
+}
+
+.map-modal button:hover {
+  background-color: #ddd;
+}

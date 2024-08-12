@@ -1,4 +1,3 @@
-// src/components/UserContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const UserContext = createContext();
@@ -6,21 +5,25 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [otpToken, setOtpToken] = useState(null);
 
   useEffect(() => {
     try {
-      // Attempt to retrieve user and token from localStorage and sessionStorage
       const storedUser =
         JSON.parse(localStorage.getItem('user')) ||
         JSON.parse(sessionStorage.getItem('user'));
       const storedToken =
         localStorage.getItem('token') || sessionStorage.getItem('token');
+      const storedOtpToken = localStorage.getItem('otpToken');
 
       if (storedUser) {
         setUser(storedUser);
       }
       if (storedToken) {
         setToken(storedToken);
+      }
+      if (storedOtpToken) {
+        setOtpToken(storedOtpToken);
       }
     } catch (error) {
       console.error('Error retrieving user or token from storage:', error);
@@ -32,7 +35,6 @@ export const UserProvider = ({ children }) => {
       setUser(userData);
       setToken(authToken);
 
-      // Select the appropriate storage method
       const storage = stayLoggedIn ? localStorage : sessionStorage;
       storage.setItem('user', JSON.stringify(userData));
       storage.setItem('token', authToken);
@@ -42,17 +44,19 @@ export const UserProvider = ({ children }) => {
   };
 
   const logout = () => {
-    // Clear state and storage
     setUser(null);
     setToken(null);
+    setOtpToken(null);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+    localStorage.removeItem('otpToken');
     sessionStorage.removeItem('user');
     sessionStorage.removeItem('token');
   };
 
   return (
-    <UserContext.Provider value={{ user, token, login, logout }}>
+    <UserContext.Provider
+      value={{ user, token, otpToken, setOtpToken, login, logout }}>
       {children}
     </UserContext.Provider>
   );

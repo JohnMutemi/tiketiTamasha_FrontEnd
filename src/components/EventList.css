@@ -38,3 +38,14 @@
 .purchase:hover {
   background-color: #9994b4b9;
 }
+
+.map-modal button:hover {
+  background-color: #f1f1f1;
+  color: #000;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.map-modal button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 0, 255, 0.3);
+}

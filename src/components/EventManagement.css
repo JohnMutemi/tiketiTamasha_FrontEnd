@@ -3,8 +3,8 @@
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  max-height: 80vh; 
-  overflow-y: auto; 
+  max-height: 80vh;
+  overflow-y: auto;
   position: relative;
 }
 
@@ -60,8 +60,8 @@
 }
 
 .table-container {
-  max-height: calc(100% - 60px); 
-  overflow-y: auto; 
+  max-height: calc(100% - 60px);
+  overflow-y: auto;
 }
 
 table {
@@ -74,7 +74,8 @@ thead {
   color: white;
 }
 
-th, td {
+th,
+td {
   padding: 10px;
   text-align: left;
   border-bottom: 1px solid #ddd;
@@ -108,4 +109,9 @@ td button:hover {
     padding: 10px;
     max-height: 70vh;
   }
+}
+
+.map-icon {
+  width: 24px;
+  height: 24px;
 }

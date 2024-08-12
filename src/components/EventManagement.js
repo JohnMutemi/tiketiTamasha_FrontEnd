@@ -15,6 +15,8 @@ const EventManagement = () => {
     imageUrl: '',
     totalTickets: '',
     remainingTickets: '',
+    latitude: '',
+    longitude: '',
   });
   const [isFormVisible, setFormVisible] = useState(() => {
     return JSON.parse(localStorage.getItem('isFormVisible')) || false;
@@ -70,11 +72,42 @@ const EventManagement = () => {
     }
   }, [token]);
 
-  const handleInputChange = (e) => {
+  const getCoordinates = async (location) => {
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+          location
+        )}&format=json&limit=1`
+      );
+      const data = await response.json();
+      if (data && data.length > 0) {
+        return {
+          latitude: parseFloat(data[0].lat),
+          longitude: parseFloat(data[0].lon),
+        };
+      }
+    } catch (error) {
+      console.error('Error fetching coordinates:', error);
+    }
+    return { latitude: '', longitude: '' }; // Default if not found
+  };
+
+  const handleInputChange = async (e) => {
     const { name, value } = e.target;
-    console.log(`Input changed - ${name}: ${value}`);
     setFormData((prevData) => {
       const newData = { ...prevData, [name]: value };
+
+      if (name === 'location') {
+        // Fetch coordinates when location is updated
+        getCoordinates(value).then(({ latitude, longitude }) => {
+          setFormData((prev) => ({
+            ...prev,
+            latitude,
+            longitude,
+          }));
+        });
+      }
+
       localStorage.setItem('formData', JSON.stringify(newData));
       return newData;
     });
@@ -100,6 +133,8 @@ const EventManagement = () => {
           image_url: formData.imageUrl,
           total_tickets: formData.totalTickets,
           remaining_tickets: formData.remainingTickets,
+          latitude: formData.latitude,
+          longitude: formData.longitude,
         }),
       });
 
@@ -143,6 +178,8 @@ const EventManagement = () => {
             image_url: formData.imageUrl,
             total_tickets: formData.totalTickets,
             remaining_tickets: formData.remainingTickets,
+            latitude: formData.latitude,
+            longitude: formData.longitude,
           }),
         }
       );
@@ -210,6 +247,8 @@ const EventManagement = () => {
       imageUrl: event.image_url,
       totalTickets: event.total_tickets,
       remainingTickets: event.remaining_tickets,
+      latitude: event.latitude,
+      longitude: event.longitude,
     });
     setFormVisible(true);
     localStorage.setItem('isFormVisible', JSON.stringify(true));
@@ -226,6 +265,8 @@ const EventManagement = () => {
       imageUrl: '',
       totalTickets: '',
       remainingTickets: '',
+      latitude: '',
+      longitude: '',
     });
     setFormVisible(false);
     setEditingEvent(null);
@@ -235,16 +276,13 @@ const EventManagement = () => {
   return (
     <div className="event-management">
       <h2>Manage Events</h2>
-
       <button
         className="toggle-form-button"
         onClick={() => setFormVisible((prev) => !prev)}>
         {isFormVisible ? 'Hide Form' : 'Add New Event'}
       </button>
-
       {message && <p className="message">{message}</p>}
       {loading && <p>Loading...</p>}
-
       {isFormVisible && (
         <form
           onSubmit={editingEvent ? handleUpdateEvent : handleAddEvent}
@@ -319,7 +357,6 @@ const EventManagement = () => {
           </button>
         </form>
       )}
-
       <div className="table-container">
         <table>
           <thead>
