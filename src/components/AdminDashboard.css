@@ -17,12 +17,12 @@
 
 
 .dashboard-header h1 {
-  font-size: 32px;
+  font-size: 2em;
   color: #333;
 }
 
 .dashboard-main {
-  margin-top: 1200px;
+  margin-top: 1300px;
   display: flex;
   flex-direction: column; /* Changed to column layout */
   gap: 20px; /* Spacing between sections */

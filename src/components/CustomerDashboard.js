@@ -113,7 +113,7 @@ function CustomerDashboard() {
         <div className="my-tickets">
           <h2>My Booked Tickets</h2>
           <table className="ticket-table">
-            <thead>
+            <thead >
               <tr>
                 <th>Ticket ID</th>
                 <th>Event Title</th>
