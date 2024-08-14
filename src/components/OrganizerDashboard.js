@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useUser } from './UserContext';
 import Logout from './Logout';
-import './OrganizerDashboard.css';
 import NavBar from './NavBar';
+import AttendeeList from './AttendeeList'; // Import the AttendeeList component
+import './OrganizerDashboard.css';
 
-function OrganizerDashboard() {
+function OrganizerDashboard({ eventId }) {
   const { user, token } = useUser();
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [attendees, setAttendees] = useState([]);
+  const [message, setMessage] = useState('');
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -23,7 +26,7 @@ function OrganizerDashboard() {
   });
   const [editingEvent, setEditingEvent] = useState(null);
   const [isFormVisible, setFormVisible] = useState(false);
-  const [message, setMessage] = useState('');
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   useEffect(() => {
     if (user && token) {
@@ -65,6 +68,7 @@ function OrganizerDashboard() {
   const handleAddEvent = async (e) => {
     e.preventDefault();
     setLoading(true);
+    console.log('Adding event with data:', formData);
     try {
       const response = await fetch('http://127.0.0.1:5555/organizer-events', {
         method: 'POST',
@@ -93,6 +97,7 @@ function OrganizerDashboard() {
   const handleUpdateEvent = async (e) => {
     e.preventDefault();
     setLoading(true);
+    console.log('Updating event with ID:', editingEvent);
     try {
       const response = await fetch(
         `http://127.0.0.1:5555/organizer-events/${editingEvent}`,
@@ -127,6 +132,7 @@ function OrganizerDashboard() {
 
   const handleDeleteEvent = async (eventId) => {
     setLoading(true);
+    console.log('Deleting event with ID:', eventId);
     try {
       const response = await fetch(
         `http://127.0.0.1:5555/organizer-events/${eventId}`,
@@ -168,11 +174,57 @@ function OrganizerDashboard() {
     setFormVisible(true);
   };
 
-  const handleViewEventDetails = (eventId) => {
-    // Implement your logic to view event details
-    console.log(`View details for event ID: ${eventId}`);
-    // You can navigate to a detailed view page or open a modal with event details
+  const handleViewEventDetails = async (eventId) => {
+    console.log(`Viewing details for event ID: ${eventId}`);
+    setSelectedEvent(eventId);
+    fetchEventAttendees(eventId);
   };
+
+  const fetchEventAttendees = async (eventId) => {
+    setLoading(true);
+    setAttendees([]); // Clear previous attendees
+    setMessage('');
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:5555/events/${eventId}/attendees`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch attendees');
+      }
+
+      const data = await response.json();
+      setAttendees(data);
+
+      console.log('DATA:', data); // Correctly logs fetched data
+
+      if (data.attendees && data.attendees.length === 0) {
+        setMessage('Attendees not found.');
+      }
+    } catch (error) {
+      setMessage('Error fetching attendees');
+      console.error('Error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (eventId && token) {
+      fetchEventAttendees(eventId);
+    }
+  }, [eventId, token]); // Fetch attendees whenever eventId or token changes
+
+  // Optional: Log attendees after it is updated
+  useEffect(() => {
+    console.log('ATTENDEES ARE:', attendees);
+  }, [attendees]);
 
   const clearForm = () => {
     setFormData({
@@ -194,17 +246,17 @@ function OrganizerDashboard() {
   return (
     <div className="organizer-dashboard">
       <NavBar showLogin={false} />
-      {/* <header className="dashboard-header sticky-navbar"> */}
-      <h1>Welcome, {user ? user.username : 'Guest'}</h1>
-      <div className="profile-menu">
-        <i className="fas fa-user profile-icon"></i>
-        <div className="dropdown">
-          <div className="dropdown-content">
-            <Logout />
+      <header className="dashboard-header">
+        <h1>Welcome, {user ? user.username : 'Guest'}</h1>
+        <div className="profile-menu">
+          <i className="fas fa-user profile-icon"></i>
+          <div className="dropdown">
+            <div className="dropdown-content">
+              <Logout />
+            </div>
           </div>
         </div>
-      </div>
-      {/* </header> */}
+      </header>
 
       <section className="dashboard-hero">
         <div className="my-events">
@@ -213,13 +265,14 @@ function OrganizerDashboard() {
               {isFormVisible ? 'Hide Form' : 'Add New Event'}
             </a>
           </h2>
-          <h3> My hosted Events</h3>
+          <h3> My Hosted Events</h3>
           {message && <p className="message">{message}</p>}
           {loading && <p>Loading...</p>}
           {isFormVisible && (
             <form
               onSubmit={editingEvent ? handleUpdateEvent : handleAddEvent}
               className="event-form">
+              {/* Form fields */}
               <input
                 type="text"
                 name="title"
@@ -243,24 +296,22 @@ function OrganizerDashboard() {
                 placeholder="Event Location"
                 required
               />
-              <div>
-                <input
-                  type="datetime-local"
-                  name="startTime"
-                  value={formData.startTime}
-                  onChange={handleInputChange}
-                  placeholder="Start Time"
-                  required
-                />
-                <input
-                  type="datetime-local"
-                  name="endTime"
-                  value={formData.endTime}
-                  onChange={handleInputChange}
-                  placeholder="End Time"
-                  required
-                />
-              </div>
+              <input
+                type="datetime-local"
+                name="startTime"
+                value={formData.startTime}
+                onChange={handleInputChange}
+                placeholder="Start Time"
+                required
+              />
+              <input
+                type="datetime-local"
+                name="endTime"
+                value={formData.endTime}
+                onChange={handleInputChange}
+                placeholder="End Time"
+                required
+              />
               <input
                 type="text"
                 name="imageUrl"
@@ -285,51 +336,62 @@ function OrganizerDashboard() {
                 placeholder="Remaining Tickets"
                 required
               />
+              <input
+                type="number"
+                name="latitude"
+                value={formData.latitude}
+                onChange={handleInputChange}
+                placeholder="Latitude"
+              />
+              <input
+                type="number"
+                name="longitude"
+                value={formData.longitude}
+                onChange={handleInputChange}
+                placeholder="Longitude"
+              />
               <button type="submit">
                 {editingEvent ? 'Update Event' : 'Add Event'}
               </button>
             </form>
           )}
-          {events.length > 0 ? (
-            <table className="event-table">
-              <thead>
-                <tr>
-                  <th>Event ID</th>
-                  <th>Title</th>
-                  <th>Date</th>
-                  <th>Location</th>
-                  <th>Total Tickets</th>
-                  <th>Remaining Tickets</th>
-                  <th>Actions</th>
+          <table className="events-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Location</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Total Tickets</th>
+                <th>Remaining Tickets</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {events.map((event) => (
+                <tr key={event.id}>
+                  <td>{event.title}</td>
+                  <td>{event.description}</td>
+                  <td>{event.location}</td>
+                  <td>{event.start_time}</td>
+                  <td>{event.end_time}</td>
+                  <td>{event.total_tickets}</td>
+                  <td>{event.remaining_tickets}</td>
+                  <td>
+                    <button onClick={() => handleEditClick(event)}>Edit</button>
+                    <button onClick={() => handleDeleteEvent(event.id)}>
+                      Delete
+                    </button>
+                    <button onClick={() => handleViewEventDetails(event.id)}>
+                      View Details
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {events.map((event) => (
-                  <tr key={event.id}>
-                    <td>{event.id}</td>
-                    <td>{event.title}</td>
-                    <td>{new Date(event.start_time).toLocaleString()}</td>
-                    <td>{event.location}</td>
-                    <td>{event.total_tickets}</td>
-                    <td>{event.remaining_tickets}</td>
-                    <td>
-                      <button onClick={() => handleEditClick(event)}>
-                        Edit
-                      </button>
-                      <button onClick={() => handleDeleteEvent(event.id)}>
-                        Delete
-                      </button>
-                      <button onClick={() => handleViewEventDetails(event.id)}>
-                        View Details
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <p>No hosted events to show</p>
-          )}
+              ))}
+            </tbody>
+          </table>
+          {selectedEvent && <AttendeeList attendees={attendees} />}
         </div>
       </section>
     </div>
