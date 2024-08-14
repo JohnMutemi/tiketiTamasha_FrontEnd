@@ -14,7 +14,7 @@
 
 /* Modal Container */
 .modal-container {
-  background-color: #fff;
+  background-color: #ffffffb5;
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -84,24 +84,24 @@
 }
 
 .pay-button {
-  background-color: #007bff;
+  background-color: #ea8f74;
   color: white;
   border: none;
 }
 
 .pay-button:hover {
-  background-color: #0056b3;
+  background-color: #ea9074b5;
   transform: scale(1.05);
 }
 
 .close-button {
-  background-color: #6c757d;
+  background-color: #9994b4;
   color: white;
   border: none;
 }
 
 .close-button:hover {
-  background-color: #5a6268;
+  background-color: #9994b4ab;
   transform: scale(1.05);
 }
 

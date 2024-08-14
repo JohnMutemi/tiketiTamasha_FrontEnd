@@ -59,7 +59,7 @@
 }
 
 .close-button {
-  background-color: #ea9074ac;
+  background-color: #9994b4;
   color: rgb(3, 3, 3);
   padding: 10px 20px;
   border: none;
@@ -69,11 +69,11 @@
 }
 
 .close-button:hover {
-  background-color: #ea8f74;
+  background-color: #9994b4ab;
 }
 
 .book-now-button {
-  background-color: #4caf50;
+  background-color: #ea8f74;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -83,5 +83,5 @@
 }
 
 .book-now-button:hover {
-  background-color: #45a049;
+  background-color: #ea9074b9;
 }
