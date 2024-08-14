@@ -10,7 +10,7 @@ const UserManagement = () => {
     username: '',
     email: '',
     password: '',
-    role: '',
+    role: 'attendee',
   });
   const [isFormVisible, setFormVisible] = useState(() => {
     return JSON.parse(localStorage.getItem('isFormVisible')) || false;
@@ -21,7 +21,6 @@ const UserManagement = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       setLoading(true);
-      console.log('Fetching users...');
       try {
         const response = await fetch('http://127.0.0.1:5555/users', {
           headers: {
@@ -34,15 +33,21 @@ const UserManagement = () => {
         }
 
         const data = await response.json();
-        console.log('Users fetched:', data);
-        setUsers(data);
-        localStorage.setItem('users', JSON.stringify(data));
+        console.log('Fetched users:', data); // Debugging statement
+
+        // Check if data.users exists and is an array
+        if (Array.isArray(data.users)) {
+          setUsers(data.users);
+          localStorage.setItem('users', JSON.stringify(data.users));
+        } else {
+          console.error('Unexpected data structure:', data);
+          setMessage('Unexpected data structure');
+        }
       } catch (error) {
         console.error('Error fetching users:', error);
         setMessage('Error fetching users');
         const cachedUsers = localStorage.getItem('users');
         if (cachedUsers) {
-          console.log('Loading cached users:', JSON.parse(cachedUsers));
           setUsers(JSON.parse(cachedUsers));
         }
       } finally {
@@ -57,7 +62,6 @@ const UserManagement = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log(`Input changed - ${name}: ${value}`);
     setFormData((prevData) => {
       const newData = { ...prevData, [name]: value };
       localStorage.setItem('formData', JSON.stringify(newData));
@@ -67,7 +71,6 @@ const UserManagement = () => {
 
   const handleAddUser = async (e) => {
     e.preventDefault();
-    console.log('Adding user:', formData);
     setLoading(true);
     try {
       const response = await fetch('http://127.0.0.1:5555/users', {
@@ -85,43 +88,51 @@ const UserManagement = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to add user');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to add user');
       }
 
       const newUser = await response.json();
-      console.log('User added:', newUser);
       setUsers((prevUsers) => [...prevUsers, newUser.user]);
       clearForm();
       setMessage('User added successfully!');
       localStorage.removeItem('formData');
     } catch (error) {
       console.error('Error adding user:', error);
-      setMessage('Error adding user');
+      setMessage(error.message || 'Error adding user');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleUpdateUser = async (userId, formData) => {
-    console.log('Updating user:', formData);
+  const handleUpdateUser = async (e) => {
+    e.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch(`http://127.0.0.1:5555/users/${userId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `http://127.0.0.1:5555/users/${editingUser}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (!response.ok) {
         throw new Error('Failed to update user');
       }
 
       const updatedUser = await response.json();
-      console.log('User updated:', updatedUser);
-      // Handle the updated user data as needed
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === updatedUser.id ? updatedUser : user
+        )
+      );
+      clearForm();
+      setMessage('User updated successfully!');
     } catch (error) {
       console.error('Error updating user:', error);
       setMessage('Error updating user');
@@ -130,9 +141,7 @@ const UserManagement = () => {
     }
   };
 
-
   const handleDeleteUser = async (userId) => {
-    console.log(`Deleting user with ID: ${userId}`);
     setLoading(true);
     try {
       const response = await fetch(`http://127.0.0.1:5555/users/${userId}`, {
@@ -161,7 +170,6 @@ const UserManagement = () => {
   };
 
   const handleEditClick = (user) => {
-    console.log('Editing user:', user);
     setEditingUser(user.id);
     setFormData({
       username: user.username,
@@ -174,12 +182,11 @@ const UserManagement = () => {
   };
 
   const clearForm = () => {
-    console.log('Clearing form');
     setFormData({
       username: '',
       email: '',
       password: '',
-      role: '',
+      role: 'attendee',
     });
     setFormVisible(false);
     setEditingUser(null);
@@ -225,27 +232,30 @@ const UserManagement = () => {
             value={formData.password}
             onChange={handleInputChange}
             placeholder="Password"
-            required
+            required={!editingUser}
           />
           <select
             name="role"
             value={formData.role}
-            onChange={handleInputChange}
-            required>
-            <option value="">Select Role</option>
+            onChange={handleInputChange}>
+            <option value="attendee">Event_attendee</option>
+            <option value="organizer">Event_organizer</option>
             <option value="admin">Admin</option>
-            <option value="user">User</option>
           </select>
           <button type="submit">
             {editingUser ? 'Update User' : 'Add User'}
           </button>
+          <button type="button" onClick={clearForm}>
+            Cancel
+          </button>
         </form>
       )}
 
-      <div className="table-container">
+      {Array.isArray(users) && users.length > 0 ? (
         <table>
           <thead>
             <tr>
+              <th>ID</th>
               <th>Username</th>
               <th>Email</th>
               <th>Role</th>
@@ -253,28 +263,25 @@ const UserManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {users.length > 0 ? (
-              users.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.username}</td>
-                  <td>{user.email}</td>
-                  <td>{user.role}</td>
-                  <td>
-                    <button onClick={() => handleEditClick(user)}>Edit</button>
-                    <button onClick={() => handleDeleteUser(user.id)}>
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="4">No users available</td>
+            {users.map((user) => (
+              <tr key={user.id}>
+                <td>{user.id}</td>
+                <td>{user.username}</td>
+                <td>{user.email}</td>
+                <td>{user.role}</td>
+                <td>
+                  <button onClick={() => handleEditClick(user)}>Edit</button>
+                  <button onClick={() => handleDeleteUser(user.id)}>
+                    Delete
+                  </button>
+                </td>
               </tr>
-            )}
+            ))}
           </tbody>
         </table>
-      </div>
+      ) : (
+        <p>No users found</p>
+      )}
     </div>
   );
 };

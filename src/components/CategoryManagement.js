@@ -1,153 +1,244 @@
 import React, { useState, useEffect } from 'react';
+import { useUser } from './UserContext';
 
 const CategoryManagement = () => {
+  const { token } = useUser();
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [editingCategory, setEditingCategory] = useState({ name: '' });
+  const [editingCategory, setEditingCategory] = useState(null);
+  const [formData, setFormData] = useState({
+    name: '',
+  });
+  const [isFormVisible, setFormVisible] = useState(() => {
+    return JSON.parse(localStorage.getItem('isFormVisible')) || false;
+  });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5555/categories')
-      .then((response) => response.json())
-      .then((data) => setCategories(data))
-      .catch((error) => console.error('Error fetching categories:', error));
-  }, []);
-
-  useEffect(() => {
-    if (selectedCategory !== null) {
-      fetch(`http://127.0.0.1:5555/categories/${selectedCategory}`)
-        .then((response) => response.json())
-        .then((data) => setEditingCategory(data))
-        .catch((error) =>
-          console.error('Error fetching category details:', error)
-        );
-    } else {
-      setEditingCategory({ name: '' });
-    }
-  }, [selectedCategory]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEditingCategory((prevCategory) => ({
-      ...prevCategory,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const method = selectedCategory ? 'PUT' : 'POST';
-    const url = selectedCategory
-      ? `http://127.0.0.1:5555/categories/${selectedCategory}`
-      : 'http://127.0.0.1:5555/categories';
-
-    fetch(url, {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(editingCategory),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Failed to save category');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log('Category saved:', data);
-        // Refresh category list and reset form
-        setCategories((prevCategories) => {
-          if (selectedCategory) {
-            return prevCategories.map((category) =>
-              category.id === data.id ? data : category
-            );
-          } else {
-            return [...prevCategories, data];
-          }
+    const fetchCategories = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch('http://127.0.0.1:5555/categories', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
-        setEditingCategory({ name: '' });
-        setSelectedCategory(null);
-      })
-      .catch((error) => {
-        console.error('Error saving category:', error);
-        alert(`Error saving category: ${error.message}`);
-      });
-  };
 
-  const handleEditClick = (categoryId) => {
-    setSelectedCategory(categoryId);
-  };
-
-  const handleDeleteClick = (categoryId) => {
-    fetch(`http://127.0.0.1:5555/categories/${categoryId}`, {
-      method: 'DELETE',
-    })
-      .then((response) => {
         if (!response.ok) {
-          throw new Error('Failed to delete category');
+          throw new Error('Failed to fetch categories');
         }
-        console.log('Category deleted');
-        setCategories((prevCategories) =>
-          prevCategories.filter((category) => category.id !== categoryId)
-        );
-        // If currently editing this category, reset form
-        if (selectedCategory === categoryId) {
-          setSelectedCategory(null);
-          setEditingCategory({ name: '' });
+
+        const data = await response.json();
+        setCategories(data);
+        localStorage.setItem('categories', JSON.stringify(data));
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        setMessage('Error fetching categories');
+        const cachedCategories = localStorage.getItem('categories');
+        if (cachedCategories) {
+          setCategories(JSON.parse(cachedCategories));
         }
-      })
-      .catch((error) => {
-        console.error('Error deleting category:', error);
-        alert(`Error deleting category: ${error.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (token) {
+      fetchCategories();
+    }
+  }, [token]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => {
+      const newData = { ...prevData, [name]: value };
+      localStorage.setItem('formData', JSON.stringify(newData));
+      return newData;
+    });
+  };
+
+  const handleAddCategory = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const response = await fetch('http://127.0.0.1:5555/categories', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          name: formData.name,
+        }),
       });
+
+      if (!response.ok) {
+        throw new Error('Failed to add category');
+      }
+
+      const newCategory = await response.json();
+      setCategories((prevCategories) => [...prevCategories, newCategory]);
+      clearForm();
+      setMessage('Category added successfully!');
+      localStorage.removeItem('formData');
+    } catch (error) {
+      console.error('Error adding category:', error);
+      setMessage('Error adding category');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUpdateCategory = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:5555/categories/${editingCategory}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            name: formData.name,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to update category');
+      }
+
+      const updatedCategory = await response.json();
+      setCategories((prevCategories) =>
+        prevCategories.map((cat) =>
+          cat.id === editingCategory ? { ...cat, ...updatedCategory } : cat
+        )
+      );
+      clearForm();
+      setMessage('Category updated successfully!');
+      localStorage.removeItem('formData');
+    } catch (error) {
+      console.error('Error updating category:', error);
+      setMessage('Error updating category');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteCategory = async (categoryId) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:5555/categories/${categoryId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to delete category');
+      }
+
+      setCategories(
+        categories.filter((category) => category.id !== categoryId)
+      );
+      setMessage('Category deleted successfully!');
+      localStorage.setItem(
+        'categories',
+        JSON.stringify(
+          categories.filter((category) => category.id !== categoryId)
+        )
+      );
+    } catch (error) {
+      console.error('Error deleting category:', error);
+      setMessage('Error deleting category');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEditClick = (category) => {
+    setEditingCategory(category.id);
+    setFormData({
+      name: category.name,
+      description: category.description,
+    });
+    setFormVisible(true);
+    localStorage.setItem('isFormVisible', JSON.stringify(true));
+  };
+
+  const clearForm = () => {
+    setFormData({
+      name: '',
+      description: '',
+    });
+    setFormVisible(false);
+    setEditingCategory(null);
+    localStorage.setItem('isFormVisible', JSON.stringify(false));
   };
 
   return (
-    <div>
-      <h2>Category Management</h2>
-      <div>
-        <h3>{selectedCategory ? 'Edit' : 'Create'} Category</h3>
-        <form onSubmit={handleSubmit}>
-          <label>
-            Category:
-            <input
-              type="text"
-              name="name"
-              value={editingCategory.name}
-              onChange={handleChange}
-              required
-            />
-          </label>
+    <div className="category-management">
+      <h2>Manage Categories</h2>
+      <button
+        className="toggle-form-button"
+        onClick={() => setFormVisible((prev) => !prev)}>
+        {isFormVisible ? 'Hide Form' : 'Add New Category'}
+      </button>
+      {message && <p className="message">{message}</p>}
+      {loading && <p>Loading...</p>}
+      {isFormVisible && (
+        <form
+          onSubmit={editingCategory ? handleUpdateCategory : handleAddCategory}
+          className="category-form">
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+            placeholder="Category Name"
+            required
+          />
           <button type="submit">
-            {selectedCategory ? 'Update' : 'Create'}
+            {editingCategory ? 'Update Category' : 'Add Category'}
           </button>
         </form>
-      </div>
-      <div>
-        <h3>Category List</h3>
+      )}
+      <div className="table-container">
         <table>
           <thead>
             <tr>
-              <th>ID</th>
               <th>Name</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {categories.map((category) => (
-              <tr key={category.id}>
-                <td>{category.id}</td>
-                <td>{category.name}</td>
-                <td>
-                  <button onClick={() => handleEditClick(category.id)}>
-                    Edit
-                  </button>
-                  <button onClick={() => handleDeleteClick(category.id)}>
-                    Delete
-                  </button>
-                </td>
+            {categories.length > 0 ? (
+              categories.map((category) => (
+                <tr key={category.id}>
+                  <td>{category.name}</td>
+                  <td>{category.description}</td>
+                  <td>
+                    <button onClick={() => handleEditClick(category)}>
+                      Edit
+                    </button>
+                    <button onClick={() => handleDeleteCategory(category.id)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="3">No categories available</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

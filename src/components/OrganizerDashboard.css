@@ -163,7 +163,8 @@
   flex-direction: column;
   gap: 5px;
 }
-git .host-event-form input,
+
+.host-event-form input,
 .host-event-form textarea {
   padding: 12px;
   border: 1px solid #e9ecef;
