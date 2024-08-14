@@ -97,7 +97,6 @@ function CustomerDashboard() {
   return (
     <div className="customer-dashboard">
       <NavBar showLogin={false} />
-      {/* <header className="dashboard-header sticky-navbar"> */}
       <header className="dashboard-header">
         <h1>Welcome, {user ? user.username : 'Guest'}</h1>
         <div className="profile-menu">
@@ -114,7 +113,7 @@ function CustomerDashboard() {
         <div className="my-tickets">
           <h2>My Booked Tickets</h2>
           <table className="ticket-table">
-            <thead>
+            <thead >
               <tr>
                 <th>Ticket ID</th>
                 <th>Event Title</th>

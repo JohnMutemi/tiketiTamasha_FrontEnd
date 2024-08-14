@@ -1,5 +1,4 @@
 
-
 .dashboard-header {
   display: flex;
   align-items: center;
@@ -7,9 +6,10 @@
   padding: 20px;
   background-color: #f8f9fa; /* Light gray background */
   border-bottom: 2px solid #e9ecef; /* Subtle border color */
-  z-index: 10;
-  margin-top: 200px;
+  z-index: 10; /* Ensure header stays above other content */
+  margin-top: 200px; /* Add spacing from the top */
 }
+
 
 .logout-button {
   background-color: #f00;
@@ -53,4 +53,4 @@
 
 .upcoming-events h2 a:hover {
   text-decoration: underline;
-}
+} */

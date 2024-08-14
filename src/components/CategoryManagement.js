@@ -57,72 +57,46 @@ const CategoryManagement = () => {
     });
   };
 
-  const handleAddCategory = async (e) => {
+  const handleSaveCategory = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch('http://127.0.0.1:5555/categories', {
-        method: 'POST',
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+
+      const method = editingCategory ? 'PUT' : 'POST';
+      const url = editingCategory
+        ? `http://127.0.0.1:5555/categories/${editingCategory}`
+        : 'http://127.0.0.1:5555/categories';
+
+      const response = await fetch(url, {
+        method: method,
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          name: formData.name,
-        }),
+        body: formDataToSend,
       });
 
       if (!response.ok) {
-        throw new Error('Failed to add category');
+        throw new Error(`Failed to ${editingCategory ? 'update' : 'add'} category`);
       }
 
-      const newCategory = await response.json();
-      setCategories((prevCategories) => [...prevCategories, newCategory]);
-      clearForm();
-      setMessage('Category added successfully!');
-      localStorage.removeItem('formData');
-    } catch (error) {
-      console.error('Error adding category:', error);
-      setMessage('Error adding category');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleUpdateCategory = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const response = await fetch(
-        `http://127.0.0.1:5555/categories/${editingCategory}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            name: formData.name,
-          }),
+      const data = await response.json();
+      setCategories((prevCategories) => {
+        if (editingCategory) {
+          return prevCategories.map((category) =>
+            category.id === data.id ? data : category
+          );
+        } else {
+          return [...prevCategories, data];
         }
-      );
-
-      if (!response.ok) {
-        throw new Error('Failed to update category');
-      }
-
-      const updatedCategory = await response.json();
-      setCategories((prevCategories) =>
-        prevCategories.map((cat) =>
-          cat.id === editingCategory ? { ...cat, ...updatedCategory } : cat
-        )
-      );
+      });
       clearForm();
-      setMessage('Category updated successfully!');
+      setMessage(`${editingCategory ? 'Updated' : 'Added'} category successfully!`);
       localStorage.removeItem('formData');
     } catch (error) {
-      console.error('Error updating category:', error);
-      setMessage('Error updating category');
+      console.error('Error saving category:', error);
+      setMessage(`Error saving category: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -167,7 +141,6 @@ const CategoryManagement = () => {
     setEditingCategory(category.id);
     setFormData({
       name: category.name,
-      description: category.description,
     });
     setFormVisible(true);
     localStorage.setItem('isFormVisible', JSON.stringify(true));
@@ -176,7 +149,6 @@ const CategoryManagement = () => {
   const clearForm = () => {
     setFormData({
       name: '',
-      description: '',
     });
     setFormVisible(false);
     setEditingCategory(null);
@@ -195,7 +167,7 @@ const CategoryManagement = () => {
       {loading && <p>Loading...</p>}
       {isFormVisible && (
         <form
-          onSubmit={editingCategory ? handleUpdateCategory : handleAddCategory}
+          onSubmit={handleSaveCategory}
           className="category-form">
           <input
             type="text"
@@ -223,7 +195,6 @@ const CategoryManagement = () => {
               categories.map((category) => (
                 <tr key={category.id}>
                   <td>{category.name}</td>
-                  <td>{category.description}</td>
                   <td>
                     <button onClick={() => handleEditClick(category)}>
                       Edit
@@ -236,7 +207,7 @@ const CategoryManagement = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="3">No categories available</td>
+                <td colSpan="2">No categories available</td>
               </tr>
             )}
           </tbody>

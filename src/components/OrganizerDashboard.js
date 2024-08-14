@@ -287,6 +287,7 @@ const OrganizerDashboard = ({ eventId }) => {
   return (
     <div className="organizer-dashboard">
       <NavBar showLogin={false} />
+
       <header className="dashboard-header">
         <h1>Welcome, {user ? user.username : 'Guest'}</h1>
         <div className="profile-menu">
@@ -297,7 +298,6 @@ const OrganizerDashboard = ({ eventId }) => {
             </div>
           </div>
         </div>
-      </header>
 
       <section className="dashboard-hero">
         <div className="my-events">
