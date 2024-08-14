@@ -1,48 +1,126 @@
-
-.payment-overlay {
+/* Modal Overlay */
+.modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
-.payment-container {
-  background: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  width: 400px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+/* Modal Container */
+.modal-container {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  width: 90%;
+  animation: fadeIn 0.3s ease-out;
 }
 
-.payment-options label {
-  display: block;
+/* Modal Header */
+.modal-container h2 {
+  margin-top: 0;
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+}
+
+/* Payment Details */
+.payment-details {
+  margin-bottom: 20px;
+}
+
+.payment-details p {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #555;
+}
+
+/* Payment Method */
+.payment-method h3 {
+  font-size: 18px;
+  color: #007bff;
   margin-bottom: 10px;
 }
 
-.button-container {
-  margin-top: 20px;
-  text-align: right;
+.payment-method select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #333;
+  transition: border-color 0.2s ease;
 }
 
-.pay-now-button, .close-button {
-  padding: 10px 20px;
-  border: none;
+.payment-method select:focus {
+  border-color: #007bff;
+}
+
+/* Buttons */
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.pay-button,
+.close-button {
+  padding: 12px 20px;
+  font-size: 16px;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.pay-now-button {
-  background-color: #28a745;
-  color: #fff;
+.pay-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+}
+
+.pay-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
 }
 
 .close-button {
-  background-color: #dc3545;
-  color: #fff;
-  margin-left: 10px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+}
+
+.close-button:hover {
+  background-color: #5a6268;
+  transform: scale(1.05);
+}
+
+/* Error Message */
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Animation for Modal */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
