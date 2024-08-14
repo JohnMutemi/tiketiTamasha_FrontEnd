@@ -19,7 +19,7 @@ function PaymentModal({ onClose, ticket }) {
     }
 
     if (selectedPaymentMethod === 'mpesa') {
-      setShowInitiateTransaction(true);
+      setShowInitiateTransaction(true);  
     } else {
       // Handle other payment methods here (e.g., credit card)
       console.log(`Processing payment via ${selectedPaymentMethod}`);
@@ -27,46 +27,57 @@ function PaymentModal({ onClose, ticket }) {
     }
   };
 
+  const handleBackToPayment = () => {
+    setShowInitiateTransaction(false); 
+  };
+
   return (
     <div className="modal-overlay">
       <div className="modal-container">
-        <h2>Payment</h2>
-        <div className="payment-details">
-          <p>
-            <strong>Ticket Type:</strong> {ticket?.ticket_type}
-          </p>
-          <p>
-            <strong>Price:</strong> ${parseFloat(ticket?.price).toFixed(2)}
-          </p>
-        </div>
-        <div className="payment-method">
-          <h3>Select Payment Method</h3>
-          <select
-            onChange={handlePaymentMethodChange}
-            value={selectedPaymentMethod}>
-            <option value="" disabled>
-              Select payment method
-            </option>
-            <option value="mpesa">MPESA</option>
-            <option value="credit_card">Credit Card</option>
-          </select>
-        </div>
-        <div className="button-container">
-          <button
-            className="pay-button"
-            onClick={handlePayNow}
-            disabled={loading}>
-            {loading ? 'Processing...' : 'Pay Now'}
-          </button>
-          <button className="close-button" onClick={onClose}>
-            Close
-          </button>
-        </div>
-        {error && <p className="error-message">{error}</p>}
+        {showInitiateTransaction ? (
+          <InitiateTransaction 
+            ticketPrice={ticket.price} 
+            onClose={onClose} 
+            onBack={handleBackToPayment} 
+          />
+        ) : (
+          <>
+            <h2>Payment</h2>
+            <div className="payment-details">
+              <p>
+                <strong>Ticket Type:</strong> {ticket?.ticket_type}
+              </p>
+              <p>
+                <strong>Price:</strong> ${parseFloat(ticket?.price).toFixed(2)}
+              </p>
+            </div>
+            <div className="payment-method">
+              <h3>Select Payment Method</h3>
+              <select
+                onChange={handlePaymentMethodChange}
+                value={selectedPaymentMethod}>
+                <option value="" disabled>
+                  Select payment method
+                </option>
+                <option value="mpesa">MPESA</option>
+                <option value="credit_card">Credit Card</option>
+              </select>
+            </div>
+            <div className="button-container">
+              <button
+                className="pay-button"
+                onClick={handlePayNow}
+                disabled={loading}>
+                {loading ? 'Processing...' : 'Pay Now'}
+              </button>
+              <button className="close-button" onClick={onClose}>
+                Close
+              </button>
+            </div>
+            {error && <p className="error-message">{error}</p>}
+          </>
+        )}
       </div>
-      {showInitiateTransaction && ticket && (
-        <InitiateTransaction ticketPrice={ticket.price} onClose={onClose} />
-      )}
     </div>
   );
 }

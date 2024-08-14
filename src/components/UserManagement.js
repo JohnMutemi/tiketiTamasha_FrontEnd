@@ -27,18 +27,17 @@ const UserManagement = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-
+    
         if (!response.ok) {
           throw new Error('Failed to fetch users');
         }
-
+    
         const data = await response.json();
-        console.log('Fetched users:', data); // Debugging statement
-
-        // Check if data.users exists and is an array
-        if (Array.isArray(data.users)) {
-          setUsers(data.users);
-          localStorage.setItem('users', JSON.stringify(data.users));
+        console.log('Fetched users:', data); // debugging 
+    
+        if (Array.isArray(data)) {
+          setUsers(data);
+          localStorage.setItem('users', JSON.stringify(data));
         } else {
           console.error('Unexpected data structure:', data);
           setMessage('Unexpected data structure');
@@ -54,6 +53,7 @@ const UserManagement = () => {
         setLoading(false);
       }
     };
+    
 
     if (token) {
       fetchUsers();

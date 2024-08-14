@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './ContactForm.css';
+import ticket from './ticket_11785924.png';
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -7,6 +9,8 @@ const ContactForm = () => {
     email: '',
     message: '',
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -37,8 +41,19 @@ const ContactForm = () => {
     setFormData({ name: '', email: '', message: '' });
   };
 
+  const handleTicketClick = () => {
+    navigate('/');
+  };
+
   return (
     <div className="contact-form-container">
+      <img
+        src={ticket}
+        alt="ticket"
+        className="ticket"
+        onClick={handleTicketClick}
+        style={{ cursor: 'pointer' }} // Makes the cursor a pointer when hovering over the ticket
+      />
       <h2>Contact Us</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -82,3 +97,4 @@ const ContactForm = () => {
 };
 
 export default ContactForm;
+

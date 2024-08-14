@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SignIn.css';
 import { useUser } from './UserContext';
+import ticket from './ticket_11785924.png';
 
 function SignIn() {
   const [username, setUsername] = useState('');
@@ -51,9 +52,20 @@ function SignIn() {
       });
   };
 
+  const handleTicketClick = () => {
+    navigate('/');
+  };
+
   return (
     <div className="signin-container">
       <form onSubmit={handleSubmit} className="signin-form">
+        <img
+          src={ticket}
+          alt="ticket"
+          className="ticket"
+          onClick={handleTicketClick}
+          style={{ cursor: 'pointer' }} // Makes the cursor a pointer when hovering over the ticket
+        />
         <h3>Login to Tiketi Tamasha</h3>
         <div className="input-group">
           <label htmlFor="username">Username</label>

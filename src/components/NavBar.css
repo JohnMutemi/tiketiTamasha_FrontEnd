@@ -83,7 +83,7 @@
   font-size: 28px;
   font-weight: 700;
   color: #d9534f;
-  margin-right: 20px;
+  margin-left: 20px;
 }
 
 .search-bar {
@@ -95,7 +95,7 @@
   border: 2px solid #9994b4;
   flex-grow: 1;
   max-width: 400px;
-  margin-right: 20px;
+  margin-left: 10px;
 }
 
 .search-bar input {

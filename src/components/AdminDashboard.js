@@ -10,9 +10,8 @@ import './AdminDashboard.css';
 const AdminDashboard = () => {
   return (
     <div className="admin-dashboard">
-      <NavBar showLogin={false} />
-      <header className="dashboard-header ">
-
+      <NavBar showLogin={false} showSearchbar={false} />
+      <header className="dashboard-header">
         <h1>Admin Dashboard</h1>
         <div className="profile-menu">
           <i className="fas fa-user profile-icon"></i>
@@ -22,7 +21,6 @@ const AdminDashboard = () => {
             </div>
           </div>
         </div>
-
       </header>
 
       <main className="dashboard-main">

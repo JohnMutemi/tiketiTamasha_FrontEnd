@@ -3,7 +3,7 @@ import { useUser } from './UserContext';
 import TicketModal from './TicketModal';
 import EventList from './EventList';
 import Logout from './Logout';
-import './customer-dashboard.css';
+import './CustomerDashboard.css';
 import NavBar from './NavBar';
 
 function CustomerDashboard() {
@@ -96,7 +96,7 @@ function CustomerDashboard() {
 
   return (
     <div className="customer-dashboard">
-      <NavBar showLogin={false} />
+      <NavBar showLogin={false} showSearchbar={false} />
       <header className="dashboard-header">
         <h1>Welcome, {user ? user.username : 'Guest'}</h1>
         <div className="profile-menu">

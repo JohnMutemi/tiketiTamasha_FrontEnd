@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './InitiateTransaction.css';
 
-function InitiateTransaction({ ticketPrice }) {
+function InitiateTransaction({ ticketPrice, onClose, onBack }) {
   const current_user = JSON.parse(sessionStorage.getItem('user'));
-  // console.log(current_user.email);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [amount, setAmount] = useState(ticketPrice || '');
   const [transactionStatus, setTransactionStatus] = useState('');
@@ -95,9 +94,17 @@ function InitiateTransaction({ ticketPrice }) {
             placeholder={`Enter the amount (minimum ${ticketPrice})`}
           />
         </div>
-        <button type="submit" disabled={loading}>
-          {loading ? 'Processing...' : 'Initiate Transaction'}
-        </button>
+        <div className="button-container">
+          <button type="submit" disabled={loading}>
+            {loading ? 'Processing...' : 'Initiate Transaction'}
+          </button>
+          <button type="button" className="back-button" onClick={onBack}>
+            Back
+          </button>
+          <button className="close-button" onClick={onClose}>
+            Close
+          </button>
+        </div>
       </form>
       {transactionStatus && (
         <p className="status success">{transactionStatus}</p>

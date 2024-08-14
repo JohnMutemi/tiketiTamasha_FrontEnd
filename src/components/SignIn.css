@@ -104,3 +104,9 @@
 .forgot-password-link a:hover {
   text-decoration: underline;
 }
+
+.ticket {
+  display: block;
+  margin: 0 auto 20px auto;
+  max-width: 100px;
+}
