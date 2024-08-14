@@ -1,262 +1,261 @@
 .dashboard-container {
-    font-family: 'Roboto', sans-serif; /* Updated font for a modern look */
-    color: #333;
-    padding: 20px;
-    max-width: 1200px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .dashboard-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px;
-    background-color: #f8f9fa; /* Light gray background */
-    border-bottom: 2px solid #e9ecef; /* Subtle border color */
-    z-index: 10;
-    margin-top: 200px;
-  }
-  
-  .dashboard-header h1 {
-    margin: 0;
-    font-size: 32px; /* Increased font size for the header */
-    color: #343a40; /* Darker color for the header */
-  }
-  
-  .dashboard-body {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-top: 20px;
-  }
-  
-  .my-events-section {
-    padding: 20px;
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Slightly larger shadow for depth */
-  }
-  
-  .events-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: flex-start;
-  }
-  
-  .event-card {
-    width: 300px;
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: #fff;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Consistent shadow across elements */
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add hover effects */
-  }
-  
-  .event-card:hover {
-    transform: translateY(-5px); /* Subtle lift on hover */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Enhance shadow on hover */
-  }
-  
-  .event-card img {
-    width: 100%;
-    height: auto;
-    border-bottom: 1px solid #e9ecef;
-  }
-  
-  .event-card h3 {
-    margin: 10px 0;
-    font-size: 22px; /* Slightly larger font for titles */
-    color: #343a40;
-  }
-  
-  .event-card p {
-    margin: 5px 0;
-    font-size: 16px;
-    color: #6c757d; /* Softer color for text */
-  }
-  
-  .profile-menu {
-    margin-left: auto;
-    position: relative;
-  }
-  
-  .profile-icon {
-    font-size: 24px;
-    cursor: pointer;
-    color: #343a40; /* Darker icon color */
-  }
-  
-  .dropdown {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background-color: #fff;
-    border: 1px solid #e9ecef;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    padding: 10px;
-    display: none;
-    z-index: 1000; /* Ensure dropdown is above other content */
-  }
-  
-  .profile-menu:hover .dropdown {
-    display: block;
-  }
-  
-  .dropdown-content a {
-    display: block;
-    padding: 8px 12px;
-    color: #343a40;
-    text-decoration: none;
-    transition: background-color 0.2s ease;
-  }
-  
-  .dropdown-content a:hover {
-    background-color: #f8f9fa;
-  }
-  
-  .account-details {
-    padding: 15px;
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
-    background-color: #fafafa;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05); /* Softer shadow for a lighter feel */
-  }
-  
-  .host-event-section {
-    padding: 20px;
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    margin: 20px auto;
-  }
-  
-  .host-event-section h2 {
-    margin-top: 0;
-    font-size: 28px;
-    color: #007bff;
-    border-bottom: 2px solid #007bff;
-    padding-bottom: 10px;
-  }
-  
-  .host-event-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .host-event-form label {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-  git 
-  .host-event-form input,
-  .host-event-form textarea {
-    padding: 12px;
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
-    width: 100%;
-    box-sizing: border-box;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease; /* Add focus effects */
-  }
-  
-  .host-event-form input:focus,
-  .host-event-form textarea:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
-  }
-  
-  .host-event-form textarea {
-    resize: vertical;
-    min-height: 100px;
-  }
-  
-  .host-event-form button {
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    align-self: flex-start;
-  }
-  
-  .host-event-form button:hover {
-    background-color: #0056b3;
-    transform: scale(1.02);
-  }
-  
-  .host-event-form button:disabled {
-    background-color: #6c757d;
-    cursor: not-allowed;
-  }
-  
-  .tickets-section {
-    margin-top: 20px;
-  }
-  
-  .tickets-section h4 {
-    margin-bottom: 10px;
-    font-size: 18px; /* Adjusted font size for section titles */
-    color: #343a40;
-  }
-  
-  .tickets-section ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .tickets-section li {
-    padding: 5px 0;
-    font-size: 16px;
-    color: #6c757d;
-  }
-  
-  .footer {
-    padding: 20px;
-    border-top: 2px solid #e9ecef;
-    background-color: #f8f9fa;
-    text-align: center; /* Center the footer content */
-  }
-  
-  .footer ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: center; /* Center the list items */
-    gap: 20px;
-  }
-  
-  .footer a {
-    color: #007bff;
-    text-decoration: none;
-    transition: color 0.2s ease; /* Smooth transition for hover effects */
-  }
-  
-  .footer a:hover {
-    color: #0056b3;
-    text-decoration: underline;
-  }
-  
-  .hidden {
-    display: none;
-  }
-  
+  font-family: 'Roboto', sans-serif; /* Updated font for a modern look */
+  color: #333;
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #f8f9fa; /* Light gray background */
+  border-bottom: 2px solid #e9ecef; /* Subtle border color */
+  z-index: 10;
+  margin-top: 200px;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 32px; /* Increased font size for the header */
+  color: #343a40; /* Darker color for the header */
+}
+
+.dashboard-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.my-events-section {
+  padding: 20px;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Slightly larger shadow for depth */
+}
+
+.events-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+}
+
+.event-card {
+  width: 300px;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Consistent shadow across elements */
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add hover effects */
+}
+
+.event-card:hover {
+  transform: translateY(-5px); /* Subtle lift on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Enhance shadow on hover */
+}
+
+.event-card img {
+  width: 100%;
+  height: auto;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.event-card h3 {
+  margin: 10px 0;
+  font-size: 22px; /* Slightly larger font for titles */
+  color: #343a40;
+}
+
+.event-card p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #6c757d; /* Softer color for text */
+}
+
+.profile-menu {
+  margin-left: auto;
+  position: relative;
+}
+
+.profile-icon {
+  font-size: 24px;
+  cursor: pointer;
+  color: #343a40; /* Darker icon color */
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 10px;
+  display: none;
+  z-index: 1000; /* Ensure dropdown is above other content */
+}
+
+.profile-menu:hover .dropdown {
+  display: block;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 8px 12px;
+  color: #343a40;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-content a:hover {
+  background-color: #f8f9fa;
+}
+
+.account-details {
+  padding: 15px;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  background-color: #fafafa;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05); /* Softer shadow for a lighter feel */
+}
+
+.host-event-section {
+  padding: 20px;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.host-event-section h2 {
+  margin-top: 0;
+  font-size: 28px;
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+}
+
+.host-event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.host-event-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.host-event-form input,
+.host-event-form textarea {
+  padding: 12px;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease; /* Add focus effects */
+}
+
+.host-event-form input:focus,
+.host-event-form textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+}
+
+.host-event-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.host-event-form button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  align-self: flex-start;
+}
+
+.host-event-form button:hover {
+  background-color: #0056b3;
+  transform: scale(1.02);
+}
+
+.host-event-form button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.tickets-section {
+  margin-top: 20px;
+}
+
+.tickets-section h4 {
+  margin-bottom: 10px;
+  font-size: 18px; /* Adjusted font size for section titles */
+  color: #343a40;
+}
+
+.tickets-section ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tickets-section li {
+  padding: 5px 0;
+  font-size: 16px;
+  color: #6c757d;
+}
+
+.footer {
+  padding: 20px;
+  border-top: 2px solid #e9ecef;
+  background-color: #f8f9fa;
+  text-align: center; /* Center the footer content */
+}
+
+.footer ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center; /* Center the list items */
+  gap: 20px;
+}
+
+.footer a {
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.2s ease; /* Smooth transition for hover effects */
+}
+
+.footer a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.hidden {
+  display: none;
+}

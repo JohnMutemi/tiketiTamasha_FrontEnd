@@ -12,15 +12,17 @@ const AdminDashboard = () => {
     <div className="admin-dashboard">
       <NavBar showLogin={false} />
       <header className="dashboard-header ">
-      <h1>Admin Dashboard</h1>
-      <div className="profile-menu">
-        <i className="fas fa-user profile-icon"></i>
-        <div className="dropdown">
-          <div className="dropdown-content">
-            <Logout />
+
+        <h1>Admin Dashboard</h1>
+        <div className="profile-menu">
+          <i className="fas fa-user profile-icon"></i>
+          <div className="dropdown">
+            <div className="dropdown-content">
+              <Logout />
+            </div>
           </div>
         </div>
-      </div>
+
       </header>
 
       <main className="dashboard-main">
