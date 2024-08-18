@@ -23,7 +23,7 @@ function CustomerDashboard() {
     if (user && token) {
       fetchPurchasedTickets();
     }
-  }, [user, token]);
+  }, [user, token, fetchPurchasedTickets]);
 
   useEffect(() => {
     if (areEventsVisible) {
@@ -41,7 +41,7 @@ function CustomerDashboard() {
     }
   }, [searchTerm, events]);
 
-  const fetchPurchasedTickets = async () => {
+  const fetchPurchasedTickets = useCallback(async () => {
     try {
       const response = await fetch(
         `http://127.0.0.1:5555/tickets?user_id=${user.user_id}`,
@@ -59,8 +59,9 @@ function CustomerDashboard() {
     } catch (error) {
       console.error('Error fetching purchased tickets:', error);
     }
-  };
+  }, [user.user_id, token]);
 
+  
   const fetchEvents = async () => {
     setLoading(true);
     try {
