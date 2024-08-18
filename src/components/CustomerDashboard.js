@@ -8,7 +8,7 @@ import CalendarComponent from './CalendarComponent';
 import './CustomerDashboard.css';
 
 function CustomerDashboard() {
-  const { user, token, selectedTicket, logout } = useUser();
+  const { user, token, selectedTicket } = useUser();
   const [purchasedTickets, setPurchasedTickets] = useState([]);
   const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
   const [areEventsVisible, setAreEventsVisible] = useState(false);
@@ -136,7 +136,7 @@ function CustomerDashboard() {
                         Add to calendar
                       </button>
                       <a
-                        href="#"
+                        href="/"
                         className="calendar-link"
                         onClick={handleToggleCalendar}>
                         <i className="fas fa-calendar-alt"></i>

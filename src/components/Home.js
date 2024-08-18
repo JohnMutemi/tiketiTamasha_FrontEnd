@@ -17,13 +17,6 @@ function Home() {
 
   const userIsLoggedIn = !!user;
 
-  const toggleLogin = () => {
-    if (userIsLoggedIn) {
-      onLogout();
-    } else {
-    }
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -132,7 +125,7 @@ function Home() {
 
       <div className="events-section">
         <h2>
-          <a href="#" onClick={handleToggleEvents}>
+          <a href="/" onClick={handleToggleEvents}>
             A Glimpse of Upcoming Events
           </a>
         </h2>
@@ -156,10 +149,10 @@ function Home() {
         </div>
 
         <div className="footer-center">
-          <a href="#">About us</a>
-          <a href="#">Help</a>
-          <a href="#">Customer Service</a>
-          <a href="#">Download the Tiketi Tamasha app</a>
+          <a href="/">About us</a>
+          <a href="/">Help</a>
+          <a href="/">Customer Service</a>
+          <a href="/">Download the Tiketi Tamasha app</a>
         </div>
         <div className="footer-right">
           <img
