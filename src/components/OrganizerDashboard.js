@@ -25,9 +25,7 @@ const OrganizerDashboard = ({ eventId }) => {
     longitude: '',
   });
   const [editingEvent, setEditingEvent] = useState(null);
-  const [isFormVisible, setFormVisible] = useState(() => {
-    return JSON.parse(localStorage.getItem('isFormVisible')) || false;
-  });
+  const [isFormVisible, setFormVisible] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   useEffect(() => {
@@ -52,7 +50,6 @@ const OrganizerDashboard = ({ eventId }) => {
       const data = await response.json();
       setEvents(data.events || []);
       setError('');
-      localStorage.setItem('events', JSON.stringify(data.events || []));
     } catch (error) {
       setError('Error fetching events.');
       const cachedEvents = localStorage.getItem('events');
@@ -99,14 +96,12 @@ const OrganizerDashboard = ({ eventId }) => {
         });
       }
 
-      localStorage.setItem('formData', JSON.stringify(newData));
       return newData;
     });
   };
 
   const handleAddEvent = async (e) => {
     e.preventDefault();
-    console.log('Adding event:', formData);
     setLoading(true);
     try {
       const response = await fetch('http://127.0.0.1:5555/organizer-events', {
@@ -133,13 +128,10 @@ const OrganizerDashboard = ({ eventId }) => {
       }
 
       const newEvent = await response.json();
-      console.log('Event added:', newEvent);
       setEvents((prevEvents) => [...prevEvents, newEvent.event]);
       clearForm();
       setMessage('Event added successfully!');
-      localStorage.removeItem('formData');
     } catch (error) {
-      console.error('Error adding event:', error);
       setMessage(`Error adding event: ${error.message}`);
     } finally {
       setLoading(false);
@@ -298,12 +290,16 @@ const OrganizerDashboard = ({ eventId }) => {
             </div>
           </div>
         </div>
-        </header>
-
+</header>
       <section className="dashboard-hero">
         <div className="my-events">
           <h2>
-            <a href="#" onClick={() => setFormVisible((prev) => !prev)}>
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                setFormVisible((prev) => !prev);
+              }}>
               {isFormVisible ? 'Cancel' : 'Add New Event'}
             </a>
           </h2>
@@ -312,106 +308,116 @@ const OrganizerDashboard = ({ eventId }) => {
           {error && <p>{error}</p>}
           {message && <p>{message}</p>}
           {isFormVisible && (
-            <form onSubmit={editingEvent ? handleUpdateEvent : handleAddEvent}>
-              <label>
-                Title:
+            <div className="event-management">
+              <form
+                onSubmit={editingEvent ? handleUpdateEvent : handleAddEvent}>
+                <label>
+                  Title:
+                  <input
+                    type="text"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleInputChange}
+                    placeholder="Event Title"
+                    required
+                  />
+                </label>
+                <label>
+                  Description:
+                  <textarea
+                    name="description"
+                    value={formData.description}
+                    onChange={handleInputChange}
+                    placeholder="Event Description"
+                    required
+                  />
+                </label>
+                <label>
+                  Location:
+                  <input
+                    type="text"
+                    name="location"
+                    value={formData.location}
+                    onChange={handleInputChange}
+                    placeholder="Event Location"
+                    required
+                  />
+                </label>
+                <label>
+                  Start Time:
+                  <input
+                    type="datetime-local"
+                    name="startTime"
+                    value={formData.startTime}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </label>
+                <label>
+                  End Time:
+                  <input
+                    type="datetime-local"
+                    name="endTime"
+                    value={formData.endTime}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </label>
+                <label>
+                  Image URL:
+                  <input
+                    type="text"
+                    name="imageUrl"
+                    value={formData.imageUrl}
+                    onChange={handleInputChange}
+                    placeholder="Image URL"
+                  />
+                </label>
+                <label>
+                  Total Tickets:
+                  <input
+                    type="number"
+                    name="totalTickets"
+                    value={formData.totalTickets}
+                    onChange={handleInputChange}
+                    placeholder="Total Tickets"
+                    required
+                  />
+                </label>
+                <label>
+                  Remaining Tickets:
+                  <input
+                    type="number"
+                    name="remainingTickets"
+                    value={formData.remainingTickets}
+                    onChange={handleInputChange}
+                    placeholder="Remaining Tickets"
+                    required
+                  />
+                </label>
                 <input
-                  type="text"
-                  name="title"
-                  value={formData.title}
-                  onChange={handleInputChange}
-                  required
+                  type="hidden"
+                  name="latitude"
+                  value={formData.latitude}
                 />
-              </label>
-              <label>
-                Description:
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  required></textarea>
-              </label>
-              <label>
-                Location:
                 <input
-                  type="text"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleInputChange}
-                  required
+                  type="hidden"
+                  name="longitude"
+                  value={formData.longitude}
                 />
-              </label>
-              <label>
-                Start Time:
-                <input
-                  type="datetime-local"
-                  name="startTime"
-                  value={formData.startTime}
-                  onChange={handleInputChange}
-                  required
-                />
-              </label>
-              <label>
-                End Time:
-                <input
-                  type="datetime-local"
-                  name="endTime"
-                  value={formData.endTime}
-                  onChange={handleInputChange}
-                  required
-                />
-              </label>
-              <label>
-                Image URL:
-                <input
-                  type="text"
-                  name="imageUrl"
-                  value={formData.imageUrl}
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label>
-                Total Tickets:
-                <input
-                  type="number"
-                  name="totalTickets"
-                  value={formData.totalTickets}
-                  onChange={handleInputChange}
-                  required
-                />
-              </label>
-              <label>
-                Remaining Tickets:
-                <input
-                  type="number"
-                  name="remainingTickets"
-                  value={formData.remainingTickets}
-                  onChange={handleInputChange}
-                  required
-                />
-              </label>
-              <input
-                type="hidden"
-                name="latitude"
-                value={formData.latitude}
-                onChange={handleInputChange}
-              />
-              <input
-                type="hidden"
-                name="longitude"
-                value={formData.longitude}
-                onChange={handleInputChange}
-              />
-              <button type="submit">
-                {editingEvent ? 'Update Event' : 'Add Event'}
-              </button>
-              {editingEvent && (
-                <button type="button" onClick={() => setEditingEvent(null)}>
+                <button type="submit">
+                  {editingEvent ? 'Update Event' : 'Add Event'}
+                </button>
+                <button
+                  type="button"
+                  onClick={clearForm}
+                  style={{ marginLeft: '10px' }}>
                   Cancel
                 </button>
-              )}
-            </form>
+              </form>
+            </div>
           )}
+
           {events.length > 0 && (
             <table>
               <thead>

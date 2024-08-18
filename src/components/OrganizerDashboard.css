@@ -1,12 +1,8 @@
-.dashboard-container {
-  font-family: 'Roboto', sans-serif; /* Updated font for a modern look */
-  color: #333;
+.organizer-dashboard {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
   padding: 20px;
-  max-width: 1200px;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  margin-bottom: -350px;
 }
 
 .dashboard-header {
@@ -14,16 +10,15 @@
   align-items: center;
   justify-content: space-between;
   padding: 20px;
-  background-color: #f8f9fa; /* Light gray background */
-  border-bottom: 2px solid #e9ecef; /* Subtle border color */
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #e9ecef;
   z-index: 10;
-  margin-top: 200px;
 }
 
 .dashboard-header h1 {
   margin: 0;
-  font-size: 32px; /* Increased font size for the header */
-  color: #343a40; /* Darker color for the header */
+  font-size: 32px;
+  color: #343a40;
 }
 
 .dashboard-body {
@@ -34,12 +29,15 @@
   margin-top: 20px;
 }
 
-.my-events-section {
+.my-events-section,
+.host-event-section,
+.account-details {
   padding: 20px;
   border: 1px solid #e9ecef;
   border-radius: 8px;
   background-color: #fff;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Slightly larger shadow for depth */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
 .events-grid {
@@ -55,17 +53,17 @@
   border-radius: 8px;
   overflow: hidden;
   background-color: #fff;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Consistent shadow across elements */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   padding: 15px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add hover effects */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .event-card:hover {
-  transform: translateY(-5px); /* Subtle lift on hover */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Enhance shadow on hover */
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
 .event-card img {
@@ -74,27 +72,26 @@
   border-bottom: 1px solid #e9ecef;
 }
 
-.event-card h3 {
+h3 {
   margin: 10px 0;
-  font-size: 22px; /* Slightly larger font for titles */
+  font-size: 22px;
   color: #343a40;
 }
 
-.event-card p {
+p {
   margin: 5px 0;
   font-size: 16px;
-  color: #6c757d; /* Softer color for text */
+  color: #6c757d;
 }
 
 .profile-menu {
-  margin-left: auto;
   position: relative;
 }
 
 .profile-icon {
   font-size: 24px;
   cursor: pointer;
-  color: #343a40; /* Darker icon color */
+  color: #343a40;
 }
 
 .dropdown {
@@ -107,7 +104,7 @@
   border-radius: 4px;
   padding: 10px;
   display: none;
-  z-index: 1000; /* Ensure dropdown is above other content */
+  z-index: 1000;
 }
 
 .profile-menu:hover .dropdown {
@@ -126,83 +123,40 @@
   background-color: #f8f9fa;
 }
 
-.account-details {
-  padding: 15px;
-  border: 1px solid #e9ecef;
-  border-radius: 8px;
-  background-color: #fafafa;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05); /* Softer shadow for a lighter feel */
-}
-
-.host-event-section {
-  padding: 20px;
-  border: 1px solid #e9ecef;
-  border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  margin: 20px auto;
-}
-
-.host-event-section h2 {
-  margin-top: 0;
-  font-size: 28px;
-  color: #007bff;
-  border-bottom: 2px solid #007bff;
-  padding-bottom: 10px;
-}
-
-.host-event-form {
-  display: flex;
+form {
+  display: contents;
   flex-direction: column;
   gap: 15px;
 }
 
-.host-event-form label {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+form label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
 }
 
-.host-event-form input,
-.host-event-form textarea {
-  padding: 12px;
-  border: 1px solid #e9ecef;
-  border-radius: 8px;
+form input,
+form textarea {
   width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
   box-sizing: border-box;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease; /* Add focus effects */
 }
 
-.host-event-form input:focus,
-.host-event-form textarea:focus {
+form input:focus,
+form textarea:focus {
   border-color: #007bff;
   box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
 }
 
-.host-event-form textarea {
+form textarea {
   resize: vertical;
   min-height: 100px;
 }
 
-.host-event-form button {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  background-color: #007bff;
-  color: #fff;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  align-self: flex-start;
-}
-
-.host-event-form button:hover {
-  background-color: #0056b3;
-  transform: scale(1.02);
-}
-
-.host-event-form button:disabled {
+form button:disabled {
   background-color: #6c757d;
   cursor: not-allowed;
 }
@@ -213,7 +167,7 @@
 
 .tickets-section h4 {
   margin-bottom: 10px;
-  font-size: 18px; /* Adjusted font size for section titles */
+  font-size: 18px;
   color: #343a40;
 }
 
@@ -233,7 +187,7 @@
   padding: 20px;
   border-top: 2px solid #e9ecef;
   background-color: #f8f9fa;
-  text-align: center; /* Center the footer content */
+  text-align: center;
 }
 
 .footer ul {
@@ -241,14 +195,14 @@
   padding: 0;
   margin: 0;
   display: flex;
-  justify-content: center; /* Center the list items */
+  justify-content: center;
   gap: 20px;
 }
 
 .footer a {
   color: #007bff;
   text-decoration: none;
-  transition: color 0.2s ease; /* Smooth transition for hover effects */
+  transition: color 0.2s ease;
 }
 
 .footer a:hover {
@@ -258,4 +212,45 @@
 
 .hidden {
   display: none;
+}
+
+.event-management {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  border: 1px solid #ddd; /* Add border for a more defined look */
+  margin-bottom: 20px;
+}
+
+.event-management form {
+  margin-bottom: 20px;
+}
+
+.event-management input,
+.event-management textarea {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.event-management button {
+  padding: 10px 20px;
+  background-color: #ea8f74;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.event-management button:hover {
+  background-color: #ea9074b4;
 }

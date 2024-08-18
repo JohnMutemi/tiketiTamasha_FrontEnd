@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useUser } from './UserContext';
+import { useNavigate } from 'react-router-dom';
 import './InitiateTransaction.css';
 
-function InitiateTransaction({ ticketPrice, onClose, onBack }) {
-  const current_user = JSON.parse(sessionStorage.getItem('user'));
+function InitiateTransaction({ ticketPrice, selectedTicketId }) {
+  const { user } = useUser();
+  const navigate = useNavigate(); // Hook for programmatic navigation
   const [phoneNumber, setPhoneNumber] = useState('');
   const [amount, setAmount] = useState(ticketPrice || '');
   const [transactionStatus, setTransactionStatus] = useState('');
@@ -16,6 +19,7 @@ function InitiateTransaction({ ticketPrice, onClose, onBack }) {
   }, [ticketPrice]);
 
   const handlePhoneNumberChange = (e) => setPhoneNumber(e.target.value);
+
   const handleAmountChange = (e) => {
     const value = e.target.value;
     if (value < ticketPrice) {
@@ -38,6 +42,16 @@ function InitiateTransaction({ ticketPrice, onClose, onBack }) {
     setError('');
     setTransactionStatus('');
 
+    const requestData = {
+      phone_number: phoneNumber,
+      amount: parseFloat(amount),
+      email: user.email,
+      ticket_id: selectedTicketId,
+      user_id: user.user_id,
+    };
+
+    console.log('Request Data:', requestData); // Log the request payload
+
     try {
       const response = await fetch(
         'http://127.0.0.1:5555/initiate-transaction',
@@ -46,11 +60,7 @@ function InitiateTransaction({ ticketPrice, onClose, onBack }) {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            phone_number: phoneNumber,
-            amount: parseFloat(amount),
-            email: current_user.email,
-          }),
+          body: JSON.stringify(requestData),
         }
       );
 
@@ -59,6 +69,11 @@ function InitiateTransaction({ ticketPrice, onClose, onBack }) {
         setTransactionStatus(
           'Transaction initiated successfully. Please check your phone.'
         );
+
+        // Set a timeout to refresh the page after 5 seconds
+        setTimeout(() => {
+          window.location.reload(); // Refresh the page
+        }, 3000); // 5 seconds delay
       } else {
         setError(data.error || 'Failed to initiate transaction.');
       }

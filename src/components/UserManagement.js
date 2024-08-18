@@ -12,9 +12,6 @@ const UserManagement = () => {
     password: '',
     role: 'attendee',
   });
-  const [isFormVisible, setFormVisible] = useState(() => {
-    return JSON.parse(localStorage.getItem('isFormVisible')) || false;
-  });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -33,11 +30,13 @@ const UserManagement = () => {
         }
     
         const data = await response.json();
-        console.log('Fetched users:', data); // debugging 
-    
-        if (Array.isArray(data)) {
-          setUsers(data);
-          localStorage.setItem('users', JSON.stringify(data));
+        console.log('Fetched users:', data); // Debugging statement
+
+        // Check if data.users exists and is an array
+        if (Array.isArray(data.users)) {
+          setUsers(data.users);
+          console.log('MY USERS:', data.users);
+          localStorage.setItem('users', JSON.stringify(data.users));
         } else {
           console.error('Unexpected data structure:', data);
           setMessage('Unexpected data structure');
@@ -67,42 +66,6 @@ const UserManagement = () => {
       localStorage.setItem('formData', JSON.stringify(newData));
       return newData;
     });
-  };
-
-  const handleAddUser = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const response = await fetch('http://127.0.0.1:5555/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-          role: formData.role,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to add user');
-      }
-
-      const newUser = await response.json();
-      setUsers((prevUsers) => [...prevUsers, newUser.user]);
-      clearForm();
-      setMessage('User added successfully!');
-      localStorage.removeItem('formData');
-    } catch (error) {
-      console.error('Error adding user:', error);
-      setMessage(error.message || 'Error adding user');
-    } finally {
-      setLoading(false);
-    }
   };
 
   const handleUpdateUser = async (e) => {
@@ -174,11 +137,9 @@ const UserManagement = () => {
     setFormData({
       username: user.username,
       email: user.email,
-      password: '', 
+      password: '',
       role: user.role,
     });
-    setFormVisible(true);
-    localStorage.setItem('isFormVisible', JSON.stringify(true));
   };
 
   const clearForm = () => {
@@ -188,28 +149,19 @@ const UserManagement = () => {
       password: '',
       role: 'attendee',
     });
-    setFormVisible(false);
     setEditingUser(null);
-    localStorage.setItem('isFormVisible', JSON.stringify(false));
+    localStorage.removeItem('formData');
   };
 
   return (
     <div className="user-management">
       <h2>Manage Users</h2>
 
-      <button
-        className="toggle-form-button"
-        onClick={() => setFormVisible((prev) => !prev)}>
-        {isFormVisible ? 'Hide Form' : 'Add New User'}
-      </button>
-
       {message && <p className="message">{message}</p>}
       {loading && <p>Loading...</p>}
 
-      {isFormVisible && (
-        <form
-          onSubmit={editingUser ? handleUpdateUser : handleAddUser}
-          className="user-form">
+      {editingUser && (
+        <form onSubmit={handleUpdateUser} className="user-form">
           <input
             type="text"
             name="username"
@@ -242,9 +194,7 @@ const UserManagement = () => {
             <option value="organizer">Event_organizer</option>
             <option value="admin">Admin</option>
           </select>
-          <button type="submit">
-            {editingUser ? 'Update User' : 'Add User'}
-          </button>
+          <button type="submit">Update User</button>
           <button type="button" onClick={clearForm}>
             Cancel
           </button>
@@ -255,7 +205,6 @@ const UserManagement = () => {
         <table>
           <thead>
             <tr>
-              <th>ID</th>
               <th>Username</th>
               <th>Email</th>
               <th>Role</th>
@@ -263,9 +212,8 @@ const UserManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
+            {users.map((user, index) => (
+              <tr key={index}>
                 <td>{user.username}</td>
                 <td>{user.email}</td>
                 <td>{user.role}</td>

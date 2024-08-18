@@ -133,6 +133,7 @@ const EventManagement = () => {
           image_url: formData.imageUrl,
           total_tickets: formData.totalTickets,
           remaining_tickets: formData.remainingTickets,
+          // ticket_Price: formData.price,
           latitude: formData.latitude,
           longitude: formData.longitude,
         }),
@@ -350,6 +351,14 @@ const EventManagement = () => {
             value={formData.remainingTickets}
             onChange={handleInputChange}
             placeholder="Remaining Tickets"
+            required
+          />
+          <input
+            type="number"
+            name="price"
+            value={formData.price}
+            onChange={handleInputChange}
+            placeholder="ticket Price"
             required
           />
           <button type="submit">

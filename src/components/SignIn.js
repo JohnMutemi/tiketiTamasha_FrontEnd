@@ -89,7 +89,7 @@ function SignIn() {
             required
           />
         </div>
-        <div className="checkbox-group">
+        {/* <div className="checkbox-group">
           <input
             id="stayLoggedIn"
             type="checkbox"
@@ -97,7 +97,7 @@ function SignIn() {
             onChange={(e) => setStayLoggedIn(e.target.checked)}
           />
           <label htmlFor="stayLoggedIn">Stay logged in</label>
-        </div>
+        </div> */}
         <button type="submit" className="signin-button">
           Login
         </button>

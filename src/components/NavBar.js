@@ -13,7 +13,7 @@ const NavBar = ({
   searchTerm,
   categories,
   onCategoryClick,
-  showSearchbar = true, 
+  showSearchbar = true,
 }) => {
   const { isAuthenticated } = useUser();
   const [showDropdown, setShowDropdown] = useState(false);

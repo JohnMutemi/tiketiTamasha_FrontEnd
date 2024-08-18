@@ -21,9 +21,7 @@ function PaymentModal({ onClose, ticket }) {
     if (selectedPaymentMethod === 'mpesa') {
       setShowInitiateTransaction(true);  
     } else {
-      // Handle other payment methods here (e.g., credit card)
       console.log(`Processing payment via ${selectedPaymentMethod}`);
-      // Additional logic for other payment methods
     }
   };
 

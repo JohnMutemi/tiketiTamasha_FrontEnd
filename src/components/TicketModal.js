@@ -89,4 +89,3 @@ function TicketModal({ onClose }) {
 }
 
 export default TicketModal;
-

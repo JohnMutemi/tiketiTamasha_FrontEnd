@@ -1,5 +1,5 @@
 import React from 'react';
-// import './AttendeeList.css';
+
 
 function AttendeeList({ attendees }) {
   if (attendees.length === 0) {

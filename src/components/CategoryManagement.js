@@ -78,7 +78,9 @@ const CategoryManagement = () => {
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to ${editingCategory ? 'update' : 'add'} category`);
+        throw new Error(
+          `Failed to ${editingCategory ? 'update' : 'add'} category`
+        );
       }
 
       const data = await response.json();
@@ -92,7 +94,9 @@ const CategoryManagement = () => {
         }
       });
       clearForm();
-      setMessage(`${editingCategory ? 'Updated' : 'Added'} category successfully!`);
+      setMessage(
+        `${editingCategory ? 'Updated' : 'Added'} category successfully!`
+      );
       localStorage.removeItem('formData');
     } catch (error) {
       console.error('Error saving category:', error);
@@ -167,7 +171,7 @@ const CategoryManagement = () => {
       {loading && <p>Loading...</p>}
       {isFormVisible && (
         <form
-          onSubmit={handleSaveCategory}
+          onSubmit={handleSaveCategory} // Fixed function reference
           className="category-form">
           <input
             type="text"
