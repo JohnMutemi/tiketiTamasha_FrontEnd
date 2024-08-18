@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Register.css';
 import { useUser } from './UserContext';
+import ticket from './ticket_11785924.png';
 
 function Register() {
   const [username, setUsername] = useState('');
@@ -105,11 +106,23 @@ function Register() {
     }
   };
 
+  const handleTicketClick = () => {
+    navigate('/');
+  };
+
   return (
     <div className="register-container">
+      <img
+        src={ticket}
+        alt="ticket"
+        className="ticket"
+        onClick={handleTicketClick}
+        style={{ cursor: 'pointer' }} 
+      />
       <form
         onSubmit={isOtpSent ? handleOtpSubmit : handleSubmit}
-        className="register-form">
+        className="register-form"
+      >
         <h3>{isOtpSent ? 'Verify OTP' : 'Create Account'}</h3>
 
         {!isOtpSent ? (
@@ -156,7 +169,8 @@ function Register() {
                 name="role"
                 value={role}
                 onChange={handleChange}
-                required>
+                required
+              >
                 <option value="event_organizer">Event Organizer</option>
                 <option value="customer">Attendee</option>
               </select>

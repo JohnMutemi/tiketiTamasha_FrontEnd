@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './ticket.css';
-import { useNavigate } from 'react-router-dom';
 import PaymentModal from './PaymentModal';
 
 function TicketModal({ onClose }) {
   const [tickets, setTickets] = useState([]);
   const [uniqueTicketTypes, setUniqueTicketTypes] = useState([]);
   const [selectedTicket, setSelectedTicket] = useState(null);
-  const [showPaymentModal, setShowPaymentModal] = useState(false); // State to control PaymentModal visibility
-  const navigate = useNavigate();
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   useEffect(() => {
     // Fetch tickets
@@ -35,45 +33,49 @@ function TicketModal({ onClose }) {
   };
 
   const handleBookNow = () => {
-    // Directly show the PaymentModal
+    // switch to PaymentModal by hiding TicketModal
     setShowPaymentModal(true);
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-container">
-        <h2>Select Ticket Type</h2>
-        <div className="ticket-options">
-          <select
-            onChange={handleTicketChange}
-            value={selectedTicket?.ticket_type || ''}>
-            <option value="" disabled>
-              Select a ticket type
-            </option>
-            {uniqueTicketTypes.map((type, index) => (
-              <option key={index} value={type}>
-                {type}
-              </option>
-            ))}
-          </select>
-        </div>
-        {selectedTicket && (
-          <div className="ticket-details">
-            <p>
-              <strong>Price:</strong> $
-              {parseFloat(selectedTicket.price).toFixed(2)}
-            </p>
+    <>
+      {!showPaymentModal && (
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <h2>Select Ticket Type</h2>
+            <div className="ticket-options">
+              <select
+                onChange={handleTicketChange}
+                value={selectedTicket?.ticket_type || ''}>
+                <option value="" disabled>
+                  Select a ticket type
+                </option>
+                {uniqueTicketTypes.map((type, index) => (
+                  <option key={index} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {selectedTicket && (
+              <div className="ticket-details">
+                <p>
+                  <strong>Price:</strong> $
+                  {parseFloat(selectedTicket.price).toFixed(2)}
+                </p>
+              </div>
+            )}
+            <div className="button-container">
+              <button className="book-now-button" onClick={handleBookNow}>
+                Book Now
+              </button>
+              <button className="close-button" onClick={onClose}>
+                Close
+              </button>
+            </div>
           </div>
-        )}
-        <div className="button-container">
-          <button className="book-now-button" onClick={handleBookNow}>
-            Book Now
-          </button>
-          <button className="close-button" onClick={onClose}>
-            Close
-          </button>
         </div>
-      </div>
+      )}
 
       {/* Render PaymentModal if showPaymentModal is true */}
       {showPaymentModal && (
@@ -82,7 +84,7 @@ function TicketModal({ onClose }) {
           onClose={() => setShowPaymentModal(false)}
         />
       )}
-    </div>
+    </>
   );
 }
 

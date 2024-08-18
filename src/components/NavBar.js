@@ -13,6 +13,7 @@ const NavBar = ({
   searchTerm,
   categories,
   onCategoryClick,
+  showSearchbar = true,
 }) => {
   const { isAuthenticated } = useUser();
   const [showDropdown, setShowDropdown] = useState(false);
@@ -43,32 +44,34 @@ const NavBar = ({
             <img src={ticket} alt="ticket" className="ticket" />
             <div className="logo">Tiketi Tamasha</div>
           </div>
-          <div className="search-bar">
-            <button
-              className="category-dropdown"
-              onClick={toggleCategoriesDropdown}>
-              ☰
-            </button>
-            {showCategories && (
-              <div className="categories-dropdown">
-                {categories.map((category) => (
-                  <button
-                    key={category}
-                    className="category-item"
-                    onClick={() => handleCategorySelect(category)}>
-                    {category}
-                  </button>
-                ))}
-              </div>
-            )}
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={handleSearchInputChange}
-            />
-            <button className="search-button">🔍</button>
-          </div>
+          {showSearchbar && ( // conditionally render the search bar
+            <div className="search-bar">
+              <button
+                className="category-dropdown"
+                onClick={toggleCategoriesDropdown}>
+                ☰
+              </button>
+              {showCategories && (
+                <div className="categories-dropdown">
+                  {categories.map((category) => (
+                    <button
+                      key={category}
+                      className="category-item"
+                      onClick={() => handleCategorySelect(category)}>
+                      {category}
+                    </button>
+                  ))}
+                </div>
+              )}
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchTerm}
+                onChange={handleSearchInputChange}
+              />
+              <button className="search-button">🔍</button>
+            </div>
+          )}
           <div className="header__menu">
             <ul className="header__menu-items">
               <li className="header__menu-item">

@@ -3,8 +3,9 @@ import { useUser } from './UserContext';
 import TicketModal from './TicketModal';
 import EventList from './EventList';
 import Logout from './Logout';
-import './customer-dashboard.css';
 import NavBar from './NavBar';
+import CalendarComponent from './CalendarComponent';
+import './CustomerDashboard.css';
 
 function CustomerDashboard() {
   const { user, token, selectedTicket, logout } = useUser();
@@ -16,6 +17,7 @@ function CustomerDashboard() {
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isCalendarVisible, setIsCalendarVisible] = useState(false);
 
   useEffect(() => {
     if (user && token) {
@@ -80,12 +82,6 @@ function CustomerDashboard() {
     logout();
   };
 
-  const handleTicketModalOpen = () => {
-    if (selectedTicket) {
-      setIsTicketModalOpen(true);
-    }
-  };
-
   const handleTicketModalClose = () => {
     setIsTicketModalOpen(false);
   };
@@ -94,10 +90,17 @@ function CustomerDashboard() {
     setAreEventsVisible(!areEventsVisible);
   };
 
+  const handleToggleCalendar = () => {
+    setIsCalendarVisible(!isCalendarVisible);
+  };
+
+  const handleEventSelect = (date) => {
+    console.log('Selected Date: ', date);
+  };
+
   return (
     <div className="customer-dashboard">
       <NavBar showLogin={false} />
-      {/* <header className="dashboard-header sticky-navbar"> */}
       <header className="dashboard-header">
         <h1>Welcome, {user ? user.username : 'Guest'}</h1>
         <div className="profile-menu">
@@ -132,9 +135,15 @@ function CustomerDashboard() {
                     <td>${parseFloat(ticket.price).toFixed(2)}</td>
                     <td>{ticket.status}</td>
                     <td>
-                      <button onClick={handleTicketModalOpen}>
-                        View Ticket
+                      <button onClick={handleToggleCalendar}>
+                        Add to calendar
                       </button>
+                      <a
+                        href="#"
+                        className="calendar-link"
+                        onClick={handleToggleCalendar}>
+                        <i className="fas fa-calendar-alt"></i>
+                      </a>
                     </td>
                   </tr>
                 ))
@@ -181,6 +190,12 @@ function CustomerDashboard() {
           tickets={[selectedTicket]}
           onClose={handleTicketModalClose}
         />
+      )}
+
+      {isCalendarVisible && (
+        <section className="calendar-section">
+          <CalendarComponent onEventSelect={handleEventSelect} />
+        </section>
       )}
     </div>
   );
