@@ -20,12 +20,6 @@ function CustomerDashboard() {
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
 
   useEffect(() => {
-    if (user && token) {
-      fetchPurchasedTickets();
-    }
-  }, [user, token, fetchPurchasedTickets]);
-
-  useEffect(() => {
     if (areEventsVisible) {
       fetchEvents();
     }
@@ -61,6 +55,11 @@ function CustomerDashboard() {
     }
   }, [user.user_id, token]);
 
+  useEffect(() => {
+    if (user && token) {
+      fetchPurchasedTickets();
+    }
+  }, [user, token, fetchPurchasedTickets]);
   
   const fetchEvents = async () => {
     setLoading(true);
