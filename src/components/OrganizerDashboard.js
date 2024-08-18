@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useUser } from './UserContext';
 import Logout from './Logout';
 import NavBar from './NavBar';
@@ -28,13 +28,7 @@ const OrganizerDashboard = ({ eventId }) => {
   const [isFormVisible, setFormVisible] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
-  useEffect(() => {
-    if (user && token) {
-      fetchEvents();
-    }
-  }, [user, token]);
-
-  const fetchEvents = async () => {
+  const fetchEvents = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch('http://127.0.0.1:5555/organizer-events', {
@@ -59,7 +53,13 @@ const OrganizerDashboard = ({ eventId }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]); // Note: token is a dependency here
+
+  useEffect(() => {
+    if (user && token) {
+      fetchEvents();
+    }
+  }, [user, token, fetchEvents]); // Include fetchEvents in the dependency array
 
   const getCoordinates = async (location) => {
     try {
@@ -290,7 +290,7 @@ const OrganizerDashboard = ({ eventId }) => {
             </div>
           </div>
         </div>
-</header>
+      </header>
       <section className="dashboard-hero">
         <div className="my-events">
           <h2>

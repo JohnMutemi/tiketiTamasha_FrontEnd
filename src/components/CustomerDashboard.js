@@ -155,7 +155,7 @@ function CustomerDashboard() {
 
         <div className="upcoming-events">
           <h2>
-            <a href="#" onClick={handleToggleEvents}>
+            <a href="/" onClick={handleToggleEvents}>
               Click here to Book a new Event
             </a>
           </h2>

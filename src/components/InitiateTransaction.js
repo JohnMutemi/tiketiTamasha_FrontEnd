@@ -5,7 +5,6 @@ import './InitiateTransaction.css';
 
 function InitiateTransaction({ ticketPrice, selectedTicketId }) {
   const { user } = useUser();
-  const navigate = useNavigate(); // Hook for programmatic navigation
   const [phoneNumber, setPhoneNumber] = useState('');
   const [amount, setAmount] = useState(ticketPrice || '');
   const [transactionStatus, setTransactionStatus] = useState('');
