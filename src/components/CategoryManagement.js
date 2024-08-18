@@ -170,7 +170,9 @@ const CategoryManagement = () => {
       {message && <p className="message">{message}</p>}
       {loading && <p>Loading...</p>}
       {isFormVisible && (
-        <form onSubmit={handleSaveCategory} className="category-form">
+        <form
+          onSubmit={handleSaveCategory} // Fixed function reference
+          className="category-form">
           <input
             type="text"
             name="name"

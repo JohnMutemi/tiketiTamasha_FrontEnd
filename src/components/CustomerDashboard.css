@@ -50,3 +50,8 @@ h2 {
   margin: 5px 0;
   color: #555;
 }
+
+.table-header {
+    background-color: blue;
+    color: black;
+}
