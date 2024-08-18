@@ -290,7 +290,7 @@ const OrganizerDashboard = ({ eventId }) => {
             </div>
           </div>
         </div>
-
+</header>
       <section className="dashboard-hero">
         <div className="my-events">
           <h2>
