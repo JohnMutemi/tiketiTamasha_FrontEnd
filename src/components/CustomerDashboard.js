@@ -35,6 +35,7 @@ function CustomerDashboard() {
     }
   }, [searchTerm, events]);
 
+  // Define fetchPurchasedTickets with useCallback
   const fetchPurchasedTickets = useCallback(async () => {
     try {
       const response = await fetch(
@@ -53,14 +54,14 @@ function CustomerDashboard() {
     } catch (error) {
       console.error('Error fetching purchased tickets:', error);
     }
-  }, [user.user_id, token]);
+  }, [user.user_id, token]); // Dependencies
 
   useEffect(() => {
     if (user && token) {
       fetchPurchasedTickets();
     }
   }, [user, token, fetchPurchasedTickets]);
-  
+
   const fetchEvents = async () => {
     setLoading(true);
     try {
@@ -76,10 +77,6 @@ function CustomerDashboard() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleLogout = () => {
-    logout();
   };
 
   const handleTicketModalClose = () => {
@@ -117,7 +114,7 @@ function CustomerDashboard() {
         <div className="my-tickets">
           <h2>My Booked Tickets</h2>
           <table className="ticket-table">
-            <thead >
+            <thead>
               <tr>
                 <th>Ticket ID</th>
                 <th>Event Title</th>
