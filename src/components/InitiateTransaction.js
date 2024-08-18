@@ -109,17 +109,9 @@ function InitiateTransaction({ ticketPrice, selectedTicketId }) {
             placeholder={`Enter the amount (minimum ${ticketPrice})`}
           />
         </div>
-        <div className="button-container">
-          <button type="submit" disabled={loading}>
-            {loading ? 'Processing...' : 'Initiate Transaction'}
-          </button>
-          <button type="button" className="back-button" onClick={onBack}>
-            Back
-          </button>
-          <button className="close-button" onClick={onClose}>
-            Close
-          </button>
-        </div>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Processing...' : 'Initiate Transaction'}
+        </button>
       </form>
       {transactionStatus && (
         <p className="status success">{transactionStatus}</p>
