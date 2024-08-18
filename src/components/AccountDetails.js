@@ -64,10 +64,10 @@ function AccountDetails() {
       </div>
       <footer className="footer">
         <p>&copy; 2024 Tiketi Tamasha. All rights reserved.</p>
-        <a href="#">About us</a>
-        <a href="#">Help</a>
-        <a href="#">Customer Service</a>
-        <a href="#">Download the Tiketi Tamasha app</a>
+        <a href="/">About us</a>
+        <a href="/">Help</a>
+        <a href="/">Customer Service</a>
+        <a href="/">Download the Tiketi Tamasha app</a>
       </footer>
     </div>
   );
