@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useUser } from './UserContext';
 import TicketModal from './TicketModal';
 import EventList from './EventList';
