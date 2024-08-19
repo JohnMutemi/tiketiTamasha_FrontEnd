@@ -6,8 +6,8 @@ const TransactionList = ({ userId }) => {
 
   useEffect(() => {
     const url = userId
-      ? `http://127.0.0.1:5555/payments?user_id=${userId}`
-      : 'http://127.0.0.1:5555/payments';
+      ? `https://tiketi-tamasha-backend-1.onrender.com/payments?user_id=${userId}`
+      : 'https://tiketi-tamasha-backend-1.onrender.com/payments';
 
     fetch(url)
       .then((response) => response.json())
@@ -22,7 +22,7 @@ const TransactionList = ({ userId }) => {
   }, [userId]);
 
   const handleRefund = (paymentId, action) => {
-    fetch('http://127.0.0.1:5555/payments', {
+    fetch('https://tiketi-tamasha-backend-1.onrender.com/payments', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

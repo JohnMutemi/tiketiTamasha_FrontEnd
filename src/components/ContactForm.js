@@ -20,13 +20,16 @@ const ContactForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://127.0.0.1:5555/feedback', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        'https://tiketi-tamasha-backend-1.onrender.com/feedback',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (response.ok) {
         console.log('Thank you for reaching TiketiTamasha!');
@@ -52,7 +55,7 @@ const ContactForm = () => {
         alt="ticket"
         className="ticket"
         onClick={handleTicketClick}
-        style={{ cursor: 'pointer' }} // Makes the cursor a pointer when hovering over the ticket
+        style={{ cursor: 'pointer' }}
       />
       <h2>Contact Us</h2>
       <form onSubmit={handleSubmit}>
@@ -97,4 +100,3 @@ const ContactForm = () => {
 };
 
 export default ContactForm;
-

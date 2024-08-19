@@ -10,7 +10,7 @@ function TicketModal({ onClose }) {
 
   useEffect(() => {
     // Fetch tickets
-    fetch('http://127.0.0.1:5555/tickets')
+    fetch('https://tiketi-tamasha-backend-1.onrender.com/tickets')
       .then((response) => response.json())
       .then((data) => {
         setTickets(data);
@@ -33,7 +33,6 @@ function TicketModal({ onClose }) {
   };
 
   const handleBookNow = () => {
-    // switch to PaymentModal by hiding TicketModal
     setShowPaymentModal(true);
   };
 
@@ -77,7 +76,6 @@ function TicketModal({ onClose }) {
         </div>
       )}
 
-      {/* Render PaymentModal if showPaymentModal is true */}
       {showPaymentModal && (
         <PaymentModal
           ticket={selectedTicket}

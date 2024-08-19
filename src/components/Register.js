@@ -38,10 +38,13 @@ function Register() {
     formData.append('role', role);
 
     try {
-      const response = await fetch('http://127.0.0.1:5555/register', {
-        method: 'POST',
-        body: formData,
-      });
+      const response = await fetch(
+        'https://tiketi-tamasha-backend-1.onrender.com/register',
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -74,14 +77,17 @@ function Register() {
       const otpToken = localStorage.getItem('otpToken');
       console.log('OTP Token:', otpToken);
 
-      const response = await fetch('http://127.0.0.1:5555/verify-otp', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${otpToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, otp }),
-      });
+      const response = await fetch(
+        'https://tiketi-tamasha-backend-1.onrender.com/verify-otp',
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${otpToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, otp }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -117,12 +123,11 @@ function Register() {
         alt="ticket"
         className="ticket"
         onClick={handleTicketClick}
-        style={{ cursor: 'pointer' }} 
+        style={{ cursor: 'pointer' }}
       />
       <form
         onSubmit={isOtpSent ? handleOtpSubmit : handleSubmit}
-        className="register-form"
-      >
+        className="register-form">
         <h3>{isOtpSent ? 'Verify OTP' : 'Create Account'}</h3>
 
         {!isOtpSent ? (
@@ -169,8 +174,7 @@ function Register() {
                 name="role"
                 value={role}
                 onChange={handleChange}
-                required
-              >
+                required>
                 <option value="event_organizer">Event Organizer</option>
                 <option value="customer">Attendee</option>
               </select>

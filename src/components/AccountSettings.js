@@ -19,28 +19,31 @@ function AccountSettings() {
             return;
         }
 
-        fetch('http://localhost:5555/users/change-password', {
+        fetch(
+          'http://https://tiketi-tamasha-backend-1.onrender.com/users/change-password',
+          {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                currentPassword,
-                newPassword,
+              currentPassword,
+              newPassword,
             }),
-        })
-        .then((response) => response.json())
-        .then((data) => {
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
             if (data.success) {
-                alert("Password changed successfully."); // resets form fields
-                setCurrentPassword('');
-                setNewPassword('');
-                setConfirmPassword('');
+              alert('Password changed successfully.'); // resets form fields
+              setCurrentPassword('');
+              setNewPassword('');
+              setConfirmPassword('');
             } else {
-                alert(data.message);
+              alert(data.message);
             }
-        })
-        .catch((error) => console.error('Error changing password:', error));
+          })
+          .catch((error) => console.error('Error changing password:', error));
     };
 
     const handleEmailChange = (e) => {

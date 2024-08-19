@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types'; // Import PropTypes
+import PropTypes from 'prop-types';
 
 function AttendeeList({ attendees }) {
   if (attendees.length === 0) {

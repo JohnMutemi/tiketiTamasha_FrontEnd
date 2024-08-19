@@ -9,7 +9,7 @@ function AccountDetails() {
   const [currentView, setCurrentView] = useState('details');
 
   useEffect(() => {
-    fetch('http://localhost:5555/users')
+    fetch('https://tiketi-tamasha-backend-1.onrender.com/users')
       .then((response) => response.json())
       .then((data) => setUserDetails(data))
       .catch((error) => console.error('Error fetching user details:', error));

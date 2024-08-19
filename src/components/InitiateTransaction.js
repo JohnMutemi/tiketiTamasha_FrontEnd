@@ -52,7 +52,7 @@ function InitiateTransaction({ ticketPrice, selectedTicketId }) {
 
     try {
       const response = await fetch(
-        'http://127.0.0.1:5555/initiate-transaction',
+        'https://tiketi-tamasha-backend-1.onrender.com/initiate-transaction',
         {
           method: 'POST',
           headers: {
@@ -68,10 +68,10 @@ function InitiateTransaction({ ticketPrice, selectedTicketId }) {
           'Transaction initiated successfully. Please check your phone.'
         );
 
-        // Set a timeout to refresh the page after 5 seconds
+        // Set a timeout to refresh the page after 3 seconds
         setTimeout(() => {
           window.location.reload(); // Refresh the page
-        }, 3000); // 5 seconds delay
+        }, 3000); // 3 seconds delay
       } else {
         setError(data.error || 'Failed to initiate transaction.');
       }

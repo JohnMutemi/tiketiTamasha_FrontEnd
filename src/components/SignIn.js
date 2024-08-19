@@ -19,7 +19,7 @@ function SignIn() {
     formData.append('username', username);
     formData.append('password', password);
 
-    fetch('http://127.0.0.1:5555/login', {
+    fetch('https://tiketi-tamasha-backend-1.onrender.com/login', {
       method: 'POST',
       body: formData,
     })
@@ -62,7 +62,7 @@ function SignIn() {
           alt="ticket"
           className="ticket"
           onClick={handleTicketClick}
-          style={{ cursor: 'pointer' }} // Makes the cursor a pointer when hovering over the ticket
+          style={{ cursor: 'pointer' }}
         />
         <h3>Login to Tiketi Tamasha</h3>
         <div className="input-group">

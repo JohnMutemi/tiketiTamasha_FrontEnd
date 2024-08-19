@@ -20,11 +20,14 @@ function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const eventsResponse = await fetch('http://127.0.0.1:5555/events', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const eventsResponse = await fetch(
+          'https://tiketi-tamasha-backend-1.onrender.com/events',
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!eventsResponse.ok) {
           throw new Error(`HTTP error! Status: ${eventsResponse.status}`);
@@ -39,7 +42,7 @@ function Home() {
         }
 
         const categoriesResponse = await fetch(
-          'http://127.0.0.1:5555/categories',
+          'https://tiketi-tamasha-backend-1.onrender.com/categories',
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -50,7 +53,7 @@ function Home() {
         if (!categoriesResponse.ok) {
           throw new Error(`HTTP error! Status: ${categoriesResponse.status}`);
         }
-        
+
         const categoriesData = await categoriesResponse.json();
         setCategories(categoriesData);
       } catch (error) {

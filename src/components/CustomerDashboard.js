@@ -39,7 +39,7 @@ function CustomerDashboard() {
   const fetchPurchasedTickets = useCallback(async () => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:5555/tickets?user_id=${user.user_id}`,
+        `https://tiketi-tamasha-backend-1.onrender.com/tickets?user_id=${user.user_id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -65,7 +65,9 @@ function CustomerDashboard() {
   const fetchEvents = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://127.0.0.1:5555/events');
+      const response = await fetch(
+        'https://tiketi-tamasha-backend-1.onrender.com/events'
+      );
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

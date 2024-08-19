@@ -18,11 +18,14 @@ const CategoryManagement = () => {
     const fetchCategories = async () => {
       setLoading(true);
       try {
-        const response = await fetch('http://127.0.0.1:5555/categories', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          'https://tiketi-tamasha-backend-1.onrender.com/categories',
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error('Failed to fetch categories');
@@ -66,8 +69,8 @@ const CategoryManagement = () => {
 
       const method = editingCategory ? 'PUT' : 'POST';
       const url = editingCategory
-        ? `http://127.0.0.1:5555/categories/${editingCategory}`
-        : 'http://127.0.0.1:5555/categories';
+        ? `https://tiketi-tamasha-backend-1.onrender.com/categories/${editingCategory}`
+        : 'https://tiketi-tamasha-backend-1.onrender.com/categories';
 
       const response = await fetch(url, {
         method: method,
@@ -110,7 +113,7 @@ const CategoryManagement = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://127.0.0.1:5555/categories/${categoryId}`,
+        `https://tiketi-tamasha-backend-1.onrender.com/categories/${categoryId}`,
         {
           method: 'DELETE',
           headers: {
@@ -171,7 +174,7 @@ const CategoryManagement = () => {
       {loading && <p>Loading...</p>}
       {isFormVisible && (
         <form
-          onSubmit={handleSaveCategory} // Fixed function reference
+          onSubmit={handleSaveCategory} 
           className="category-form">
           <input
             type="text"

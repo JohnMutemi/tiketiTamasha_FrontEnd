@@ -19,18 +19,21 @@ const UserManagement = () => {
     const fetchUsers = async () => {
       setLoading(true);
       try {
-        const response = await fetch('http://127.0.0.1:5555/users', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-    
+        const response = await fetch(
+          'https://tiketi-tamasha-backend-1.onrender.com/users',
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
         if (!response.ok) {
           throw new Error('Failed to fetch users');
         }
-    
+
         const data = await response.json();
-        console.log('Fetched users:', data); // Debugging statement
+        console.log('Fetched users:', data); 
 
         // Check if data.users exists and is an array
         if (Array.isArray(data.users)) {
@@ -52,7 +55,6 @@ const UserManagement = () => {
         setLoading(false);
       }
     };
-    
 
     if (token) {
       fetchUsers();
@@ -73,7 +75,7 @@ const UserManagement = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://127.0.0.1:5555/users/${editingUser}`,
+        `https://tiketi-tamasha-backend-1.onrender.com/users/${editingUser}`,
         {
           method: 'PATCH',
           headers: {
@@ -107,12 +109,15 @@ const UserManagement = () => {
   const handleDeleteUser = async (userId) => {
     setLoading(true);
     try {
-      const response = await fetch(`http://127.0.0.1:5555/users/${userId}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `https://tiketi-tamasha-backend-1.onrender.com/users/${userId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error('Failed to delete user');
