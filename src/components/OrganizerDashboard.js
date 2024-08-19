@@ -56,10 +56,10 @@ const OrganizerDashboard = ({ eventId }) => {
   }, [token]); // Note: token is a dependency here
 
   useEffect(() => {
-    if (user && token) {
-      fetchEvents();
+    if (eventId && token) {
+      fetchEventAttendees(eventId);
     }
-  }, [user, token, fetchEvents]); // Include fetchEvents in the dependency array
+  }, [eventId, token, fetchEventAttendees]);
 
   const getCoordinates = async (location) => {
     try {
@@ -294,15 +294,20 @@ const OrganizerDashboard = ({ eventId }) => {
       <section className="dashboard-hero">
         <div className="my-events">
           <h2>
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                setFormVisible((prev) => !prev);
+            <button
+              type="button"
+              onClick={() => setFormVisible((prev) => !prev)}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'blue',
+                textDecoration: 'underline',
+                cursor: 'pointer',
               }}>
               {isFormVisible ? 'Cancel' : 'Add New Event'}
-            </a>
+            </button>
           </h2>
+
           <h3> My Hosted Events</h3>
           {loading && <p>Loading...</p>}
           {error && <p>{error}</p>}

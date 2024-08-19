@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useUser } from './UserContext';
-import { useNavigate } from 'react-router-dom';
 import './InitiateTransaction.css';
 
 function InitiateTransaction({ ticketPrice, selectedTicketId }) {

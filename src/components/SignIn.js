@@ -7,7 +7,6 @@ import ticket from './ticket_11785924.png';
 function SignIn() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [stayLoggedIn, setStayLoggedIn] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
@@ -19,7 +18,6 @@ function SignIn() {
     const formData = new FormData();
     formData.append('username', username);
     formData.append('password', password);
-    formData.append('stayLoggedIn', stayLoggedIn.toString());
 
     fetch('http://127.0.0.1:5555/login', {
       method: 'POST',
@@ -35,7 +33,7 @@ function SignIn() {
       })
       .then((userData) => {
         const { access_token, ...userInfo } = userData;
-        login(userInfo, access_token, stayLoggedIn);
+        login(userInfo, access_token);
         setError('');
         setSuccess('Login successful!');
         const dashboardPath =
@@ -89,15 +87,6 @@ function SignIn() {
             required
           />
         </div>
-        {/* <div className="checkbox-group">
-          <input
-            id="stayLoggedIn"
-            type="checkbox"
-            checked={stayLoggedIn}
-            onChange={(e) => setStayLoggedIn(e.target.checked)}
-          />
-          <label htmlFor="stayLoggedIn">Stay logged in</label>
-        </div> */}
         <button type="submit" className="signin-button">
           Login
         </button>

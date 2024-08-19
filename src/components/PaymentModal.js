@@ -4,8 +4,6 @@ import InitiateTransaction from './InitiateTransaction';
 
 function PaymentModal({ onClose, ticket }) {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
   const [showInitiateTransaction, setShowInitiateTransaction] = useState(false);
 
   const handlePaymentMethodChange = (event) => {
@@ -19,24 +17,24 @@ function PaymentModal({ onClose, ticket }) {
     }
 
     if (selectedPaymentMethod === 'mpesa') {
-      setShowInitiateTransaction(true);  
+      setShowInitiateTransaction(true);
     } else {
       console.log(`Processing payment via ${selectedPaymentMethod}`);
     }
   };
 
   const handleBackToPayment = () => {
-    setShowInitiateTransaction(false); 
+    setShowInitiateTransaction(false);
   };
 
   return (
     <div className="modal-overlay">
       <div className="modal-container">
         {showInitiateTransaction ? (
-          <InitiateTransaction 
-            ticketPrice={ticket.price} 
-            onClose={onClose} 
-            onBack={handleBackToPayment} 
+          <InitiateTransaction
+            ticketPrice={ticket.price}
+            onClose={onClose}
+            onBack={handleBackToPayment}
           />
         ) : (
           <>
@@ -62,17 +60,13 @@ function PaymentModal({ onClose, ticket }) {
               </select>
             </div>
             <div className="button-container">
-              <button
-                className="pay-button"
-                onClick={handlePayNow}
-                disabled={loading}>
-                {loading ? 'Processing...' : 'Pay Now'}
+              <button className="pay-button" onClick={handlePayNow}>
+                Pay Now
               </button>
               <button className="close-button" onClick={onClose}>
                 Close
               </button>
             </div>
-            {error && <p className="error-message">{error}</p>}
           </>
         )}
       </div>
