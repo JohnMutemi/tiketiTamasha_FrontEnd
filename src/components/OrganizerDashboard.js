@@ -221,10 +221,6 @@ const OrganizerDashboard = ({ eventId }) => {
     setAttendees([]);
     setMessage('');
 
-    const handleViewEventDetails = async (eventId) => {
-      setSelectedEvent(eventId);
-      fetchEventAttendees(eventId);
-    };
     try {
       const response = await fetch(
         `http://127.0.0.1:5555/events/${eventId}/attendees`,
@@ -273,6 +269,10 @@ const OrganizerDashboard = ({ eventId }) => {
     });
     setFormVisible(false);
     setEditingEvent(null);
+  };
+  const handleViewEventDetails = async (eventId) => {
+    setSelectedEvent(eventId);
+    fetchEventAttendees(eventId);
   };
 
   return (
