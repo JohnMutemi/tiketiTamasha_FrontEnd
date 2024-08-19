@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types'; // Import PropTypes
 
 function AttendeeList({ attendees }) {
   if (attendees.length === 0) {
@@ -30,5 +30,17 @@ function AttendeeList({ attendees }) {
     </div>
   );
 }
+
+// Add PropTypes validation
+AttendeeList.propTypes = {
+  attendees: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired,
+      ticket_type: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};
 
 export default AttendeeList;

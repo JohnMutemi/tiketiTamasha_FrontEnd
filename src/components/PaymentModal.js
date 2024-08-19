@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types'; // Import PropTypes
 import './payment.css';
 import InitiateTransaction from './InitiateTransaction';
 
@@ -73,5 +74,14 @@ function PaymentModal({ onClose, ticket }) {
     </div>
   );
 }
+
+// Define prop types
+PaymentModal.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  ticket: PropTypes.shape({
+    price: PropTypes.number.isRequired,
+    ticket_type: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export default PaymentModal;
