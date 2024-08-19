@@ -53,7 +53,46 @@ const OrganizerDashboard = ({ eventId }) => {
     } finally {
       setLoading(false);
     }
-  }, [token]); // Note: token is a dependency here
+  }, [token]);
+
+  const fetchEventAttendees = useCallback(
+    async (eventId) => {
+      setLoading(true);
+      setAttendees([]);
+      setMessage('');
+
+      try {
+        const response = await fetch(
+          `http://127.0.0.1:5555/events/${eventId}/attendees`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch attendees');
+        }
+
+        const data = await response.json();
+        setAttendees(data);
+
+        if (data.attendees && data.attendees.length === 0) {
+          setMessage('Attendees not found.');
+        }
+      } catch (error) {
+        setMessage('Error fetching attendees');
+      } finally {
+        setLoading(false);
+      }
+    },
+    [token]
+  );
+
+  useEffect(() => {
+    fetchEvents();
+  }, [fetchEvents]);
 
   useEffect(() => {
     if (eventId && token) {
@@ -216,44 +255,6 @@ const OrganizerDashboard = ({ eventId }) => {
     setFormVisible(true);
   };
 
-  const fetchEventAttendees = async (eventId) => {
-    setLoading(true);
-    setAttendees([]);
-    setMessage('');
-
-    try {
-      const response = await fetch(
-        `http://127.0.0.1:5555/events/${eventId}/attendees`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch attendees');
-      }
-
-      const data = await response.json();
-      setAttendees(data);
-
-      if (data.attendees && data.attendees.length === 0) {
-        setMessage('Attendees not found.');
-      }
-    } catch (error) {
-      setMessage('Error fetching attendees');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (eventId && token) {
-      fetchEventAttendees(eventId);
-    }
-  }, [eventId, token]);
-
   const clearForm = () => {
     setFormData({
       title: '',
@@ -270,6 +271,7 @@ const OrganizerDashboard = ({ eventId }) => {
     setFormVisible(false);
     setEditingEvent(null);
   };
+
   const handleViewEventDetails = async (eventId) => {
     setSelectedEvent(eventId);
     fetchEventAttendees(eventId);
