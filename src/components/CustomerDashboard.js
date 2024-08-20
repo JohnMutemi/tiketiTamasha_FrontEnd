@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useUser } from './UserContext';
 import TicketModal from './TicketModal';
 import EventList from './EventList';
@@ -19,6 +19,26 @@ function CustomerDashboard() {
   const [error, setError] = useState('');
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
 
+  const fetchPurchasedTickets = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `https://tiketi-tamasha-backend-1.onrender.com/tickets?user_id=${user.user_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error('Failed to fetch tickets.');
+      }
+      const data = await response.json();
+      setPurchasedTickets(data);
+    } catch (error) {
+      console.error('Error fetching purchased tickets:', error);
+    }
+  }, [user.user_id, token]);
+
   useEffect(() => {
     if (user && token) {
       fetchPurchasedTickets();
@@ -37,26 +57,6 @@ function CustomerDashboard() {
     );
     setFilteredEvents(filtered);
   }, [searchTerm, events]);
-
-  const fetchPurchasedTickets = async () => {
-    try {
-      const response = await fetch(
-        `https://tiketi-tamasha-backend-1.onrender.com/tickets?user_id=${user.user_id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (!response.ok) {
-        throw new Error('Failed to fetch tickets.');
-      }
-      const data = await response.json();
-      setPurchasedTickets(data);
-    } catch (error) {
-      console.error('Error fetching purchased tickets:', error);
-    }
-  };
 
   const fetchEvents = async () => {
     setLoading(true);
