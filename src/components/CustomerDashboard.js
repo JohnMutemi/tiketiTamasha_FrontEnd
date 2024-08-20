@@ -85,7 +85,9 @@ function CustomerDashboard() {
     setIsTicketModalOpen(false);
   };
 
-  const handleToggleEvents = () => {
+  const handleToggleEvents = (e) => {
+    e.preventDefault(); // Prevent default anchor behavior
+    console.log('Toggle Events Clicked. Current visibility:', areEventsVisible);
     setAreEventsVisible(!areEventsVisible);
   };
 

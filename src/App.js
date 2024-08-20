@@ -10,6 +10,7 @@ import ContactForm from './components/ContactForm';
 import AdminDashboard from './components/AdminDashboard';
 import InitiateTransaction from './components/InitiateTransaction';
 import { UserProvider } from './components/UserContext';
+import TicketManagement from './components/TicketManagement';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/organizer-dashboard" element={<OrganizerDashboard />} />
           <Route path="/customer-dashboard" element={<CustomerDashboard />} />
           <Route path="/contact-us" element={<ContactForm />} />
+          <Route path="/tickets" component={TicketManagement} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route
             path="/initiate-transaction"

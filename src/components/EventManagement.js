@@ -40,14 +40,11 @@ const EventManagement = () => {
       setLoading(true);
       console.log('Fetching events...');
       try {
-        const response = await fetch(
-          'https://tiketi-tamasha-backend-1.onrender.com/events',
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch('http://127.0.0.1:5555/events', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!response.ok) {
           throw new Error('Failed to fetch events');
@@ -121,28 +118,26 @@ const EventManagement = () => {
     console.log('Adding event:', formData);
     setLoading(true);
     try {
-      const response = await fetch(
-        'https://tiketi-tamasha-backend-1.onrender.com/events',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            title: formData.title,
-            description: formData.description,
-            location: formData.location,
-            start_time: formData.startTime,
-            end_time: formData.endTime,
-            image_url: formData.imageUrl,
-            total_tickets: formData.totalTickets,
-            remaining_tickets: formData.remainingTickets,
-            latitude: formData.latitude,
-            longitude: formData.longitude,
-          }),
-        }
-      );
+      const response = await fetch('http://127.0.0.1:5555/events', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          title: formData.title,
+          description: formData.description,
+          location: formData.location,
+          start_time: formData.startTime,
+          end_time: formData.endTime,
+          image_url: formData.imageUrl,
+          total_tickets: formData.totalTickets,
+          remaining_tickets: formData.remainingTickets,
+          // ticket_Price: formData.price,
+          latitude: formData.latitude,
+          longitude: formData.longitude,
+        }),
+      });
 
       if (!response.ok) {
         throw new Error('Failed to add event');
@@ -168,7 +163,7 @@ const EventManagement = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `https://tiketi-tamasha-backend-1.onrender.com/events/${editingEvent}`,
+        `http://127.0.0.1:5555/events/${editingEvent}`,
         {
           method: 'PATCH',
           headers: {
@@ -216,15 +211,12 @@ const EventManagement = () => {
     console.log(`Deleting event with ID: ${eventId}`);
     setLoading(true);
     try {
-      const response = await fetch(
-        `https://tiketi-tamasha-backend-1.onrender.com/events/${eventId}`,
-        {
-          method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`http://127.0.0.1:5555/events/${eventId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!response.ok) {
         throw new Error('Failed to delete event');
@@ -366,7 +358,7 @@ const EventManagement = () => {
             name="price"
             value={formData.price}
             onChange={handleInputChange}
-            placeholder="Ticket Price"
+            placeholder="ticket Price"
             required
           />
           <button type="submit">

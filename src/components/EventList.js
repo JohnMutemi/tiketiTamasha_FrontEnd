@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import TicketModal from './TicketModal';
-import Map from './Map';
+import Map from './Map'; // Import the Map component
 import { useUser } from './UserContext';
 import './EventList.css';
 
@@ -10,7 +10,7 @@ function EventList({ events = [] }) {
   const [selectedEventTickets, setSelectedEventTickets] = useState([]);
   const [selectedEventLocation, setSelectedEventLocation] = useState(null);
   const { user, setSelectedTicket } = useUser();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Initialize useNavigate
 
   // Function to fetch tickets for a specific event
   const fetchTickets = (eventId) => {
@@ -29,7 +29,7 @@ function EventList({ events = [] }) {
   // Open the modal and set the selected event's tickets
   const handlePurchaseClick = (eventId) => {
     if (user) {
-      console.log(`Purchase button clicked for event ID: ${eventId}`);
+      console.log(`Purchase button clicked for event ID: ${eventId}`); // Print statement for debugging
       fetchTickets(eventId);
       const selectedTicket = { eventId, tickets: selectedEventTickets };
       console.log('Selected ticket:', selectedTicket);

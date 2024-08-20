@@ -1,0 +1,145 @@
+/* TicketManagement.css */
+
+/* Container for the Ticket Management component */
+.ticket-management {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+/* Header for the Ticket Management section */
+.ticket-management h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+/* Form styling */
+.ticket-management form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.ticket-management form input,
+.ticket-management form button,
+.ticket-management form select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.ticket-management form input[type='number'] {
+  -moz-appearance: textfield; /* Firefox */
+  -webkit-appearance: none; /* Chrome, Safari, and Opera */
+  appearance: none; /* Standard */
+}
+
+.ticket-management form input[type='number']::-webkit-outer-spin-button,
+.ticket-management form input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none; /* Chrome, Safari, and Opera */
+  margin: 0;
+}
+
+.ticket-management form input[type='number']::-webkit-outer-spin-button,
+.ticket-management form input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Submit button styling */
+.ticket-management form button[type='submit'] {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.ticket-management form button[type='submit']:hover {
+  background-color: #0056b3;
+}
+
+/* Cancel button styling */
+.ticket-management form button[type='button'] {
+  background-color: #6c757d;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.ticket-management form button[type='button']:hover {
+  background-color: #5a6268;
+}
+
+/* Table styling */
+.ticket-management table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.ticket-management table,
+.ticket-management th,
+.ticket-management td {
+  border: 1px solid #ddd;
+}
+
+.ticket-management th,
+.ticket-management td {
+  padding: 10px;
+  text-align: left;
+}
+
+.ticket-management th {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.ticket-management tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Actions column button styling */
+.ticket-management .action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.ticket-management .action-buttons button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.ticket-management .action-buttons .edit-btn {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.ticket-management .action-buttons .edit-btn:hover {
+  background-color: #218838;
+}
+
+.ticket-management .action-buttons .delete-btn {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.ticket-management .action-buttons .delete-btn:hover {
+  background-color: #c82333;
+}
+
+.ticket-management .action-buttons .manage-btn {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.ticket-management .action-buttons .manage-btn:hover {
+  background-color: #0056b3;
+}

@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useUser } from './UserContext';
 import Logout from './Logout';
 import NavBar from './NavBar';
@@ -28,17 +28,20 @@ const OrganizerDashboard = ({ eventId }) => {
   const [isFormVisible, setFormVisible] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
-  const fetchEvents = useCallback(async () => {
+  useEffect(() => {
+    if (user && token) {
+      fetchEvents();
+    }
+  }, [user, token]);
+
+  const fetchEvents = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        'https://tiketi-tamasha-backend-1.onrender.com/organizer-events',
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch('http://127.0.0.1:5555/organizer-events', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -56,52 +59,7 @@ const OrganizerDashboard = ({ eventId }) => {
     } finally {
       setLoading(false);
     }
-  }, [token]);
-
-  const fetchEventAttendees = useCallback(
-    async (eventId) => {
-      setLoading(true);
-      setAttendees([]);
-      setMessage('');
-
-      try {
-        const response = await fetch(
-          `https://tiketi-tamasha-backend-1.onrender.com/events/${eventId}/attendees`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch attendees');
-        }
-
-        const data = await response.json();
-        setAttendees(data);
-
-        if (data.attendees && data.attendees.length === 0) {
-          setMessage('Attendees not found.');
-        }
-      } catch (error) {
-        setMessage('Error fetching attendees');
-      } finally {
-        setLoading(false);
-      }
-    },
-    [token]
-  );
-
-  useEffect(() => {
-    fetchEvents();
-  }, [fetchEvents]);
-
-  useEffect(() => {
-    if (eventId && token) {
-      fetchEventAttendees(eventId);
-    }
-  }, [eventId, token, fetchEventAttendees]);
+  };
 
   const getCoordinates = async (location) => {
     try {
@@ -146,26 +104,23 @@ const OrganizerDashboard = ({ eventId }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch(
-        'https://tiketi-tamasha-backend-1.onrender.com/organizer-events',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            title: formData.title,
-            description: formData.description,
-            location: formData.location,
-            start_time: formData.startTime,
-            end_time: formData.endTime,
-            image_url: formData.imageUrl,
-            total_tickets: formData.totalTickets,
-            remaining_tickets: formData.remainingTickets,
-          }),
-        }
-      );
+      const response = await fetch('http://127.0.0.1:5555/organizer-events', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          title: formData.title,
+          description: formData.description,
+          location: formData.location,
+          start_time: formData.startTime,
+          end_time: formData.endTime,
+          image_url: formData.imageUrl,
+          total_tickets: formData.totalTickets,
+          remaining_tickets: formData.remainingTickets,
+        }),
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -188,7 +143,7 @@ const OrganizerDashboard = ({ eventId }) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `https://tiketi-tamasha-backend-1.onrender.com/organizer-events/${editingEvent}`,
+        `http://127.0.0.1:5555/organizer-events/${editingEvent}`,
         {
           method: 'PATCH',
           headers: {
@@ -222,7 +177,7 @@ const OrganizerDashboard = ({ eventId }) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `https://tiketi-tamasha-backend-1.onrender.com/organizer-events/${eventId}`,
+        `http://127.0.0.1:5555/organizer-events/${eventId}`,
         {
           method: 'DELETE',
           headers: {
@@ -261,6 +216,49 @@ const OrganizerDashboard = ({ eventId }) => {
     setFormVisible(true);
   };
 
+  const handleViewEventDetails = async (eventId) => {
+    setSelectedEvent(eventId);
+    fetchEventAttendees(eventId);
+  };
+
+  const fetchEventAttendees = async (eventId) => {
+    setLoading(true);
+    setAttendees([]);
+    setMessage('');
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:5555/events/${eventId}/attendees`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch attendees');
+      }
+
+      const data = await response.json();
+      setAttendees(data);
+
+      if (data.attendees && data.attendees.length === 0) {
+        setMessage('Attendees not found.');
+      }
+    } catch (error) {
+      setMessage('Error fetching attendees');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (eventId && token) {
+      fetchEventAttendees(eventId);
+    }
+  }, [eventId, token]);
+
   const clearForm = () => {
     setFormData({
       title: '',
@@ -278,14 +276,9 @@ const OrganizerDashboard = ({ eventId }) => {
     setEditingEvent(null);
   };
 
-  const handleViewEventDetails = async (eventId) => {
-    setSelectedEvent(eventId);
-    fetchEventAttendees(eventId);
-  };
-
   return (
     <div className="organizer-dashboard">
-      <NavBar showLogin={false} showSearchbar={false} />
+      <NavBar showLogin={false} />
 
       <header className="dashboard-header">
         <h1>Welcome, {user ? user.username : 'Guest'}</h1>
@@ -301,20 +294,15 @@ const OrganizerDashboard = ({ eventId }) => {
       <section className="dashboard-hero">
         <div className="my-events">
           <h2>
-            <button
-              type="button"
-              onClick={() => setFormVisible((prev) => !prev)}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: 'blue',
-                textDecoration: 'underline',
-                cursor: 'pointer',
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                setFormVisible((prev) => !prev);
               }}>
               {isFormVisible ? 'Cancel' : 'Add New Event'}
-            </button>
+            </a>
           </h2>
-
           <h3> My Hosted Events</h3>
           {loading && <p>Loading...</p>}
           {error && <p>{error}</p>}
