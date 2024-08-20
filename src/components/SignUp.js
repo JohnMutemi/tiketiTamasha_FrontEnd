@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Register.css';
+import './SignUp.css';
 import { useUser } from './UserContext';
 import ticket from './ticket_11785924.png';
 
-function Register() {
+function SignUp() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -213,4 +213,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default SignUp;

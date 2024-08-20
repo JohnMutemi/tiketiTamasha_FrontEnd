@@ -9,19 +9,39 @@ function TicketModal({ onClose }) {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   useEffect(() => {
-    // Fetch tickets
-    fetch('https://tiketi-tamasha-backend-1.onrender.com/tickets')
-      .then((response) => response.json())
-      .then((data) => {
-        setTickets(data);
+    const fetchTickets = async () => {
+      try {
+        const response = await fetch(
+          'https://tiketi-tamasha-backend-1.onrender.com/tickets'
+        );
+        if (!response.ok) {
+          throw new Error('Failed to fetch tickets');
+        }
+        const data = await response.json();
 
-        // Extract unique ticket types
-        const ticketTypes = new Set(data.map((ticket) => ticket.ticket_type));
-        setUniqueTicketTypes([...ticketTypes]);
+        if (Array.isArray(data)) {
+          console.log("Data before setting ticket - ",data)
+          setTickets(data);
 
-        // Set initial selected ticket
-        setSelectedTicket(data[0]);
-      });
+          // Extract unique ticket types
+          const ticketTypes = [
+            ...new Set(data.map((ticket) => ticket.ticket_type)),
+          ];
+          setUniqueTicketTypes(ticketTypes);
+
+          // Set initial selected ticket
+          if (data.length > 0) {
+            setSelectedTicket(data[0]);
+          }
+        } else {
+          console.error('Expected array but got:', typeof data);
+        }
+      } catch (error) {
+        console.error('Error fetching tickets:', error);
+      }
+    };
+
+    fetchTickets();
   }, []);
 
   const handleTicketChange = (event) => {

@@ -126,7 +126,7 @@ function Home() {
             platform ensures that booking tickets is quick, easy, and
             hassle-free.
           </p>
-          <a href="/register" className="get-started-button">
+          <a href="/sign-up" className="get-started-button">
             Get Started for Free
           </a>
         </div>

@@ -32,11 +32,14 @@ const OrganizerDashboard = ({ eventId }) => {
   const fetchEvents = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://127.0.0.1:5555/organizer-events', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        'https://tiketi-tamasha-backend-1.onrender.com/organizer-events',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -105,25 +108,28 @@ const OrganizerDashboard = ({ eventId }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch('http://127.0.0.1:5555/organizer-events', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          title: formData.title,
-          description: formData.description,
-          location: formData.location,
-          start_time: formData.startTime,
-          end_time: formData.endTime,
-          image_url: formData.imageUrl,
-          total_tickets: formData.totalTickets,
-          remaining_tickets: formData.remainingTickets,
-          latitude: formData.latitude,
-          longitude: formData.longitude,
-        }),
-      });
+      const response = await fetch(
+        'https://tiketi-tamasha-backend-1.onrender.com/organizer-events',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            title: formData.title,
+            description: formData.description,
+            location: formData.location,
+            start_time: formData.startTime,
+            end_time: formData.endTime,
+            image_url: formData.imageUrl,
+            total_tickets: formData.totalTickets,
+            remaining_tickets: formData.remainingTickets,
+            latitude: formData.latitude,
+            longitude: formData.longitude,
+          }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -146,7 +152,7 @@ const OrganizerDashboard = ({ eventId }) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://127.0.0.1:5555/organizer-events/${editingEvent}`,
+        `https://tiketi-tamasha-backend-1.onrender.com/organizer-events/${editingEvent}`,
         {
           method: 'PATCH',
           headers: {
@@ -180,7 +186,7 @@ const OrganizerDashboard = ({ eventId }) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://127.0.0.1:5555/organizer-events/${eventId}`,
+        `https://tiketi-tamasha-backend-1.onrender.com/organizer-events/${eventId}`,
         {
           method: 'DELETE',
           headers: {
@@ -234,7 +240,7 @@ const OrganizerDashboard = ({ eventId }) => {
 
       try {
         const response = await fetch(
-          `http://127.0.0.1:5555/events/${eventId}/attendees`,
+          `https://tiketi-tamasha-backend-1.onrender.com/events/${eventId}/attendees`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

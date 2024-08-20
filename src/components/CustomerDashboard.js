@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useUser } from './UserContext';
 import TicketModal from './TicketModal';
 import EventList from './EventList';
@@ -8,7 +8,7 @@ import CalendarComponent from './CalendarComponent';
 import './CustomerDashboard.css';
 
 function CustomerDashboard() {
-  const { user, token, selectedTicket } = useUser();
+  const { user, token, selectedTicket, logout } = useUser();
   const [purchasedTickets, setPurchasedTickets] = useState([]);
   const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
   const [areEventsVisible, setAreEventsVisible] = useState(false);
@@ -18,6 +18,12 @@ function CustomerDashboard() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
+
+  useEffect(() => {
+    if (user && token) {
+      fetchPurchasedTickets();
+    }
+  }, [user, token]);
 
   useEffect(() => {
     if (areEventsVisible) {
@@ -35,8 +41,7 @@ function CustomerDashboard() {
     }
   }, [searchTerm, events]);
 
-  // Define fetchPurchasedTickets with useCallback
-  const fetchPurchasedTickets = useCallback(async () => {
+  const fetchPurchasedTickets = async () => {
     try {
       const response = await fetch(
         `https://tiketi-tamasha-backend-1.onrender.com/tickets?user_id=${user.user_id}`,
@@ -54,13 +59,7 @@ function CustomerDashboard() {
     } catch (error) {
       console.error('Error fetching purchased tickets:', error);
     }
-  }, [user.user_id, token]); // Dependencies
-
-  useEffect(() => {
-    if (user && token) {
-      fetchPurchasedTickets();
-    }
-  }, [user, token, fetchPurchasedTickets]);
+  };
 
   const fetchEvents = async () => {
     setLoading(true);
@@ -81,13 +80,15 @@ function CustomerDashboard() {
     }
   };
 
+  const handleLogout = () => {
+    logout();
+  };
+
   const handleTicketModalClose = () => {
     setIsTicketModalOpen(false);
   };
 
-  const handleToggleEvents = (e) => {
-    e.preventDefault(); // Prevent default anchor behavior
-    console.log('Toggle Events Clicked. Current visibility:', areEventsVisible);
+  const handleToggleEvents = () => {
     setAreEventsVisible(!areEventsVisible);
   };
 
@@ -101,7 +102,7 @@ function CustomerDashboard() {
 
   return (
     <div className="customer-dashboard">
-      <NavBar showLogin={false} showSearchbar={false} />
+      <NavBar showLogin={false} />
       <header className="dashboard-header">
         <h1>Welcome, {user ? user.username : 'Guest'}</h1>
         <div className="profile-menu">
@@ -140,7 +141,7 @@ function CustomerDashboard() {
                         Add to calendar
                       </button>
                       <a
-                        href="/"
+                        href="#"
                         className="calendar-link"
                         onClick={handleToggleCalendar}>
                         <i className="fas fa-calendar-alt"></i>
@@ -159,7 +160,7 @@ function CustomerDashboard() {
 
         <div className="upcoming-events">
           <h2>
-            <a href="/" onClick={handleToggleEvents}>
+            <a href="#" onClick={handleToggleEvents}>
               Click here to Book a new Event
             </a>
           </h2>

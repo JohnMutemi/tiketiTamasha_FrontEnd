@@ -97,7 +97,7 @@ function SignIn() {
         </div>
         <div className="signup-link">
           <p>
-            New to Tiketi Tamasha? <a href="/register">Create account</a>
+            New to Tiketi Tamasha? <a href="/sign-up">Create account</a>
           </p>
         </div>
       </form>
