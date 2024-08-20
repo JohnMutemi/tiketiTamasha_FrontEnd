@@ -267,3 +267,16 @@ form button:disabled {
   margin-top: 4px;
   padding: 4px;
 }
+.link-button {
+  background: none;
+  border: none;
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+.link-button:hover {
+  color: darkblue;
+}

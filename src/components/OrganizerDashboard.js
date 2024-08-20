@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useUser } from './UserContext';
 import Logout from './Logout';
 import NavBar from './NavBar';
@@ -28,13 +28,8 @@ const OrganizerDashboard = ({ eventId }) => {
   const [isFormVisible, setFormVisible] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
-  useEffect(() => {
-    if (user && token) {
-      fetchEvents();
-    }
-  }, [user, token]);
-
-  const fetchEvents = async () => {
+  // Fetch events with useCallback to handle dependency issues
+  const fetchEvents = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch('http://127.0.0.1:5555/organizer-events', {
@@ -59,7 +54,13 @@ const OrganizerDashboard = ({ eventId }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    if (user && token) {
+      fetchEvents();
+    }
+  }, [user, token, fetchEvents]);
 
   const getCoordinates = async (location) => {
     try {
@@ -119,6 +120,8 @@ const OrganizerDashboard = ({ eventId }) => {
           image_url: formData.imageUrl,
           total_tickets: formData.totalTickets,
           remaining_tickets: formData.remainingTickets,
+          latitude: formData.latitude,
+          longitude: formData.longitude,
         }),
       });
 
@@ -216,48 +219,53 @@ const OrganizerDashboard = ({ eventId }) => {
     setFormVisible(true);
   };
 
-  const handleViewEventDetails = async (eventId) => {
+  const handleViewAttendees = (eventId) => {
+    console.log(`View Attendees clicked for event ID: ${eventId}`);
     setSelectedEvent(eventId);
     fetchEventAttendees(eventId);
   };
 
-  const fetchEventAttendees = async (eventId) => {
-    setLoading(true);
-    setAttendees([]);
-    setMessage('');
+  // Fetch event attendees with useCallback to handle dependency issues
+  const fetchEventAttendees = useCallback(
+    async (eventId) => {
+      setLoading(true);
+      setAttendees([]);
+      setMessage('');
 
-    try {
-      const response = await fetch(
-        `http://127.0.0.1:5555/events/${eventId}/attendees`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      try {
+        const response = await fetch(
+          `http://127.0.0.1:5555/events/${eventId}/attendees`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch attendees');
         }
-      );
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch attendees');
+        const data = await response.json();
+        setAttendees(data);
+
+        if (data.attendees && data.attendees.length === 0) {
+          setMessage('Attendees not found.');
+        }
+      } catch (error) {
+        setMessage('Error fetching attendees');
+      } finally {
+        setLoading(false);
       }
-
-      const data = await response.json();
-      setAttendees(data);
-
-      if (data.attendees && data.attendees.length === 0) {
-        setMessage('Attendees not found.');
-      }
-    } catch (error) {
-      setMessage('Error fetching attendees');
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [token]
+  );
 
   useEffect(() => {
     if (eventId && token) {
       fetchEventAttendees(eventId);
     }
-  }, [eventId, token]);
+  }, [eventId, token, fetchEventAttendees]);
 
   const clearForm = () => {
     setFormData({
@@ -294,15 +302,16 @@ const OrganizerDashboard = ({ eventId }) => {
       <section className="dashboard-hero">
         <div className="my-events">
           <h2>
-            <a
-              href="#"
+            <button
               onClick={(e) => {
                 e.preventDefault();
                 setFormVisible((prev) => !prev);
-              }}>
+              }}
+              className="link-button">
               {isFormVisible ? 'Cancel' : 'Add New Event'}
-            </a>
+            </button>
           </h2>
+
           <h3> My Hosted Events</h3>
           {loading && <p>Loading...</p>}
           {error && <p>{error}</p>}
@@ -318,7 +327,6 @@ const OrganizerDashboard = ({ eventId }) => {
                     name="title"
                     value={formData.title}
                     onChange={handleInputChange}
-                    placeholder="Event Title"
                     required
                   />
                 </label>
@@ -328,7 +336,6 @@ const OrganizerDashboard = ({ eventId }) => {
                     name="description"
                     value={formData.description}
                     onChange={handleInputChange}
-                    placeholder="Event Description"
                     required
                   />
                 </label>
@@ -339,7 +346,6 @@ const OrganizerDashboard = ({ eventId }) => {
                     name="location"
                     value={formData.location}
                     onChange={handleInputChange}
-                    placeholder="Event Location"
                     required
                   />
                 </label>
@@ -370,7 +376,7 @@ const OrganizerDashboard = ({ eventId }) => {
                     name="imageUrl"
                     value={formData.imageUrl}
                     onChange={handleInputChange}
-                    placeholder="Image URL"
+                    required
                   />
                 </label>
                 <label>
@@ -380,7 +386,6 @@ const OrganizerDashboard = ({ eventId }) => {
                     name="totalTickets"
                     value={formData.totalTickets}
                     onChange={handleInputChange}
-                    placeholder="Total Tickets"
                     required
                   />
                 </label>
@@ -391,80 +396,69 @@ const OrganizerDashboard = ({ eventId }) => {
                     name="remainingTickets"
                     value={formData.remainingTickets}
                     onChange={handleInputChange}
-                    placeholder="Remaining Tickets"
                     required
                   />
                 </label>
-                <input
-                  type="hidden"
-                  name="latitude"
-                  value={formData.latitude}
-                />
-                <input
-                  type="hidden"
-                  name="longitude"
-                  value={formData.longitude}
-                />
                 <button type="submit">
                   {editingEvent ? 'Update Event' : 'Add Event'}
                 </button>
-                <button
-                  type="button"
-                  onClick={clearForm}
-                  style={{ marginLeft: '10px' }}>
+                <button type="button" onClick={clearForm}>
                   Cancel
                 </button>
               </form>
             </div>
           )}
-
-          {events.length > 0 && (
-            <table>
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Description</th>
-                  <th>Location</th>
-                  <th>Start Time</th>
-                  <th>End Time</th>
-                  <th>Actions</th>
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Location</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Total Tickets</th>
+                <th>Remaining Tickets</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {events.map((event) => (
+                <tr key={event.id}>
+                  <td>{event.title}</td>
+                  <td>{event.description}</td>
+                  <td>{event.location}</td>
+                  <td>{event.start_time}</td>
+                  <td>{event.end_time}</td>
+                  <td>{event.total_tickets}</td>
+                  <td>{event.remaining_tickets}</td>
+                  <td>
+                    <button onClick={() => handleEditClick(event)}>Edit</button>
+                    <button
+                      onClick={() => handleDeleteEvent(event.id)}
+                      className="delete-button">
+                      Delete
+                    </button>
+                    <button
+                      onClick={() => handleViewAttendees(event.id)}
+                      className="attendees-button">
+                      View Attendees
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {events.map((event) => (
-                  <tr key={event.id}>
-                    <td>{event.title}</td>
-                    <td>{event.description}</td>
-                    <td>{event.location}</td>
-                    <td>{event.start_time}</td>
-                    <td>{event.end_time}</td>
-                    <td>
-                      <button onClick={() => handleEditClick(event)}>
-                        Edit
-                      </button>
-                      <button onClick={() => handleDeleteEvent(event.id)}>
-                        Delete
-                      </button>
-                      <button onClick={() => handleViewEventDetails(event.id)}>
-                        View Attendees
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+              ))}
+            </tbody>
+          </table>
         </div>
       </section>
 
-      {selectedEvent && (
-        <AttendeeList
-          eventId={selectedEvent}
-          attendees={attendees}
-          message={message}
-          loading={loading}
-        />
-      )}
+      <section className="event-attendees">
+        {selectedEvent && attendees.length > 0 && (
+          <div>
+            <h3>Attendees for Event ID: {selectedEvent}</h3>
+            <AttendeeList attendees={attendees} />
+          </div>
+        )}
+      </section>
     </div>
   );
 };
