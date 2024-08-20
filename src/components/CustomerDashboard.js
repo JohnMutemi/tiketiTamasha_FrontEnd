@@ -8,7 +8,7 @@ import CalendarComponent from './CalendarComponent';
 import './CustomerDashboard.css';
 
 function CustomerDashboard() {
-  const { user, token, selectedTicket, logout } = useUser();
+  const { user, token, selectedTicket } = useUser();
   const [purchasedTickets, setPurchasedTickets] = useState([]);
   const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
   const [areEventsVisible, setAreEventsVisible] = useState(false);
@@ -23,7 +23,7 @@ function CustomerDashboard() {
     if (user && token) {
       fetchPurchasedTickets();
     }
-  }, [user, token]);
+  }, [user, token, fetchPurchasedTickets]);
 
   useEffect(() => {
     if (areEventsVisible) {
@@ -75,10 +75,6 @@ function CustomerDashboard() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleLogout = () => {
-    logout();
   };
 
   const toggleTicketModal = () => {
@@ -134,15 +130,12 @@ function CustomerDashboard() {
                     <td>${parseFloat(ticket.price).toFixed(2)}</td>
                     <td>{ticket.status}</td>
                     <td>
-                      <button onClick={toggleCalendarVisibility}>
+                      <button
+                        onClick={toggleCalendarVisibility}
+                        className="calendar-link-button">
                         Add to calendar
-                      </button>
-                      <a
-                        href="#"
-                        className="calendar-link"
-                        onClick={toggleCalendarVisibility}>
                         <i className="fas fa-calendar-alt"></i>
-                      </a>
+                      </button>
                     </td>
                   </tr>
                 ))
@@ -157,9 +150,11 @@ function CustomerDashboard() {
 
         <div className="upcoming-events">
           <h2>
-            <a href="#" onClick={toggleEventsVisibility}>
+            <button
+              onClick={toggleEventsVisibility}
+              className="event-toggle-button">
               Click here to Book a new Event
-            </a>
+            </button>
           </h2>
           {areEventsVisible && (
             <>
