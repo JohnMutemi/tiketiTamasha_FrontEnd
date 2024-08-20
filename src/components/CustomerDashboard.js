@@ -32,13 +32,10 @@ function CustomerDashboard() {
   }, [areEventsVisible]);
 
   useEffect(() => {
-    if (events.length > 0) {
-      setFilteredEvents(
-        events.filter((event) =>
-          event.title.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      );
-    }
+    const filtered = events.filter((event) =>
+      event.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredEvents(filtered);
   }, [searchTerm, events]);
 
   const fetchPurchasedTickets = async () => {
@@ -52,7 +49,7 @@ function CustomerDashboard() {
         }
       );
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('Failed to fetch tickets.');
       }
       const data = await response.json();
       setPurchasedTickets(data);
@@ -68,7 +65,7 @@ function CustomerDashboard() {
         'https://tiketi-tamasha-backend-1.onrender.com/events'
       );
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('Failed to fetch events.');
       }
       const data = await response.json();
       setEvents(data);
@@ -84,15 +81,15 @@ function CustomerDashboard() {
     logout();
   };
 
-  const handleTicketModalClose = () => {
-    setIsTicketModalOpen(false);
+  const toggleTicketModal = () => {
+    setIsTicketModalOpen(!isTicketModalOpen);
   };
 
-  const handleToggleEvents = () => {
+  const toggleEventsVisibility = () => {
     setAreEventsVisible(!areEventsVisible);
   };
 
-  const handleToggleCalendar = () => {
+  const toggleCalendarVisibility = () => {
     setIsCalendarVisible(!isCalendarVisible);
   };
 
@@ -137,13 +134,13 @@ function CustomerDashboard() {
                     <td>${parseFloat(ticket.price).toFixed(2)}</td>
                     <td>{ticket.status}</td>
                     <td>
-                      <button onClick={handleToggleCalendar}>
+                      <button onClick={toggleCalendarVisibility}>
                         Add to calendar
                       </button>
                       <a
                         href="#"
                         className="calendar-link"
-                        onClick={handleToggleCalendar}>
+                        onClick={toggleCalendarVisibility}>
                         <i className="fas fa-calendar-alt"></i>
                       </a>
                     </td>
@@ -160,7 +157,7 @@ function CustomerDashboard() {
 
         <div className="upcoming-events">
           <h2>
-            <a href="#" onClick={handleToggleEvents}>
+            <a href="#" onClick={toggleEventsVisibility}>
               Click here to Book a new Event
             </a>
           </h2>
@@ -188,10 +185,7 @@ function CustomerDashboard() {
       </section>
 
       {isTicketModalOpen && (
-        <TicketModal
-          tickets={[selectedTicket]}
-          onClose={handleTicketModalClose}
-        />
+        <TicketModal tickets={[selectedTicket]} onClose={toggleTicketModal} />
       )}
 
       {isCalendarVisible && (
