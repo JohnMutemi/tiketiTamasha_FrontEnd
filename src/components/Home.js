@@ -133,9 +133,18 @@ function Home() {
       </div>
       <div className="events-section">
         <h2>
-          <a href="/" onClick={handleClick}>
+          <button
+            onClick={handleClick}
+            style={{
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              color: 'blue',
+              textDecoration: 'underline',
+              cursor: 'pointer',
+            }}>
             A Glimpse of Upcoming Events
-          </a>
+          </button>
         </h2>
         {areEventsVisible && (
           <>

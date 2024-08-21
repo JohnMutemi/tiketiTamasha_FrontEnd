@@ -97,7 +97,19 @@ function SignIn() {
         </div>
         <div className="signup-link">
           <p>
-            New to Tiketi Tamasha? <a href="/sign-up">Create account</a>
+            New to Tiketi Tamasha?
+            <button
+              onClick={() => (window.location.href = '/sign-up')}
+              style={{
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                color: 'blue',
+                textDecoration: 'underline',
+                cursor: 'pointer',
+              }}>
+              Create account
+            </button>
           </p>
         </div>
       </form>
