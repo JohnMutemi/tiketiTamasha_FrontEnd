@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './SignUp.css';
 import { useUser } from './UserContext';
 import ticket from './ticket_11785924.png';
@@ -206,7 +206,7 @@ function SignUp() {
         {error && <p className="error-message">{error}</p>}
         {success && <p className="success-message">{success}</p>}
         <p className="login-link">
-          Already have an account? <a href="/login">Log In</a>
+          Already have an account? <Link to="/login">Log In</Link>
         </p>
       </form>
     </div>
