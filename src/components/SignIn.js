@@ -54,6 +54,10 @@ function SignIn() {
     navigate('/');
   };
 
+  const handleSignUpClick = () => {
+    navigate('/sign-up');
+  };
+
   return (
     <div className="signin-container">
       <form onSubmit={handleSubmit} className="signin-form">
@@ -99,15 +103,7 @@ function SignIn() {
           <p>
             New to Tiketi Tamasha?
             <button
-              onClick={() => (window.location.href = '/sign-up')}
-              style={{
-                background: 'none',
-                border: 'none',
-                padding: 0,
-                color: 'blue',
-                textDecoration: 'underline',
-                cursor: 'pointer',
-              }}>
+              onClick={handleSignUpClick}>
               Create account
             </button>
           </p>

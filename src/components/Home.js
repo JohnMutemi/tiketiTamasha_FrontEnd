@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import NavBar from './NavBar';
 import { useUser } from './UserContext';
 import EventList from './EventList';
@@ -14,6 +15,8 @@ function Home() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   const userIsLoggedIn = !!user;
 
@@ -98,6 +101,7 @@ function Home() {
   const handleToggleEvents = () => {
     setAreEventsVisible((prevVisible) => !prevVisible);
   };
+
   const handleClick = (event) => {
     event.preventDefault(); // Prevent the default behavior of the link
     console.log('Link clicked: A Glimpse of Upcoming Events');
@@ -126,23 +130,18 @@ function Home() {
             platform ensures that booking tickets is quick, easy, and
             hassle-free.
           </p>
-          <a href="/sign-up" className="get-started-button">
+          <button
+            className="get-started-button"
+            onClick={() => navigate('/sign-up')}>
             Get Started for Free
-          </a>
+          </button>
         </div>
       </div>
       <div className="events-section">
         <h2>
           <button
             onClick={handleClick}
-            style={{
-              background: 'none',
-              border: 'none',
-              padding: 0,
-              color: 'blue',
-              textDecoration: 'underline',
-              cursor: 'pointer',
-            }}>
+          >
             A Glimpse of Upcoming Events
           </button>
         </h2>
