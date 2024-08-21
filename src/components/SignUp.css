@@ -1,11 +1,8 @@
 body {
   background-color: #f5f5f5;
-  /* display: flex; */
+  display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  margin: 0;
-  font-family: Arial, sans-serif;
 }
 
 .register-container {
@@ -70,6 +67,7 @@ body {
   align-items: center;
   justify-content: center;
 }
+
 .google-icon {
   width: 20px;
   height: auto;
@@ -89,4 +87,9 @@ body {
 
 .login-link {
   margin-top: 10px;
+}
+
+form {
+  flex-direction: column;
+  gap: 15px;
 }
